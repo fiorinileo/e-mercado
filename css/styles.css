@@ -188,3 +188,20 @@ a.custom-card:hover {
 .checked {
   color: orange;
 }
+
+/*         ESTILOS PARA LOGIN.HTML      */
+
+.container.center.d-flex{
+  flex-direction:column;
+  text-align: center;
+  align-items: center;
+}
+
+.center.container.d-flex img{
+  max-width: 500px;
+}
+.form-login--container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
