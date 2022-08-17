@@ -29,12 +29,53 @@
           <li class="nav-item">
             <a class="nav-link active" href="sell.html">Vender</a>
           </li>
-          <li class="nav-item">
-          </li>
+          <li class="nav-item" style="width: 123px;">
+            <button class="btn btn-secondary" onclick="cerrarSesion()" id="btn-cerrarSesion" style="display : none">
+              Cerrar sesión
+            </button> 
+            </li>
         </ul>
       </div>
     </div>
   </nav>
+  <div class="alert alert-success" style="display: none;" id="alerta-aviso-exito">
+    <strong>Exito!</strong> has iniciado sesion.
+  </div>
+    <div id="modalLogin" style="display: none;">
+      <div class="alert alert-warning" id="alerta-aviso-atencion" style="display: none;">
+        <strong>Atención!</strong> No puedes dejar ningún campo vacio.
+      </div>
+      <div class="container center d-flex">
+        <div>
+          <img src="./img/login.png" alt="logo de JaP e-mercado" />
+        </div>
+        <div class="col-md-4 form-login--container">
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <input
+                type="email"
+                class="form-control"
+                id="inputEmail"
+                placeholder="EMAIL"
+              />
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <input
+                type="password"
+                class="form-control"
+                id="inputPassword"
+                placeholder="PASSWORD"
+              />
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary btn-block" id="btn-ingresar">
+            Ingresar
+          </button>
+        </div>
+      </div>
+    </div>
   <div class="container">
     <div class="text-center p-4">
       <h2>Vender</h2>
@@ -227,6 +268,7 @@
   <script src="js/dropzone.js"></script>
   <script src="js/init.js"></script>
   <script src="js/sell.js"></script>
+  <script src="js/login.js"></script>
 </body>
 
 </html>

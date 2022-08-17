@@ -190,7 +190,28 @@ a.custom-card:hover {
 }
 
 /*         ESTILOS PARA LOGIN.HTML      */
+#modalLogin{
+  position: absolute;
+  z-index: 100;
+  width: 100vw;
+  height: 100%;
+  background-color: rgba(75, 71, 71, 0.644);
+  -webkit-transition: all 2s;
+  transition:all 2s;
+}
 
+#modalLogin img{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 3px;
+}
+#modalLogin>div{
+  margin-top: 60px;
+  background-color: #fff;
+  max-width: 600px;
+  padding-bottom: 40px;
+  border-radius: 4px;
+}
 .container.center.d-flex{
   flex-direction:column;
   text-align: center;
@@ -201,6 +222,7 @@ a.custom-card:hover {
   max-width: 500px;
 }
 .form-login--container{
+  width: 300px;  
   display: flex;
   flex-direction: column;
   justify-content: center;
