@@ -2,7 +2,7 @@
 .card-body,
 .container,
 .site-header {
-  font-family: 'Raleway', serif !important;
+  font-family: 'Nunito', serif !important;
 }
 
 .jumbotron .display-4 {
@@ -195,22 +195,23 @@ a.custom-card:hover {
   z-index: 100;
   width: 100vw;
   height: 100%;
-  background-color: rgba(75, 71, 71, 0.644);
+  background-color: rgba(73, 75, 71, 0.75);
   -webkit-transition: all 2s;
   transition:all 2s;
 }
 
 #modalLogin img{
   margin-top: 20px;
-  margin-bottom: 20px;
   border-radius: 3px;
 }
 #modalLogin>div{
+  height: 570px;
   margin-top: 60px;
   background-color: #fff;
   max-width: 600px;
   padding-bottom: 40px;
   border-radius: 4px;
+  box-shadow: #065454 1px 2px 34px 3px;
 }
 .container.center.d-flex{
   flex-direction:column;
@@ -226,4 +227,23 @@ a.custom-card:hover {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.form-login--container h2{
+  font-weight: bold;
+  color: #0087F7;
+  margin-top: 10px;
+  margin-bottom: 40px;
+}
+
+.form-control{
+  margin:  0 0 20px;
+  border: #0087F7 solid 1px;
+}
+
+.invalid-form-input{
+  color: #bb2929;
+  border: #bb2929 2px solid;
+}
+.correct-form-input{
+  color: #1ad72a;
 }
