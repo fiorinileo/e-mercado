@@ -18,14 +18,12 @@
 let currentProductsArray = [];
 
 function showProductsList(){
-
     // Se extrae el nombre de la categoria almacenado dentro del objeto del JSON dependiendo del ID que esta almacene, siendo variable para todas las categorias existentes.    Se emplea el mismo formato de "Categories" para presentar su nombre.
     let categoryName = currentProductsArray.catName;
     document.getElementById("title-product").innerHTML = `
         <h2>Productos</h2>
         <p class="lead" >Verás aquí todos la categoría ${categoryName}</p>
         `;
-
     // Reutilización del código ya creado en "Categories", esto se debe a que la visualización que se solicita es idéntica, sustituyendo en este caso las distintas categorias, por los distintos productos pertenecientes a la categoría solicitada.
     let htmlContentToAppend = "";
     for(let i = 0; i < currentProductsArray.products.length; i++){
@@ -46,9 +44,7 @@ function showProductsList(){
                     </div>
                 </div>
             </div>
-            `
-        
-        
+            ` 
         document.getElementById("cat-list-container").innerHTML = htmlContentToAppend;
     }
 }

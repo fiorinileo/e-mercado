@@ -6,7 +6,6 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <meta name="google-signin-client_id" content="723615790319-hs2mo63ng9jm84f8l3frmqgfdep2im9m.apps.googleusercontent.com">
     <title>eMercado - Todo lo que busques está aquí</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,9 +53,9 @@
     <main>
       
     <div id="buttonDiv"></div> 
-      <div class="alert alert-success" style="display: none;" id="alerta-aviso-exito">
+      <section class="alert alert-success" style="display: none;" id="alerta-aviso-exito">
         <strong>Exito!</strong> has iniciado sesion.
-      </div>
+      </section>
       
         <div id="modalLogin" style="display: none;">
           <section class="alert alert-warning" id="alerta-aviso-atencion" style="display: none;">
@@ -72,7 +71,7 @@
                   Iniciar sesión
                 </h2>
               </div>
-              <div class="g-signin2" data-onsuccess="onSignIn"></div>
+              
               <div class="row mb-3">
                 <div class="col-sm-12">
                   <input
@@ -190,8 +189,6 @@
       </div>
     </footer>
     <script src="js/bootstrap.bundle.min.js"></script>
-
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="js/index.js"></script>
     <script src="js/init.js"></script>
     <script src="js/login.js"></script>

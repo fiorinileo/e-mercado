@@ -213,6 +213,9 @@ a.custom-card:hover {
   border-radius: 4px;
   box-shadow: #065454 1px 2px 34px 3px;
 }
+.overflow-hidden{
+  overflow: hidden;
+}
 .container.center.d-flex{
   flex-direction:column;
   text-align: center;
@@ -230,20 +233,22 @@ a.custom-card:hover {
 }
 .form-login--container h2{
   font-weight: bold;
-  color: #0087F7;
+  color: #2595ae;
   margin-top: 10px;
   margin-bottom: 40px;
 }
 
 .form-control{
   margin:  0 0 20px;
-  border: #0087F7 solid 1px;
+  border: #2595ae solid 1px;
 }
 
-.invalid-form-input{
-  color: #bb2929;
-  border: #bb2929 2px solid;
-}
-.correct-form-input{
-  color: #1ad72a;
-}
+ input.form-control:focus{
+  outline: #2595ae72 1px solid;
+  border: #2595ae72 1px solid;
+
+ }
+
+ nav {
+  height: 40px;
+ }
