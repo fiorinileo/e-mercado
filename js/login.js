@@ -1,21 +1,23 @@
-localStorage.getItem("session") == "false" ? 
-    localStorage.setItem("session", false): 
-    localStorage.setItem("session",true) ; 
-
 
 function cerrarSesion(){
-        localStorage.setItem("session", false);
         document.getElementById("btn-cerrarSesion").style.display = "none";
+        document.getElementById("userName").innerHTML = "";
+    
+        localStorage.removeItem("session");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("catID");
         login();
     }
 
 
 document.addEventListener("DOMContentLoaded", function(){
-  if(localStorage.getItem("session") == "false" ){
-    login();
+
+  if(localStorage.getItem("session")){
+    document.getElementById("btn-cerrarSesion").style.display = "inline-block";
+    document.getElementById("userName").innerHTML = localStorage.getItem("userName");   
   }
   else{
-      document.getElementById("btn-cerrarSesion").style.display = "inline-block";
+    login();
   }
 })
 
@@ -29,10 +31,9 @@ function login() {
   const navbar = document.querySelectorAll("#navbarNav a");
 
   modalLogin.style.display = "block"
-  navbar.forEach(link => {
-    link.setAttribute('hidden', 'hidden');
-  });
+  navbar.forEach(link => link.setAttribute('hidden', 'hidden'));
 
+  
   do {
     if (btningresar) { // ingrese en el caso que no sea null 
 
@@ -42,9 +43,9 @@ function login() {
 
         /* Validamos que haya ingresado datos en los inputs */
         if (email.trim() != "" && password.trim() != "") {
-          navbar.forEach(link => {
-            link.removeAttribute('hidden', 'hidden');
-          });
+            localStorage.setItem("userName",email);
+            document.getElementById("userName").innerHTML = localStorage.getItem("userName"); 
+            navbar.forEach(link =>link.removeAttribute('hidden', 'hidden'));
             modalLogin.style.display = "none"; // quitamos el modal login
               avisoExito.style.display = "block"; // mostramos el cartel de login exitoso
             setTimeout(() => {
