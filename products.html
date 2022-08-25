@@ -15,8 +15,15 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-1">
     <div class="container">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -30,18 +37,19 @@
           <li class="nav-item">
             <a class="nav-link" href="sell.html">Vender</a>
           </li>
-          <li class="nav-item" style="width: 123px;">
-
-            <div>
-              <p id="userName" style="color: white;"></p>
+         
+          <li class="nav-item dropdown ">
+              <a class="userPerfil nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img class="userPerfil--img" src="./img/img_perfil.png" alt="">
+                <div>
+                  <span id="userName" style="color: white;"></span>
+                </div>
+              </a>
+            
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <button class="dropdown-item btn btn-secondary" onclick="cerrarSesion()" id="btn-cerrarSesion" style="display : none"> Cerrar sesión</button>
             </div>
-             
-            </li>
-            <li class="nav-item">
-              <button class="btn btn-secondary" onclick="cerrarSesion()" id="btn-cerrarSesion" style="display : none">
-                Cerrar sesión
-              </button>
-            </li>
+          </li>
         </ul>
       </div>
     </div>
@@ -96,11 +104,49 @@
     <div class="text-center p-4" id="title-product">
     </div>
     <div class="container">
-      <div class="row">
-        <div class="list-group" id="cat-list-container">
-         
+        <div class="row">
+          <div class="col text-end">
+            <div class="btn-group btn-group-toggle mb-4" data-bs-toggle="buttons">
+              <input type="radio" class="btn-check" name="options" id="sortAsc">
+              <label class="btn btn-light" for="sortAsc">A-Z</label>
+              <input type="radio" class="btn-check" name="options" id="sortDesc">
+              <label class="btn btn-light" for="sortDesc">Z-A</label>
+              <input type="radio" class="btn-check" name="options" id="sortByCount" checked>
+              <label class="btn btn-light" for="sortByCount"><i class="fas fa-sort-amount-down mr-1"></i></label>
+            </div>
+          </div>
         </div>
-      </div>
+        <div class="row">
+          <div class="col-md-12 mb-1 container d-flex">
+            <div class="input-group">
+              <div class="form-outline d-flex">
+                <label class="form-label" for="form1">Search</label>
+                <input id="search-input" onkeyup="searchFunction()" type="search" id="form1" class="form-control" />
+              </div>
+            </div>
+            <div class="row container p-0 m-0">
+              <div class="col">
+                <p class="font-weight-normal text-end my-2">Precio.</p>
+              </div>
+              <div class="col">
+                <input class="form-control" type="number" placeholder="min." id="rangeFilterPriceMin">
+              </div>
+              <div class="col">
+                <input class="form-control" type="number" placeholder="máx." id="rangeFilterPriceMax">
+              </div>
+              <div class="col-3">
+                <div class="btn-group" role="group">
+                  <button class="btn btn-light btn-block" id="rangeFilterPrice">Filtrar</button>
+                  <button class="btn btn-link btn-sm" id="clearRangeFilter">Limpiar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <ul class="list-group" id="cat-list-container">
+          </ul>
+        </div>
     </div>
   </main>
   <footer class="text-muted">
@@ -121,6 +167,9 @@
       <div></div>
     </div>
   </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
   <script src="js/products.js"></script>

@@ -51,7 +51,7 @@ function login() {
             setTimeout(() => {
               avisoExito.style.display =
                 "none"; 
-            }, 3000); // quitamos el cartel de login exitoso pasados 2 segundos (2000ms)
+            }, 3000); // quitamos el cartel de login exitoso pasados 3 segundos (3000ms)
             
             localStorage.setItem("session", true);// almacenamos en el navegador que el usuario esta logeado
             btnCerrarSesion.style.display = "inline-block"; //hacemos visible el boton "cerrar sesión"

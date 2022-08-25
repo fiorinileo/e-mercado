@@ -239,7 +239,6 @@ a.custom-card:hover {
 }
 
 .form-control{
-  margin:  0 0 20px;
   border: #2595ae solid 1px;
 }
 
@@ -249,6 +248,47 @@ a.custom-card:hover {
 
  }
 
- nav {
+ .userPerfil{
+  display: flex;
+  align-items: center;
+  }
+  .userPerfil div{
+
+    margin: 0 0 0 15px;
+  }
+ .userPerfil--img{
+  width: 24px;
+  height: 24px;
+} 
+
+nav{
   height: 40px;
- }
+}
+
+.dropdown-menu{
+
+  background-color: #212529;
+}
+.dropdown-item{
+  color: #fff;
+}
+.dropdown-item:hover{
+  color: #fff;
+  background-color: #3a3d41;
+}
+.navbar-expand-lg .navbar-nav .dropdown-menu{
+  left: 40%;
+}
+
+#btn-cerrarSesion{
+  text-align: center;
+}
+.input-group{
+  align-items: flex-start;
+}
+.input-group label{
+  align-self: center;
+}
+.form-label{
+  margin: auto 8px;
+}
