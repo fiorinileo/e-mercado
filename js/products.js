@@ -181,7 +181,8 @@ function sortAndShowProducts(sortCriteria, ProductsArray){
 //Función que se ejecuta una vez que se haya lanzado el evento de que el documento se encuentra cargado, es decir, se encuentran todos los elementos HTML presentes.
 document.addEventListener("DOMContentLoaded", function(e){
     let id = localStorage.catID;
-    getJSONData("https://japceibal.github.io/emercado-api/cats_products/"+id+".json").then(function(resultObj){
+    if(id){
+        getJSONData("https://japceibal.github.io/emercado-api/cats_products/"+id+".json").then(function(resultObj){
         if (resultObj.status === "ok"){
             currentProductsArray = resultObj.data;
             categoryName = currentProductsArray.catName;
@@ -190,31 +191,35 @@ document.addEventListener("DOMContentLoaded", function(e){
             //sortAndShowProducts(ORDER_ASC_BY_NAME, resultObj.data);
         }
     });
+    }
+    else{
+        this.location.replace("../categories.html");
+    }
 
 });
 
 
 function searchFunction() {
     // Declare variables
-    var input, filter, ul, li, a, i, txtValue;
+    var input, filter, ul, li, p, txtValueP, txtValueH4, h4;
     input = document.getElementById('search-input');
     filter = input.value.toUpperCase();
     ul = document.getElementById("cat-list-container");
-    li = ul.getElementsByTagName('li');
+    li = Object.values(ul.getElementsByTagName('li'));
   
     // Loop through all list items, and hide those who don't match the search query
-    for (i = 0; i < li.length; i++) {
+    li.forEach(i => {
         // extraemos contenido de las descripciones
-      p = li[i].getElementsByTagName("p")[0];
+      p = i.getElementsByTagName("p")[0];
       txtValueP = p.textContent || p.innerText;
         // extraemos contenido de los títulos
-      h4 = li[i].getElementsByTagName("h4")[0];
+      h4 = i.getElementsByTagName("h4")[0];
       txtValueH4 = h4.textContent || h4.innerText;
 
       if (txtValueP.toUpperCase().indexOf(filter) > -1 || txtValueH4.toUpperCase().indexOf(filter) > -1) {
-        li[i].style.display = "";
+        i.style.display = "";
       } else {
-        li[i].style.display = "none";
+        i.style.display = "none";
       }
-    }
+    });
   }
