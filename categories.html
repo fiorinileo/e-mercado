@@ -127,24 +127,21 @@
               <p class="font-weight-normal text-end my-2">Cant.</p>
             </div>
             <div class="col">
-              <input class="form-control" type="number" placeholder="min." id="rangeFilterCountMin">
+              <input class="form-control" type="number" placeholder="min." id="rangeFilterCountMin" onkeyup="sortFunction()">
             </div>
             <div class="col">
-              <input class="form-control" type="number" placeholder="máx." id="rangeFilterCountMax">
+              <input class="form-control" type="number" placeholder="máx." id="rangeFilterCountMax" onkeyup="sortFunction()">
             </div>
             <div class="col-3 p-0">
-              <div class="btn-group" role="group">
-                <button class="btn btn-light btn-block" id="rangeFilterCount">Filtrar</button>
-                <button class="btn btn-link btn-sm" id="clearRangeFilter">Limpiar</button>
+              <div class="btn-group product-cta-btn" role="group">
+                <button class="btn btn-primary btn-xs" id="clearRangeFilter">Limpiar</button>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="list-group" id="cat-list-container">
-        </div>
-      </div>
+        <ul class="row" id="cat-list-container">
+        </ul>
     </div>
   </main>
   <footer class="text-muted">

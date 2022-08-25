@@ -1,3 +1,13 @@
+:root{
+  --primary-color: #b11a38 ;
+  --soft-primary-color:#f45272;
+}
+
+
+
+
+
+
 .jumbotron,
 .card-body,
 .container,
@@ -13,6 +23,9 @@ nav a {
   text-decoration: none;
 }
 
+li{
+  list-style: none;
+}
 .bd-placeholder-img {
   font-size: 1.125rem;
   text-anchor: middle;
@@ -239,7 +252,7 @@ a.custom-card:hover {
 }
 
 .form-control{
-  border: #2595ae solid 1px;
+  border: var(--primary-color) solid 1px;
 }
 
  input.form-control:focus{
@@ -289,6 +302,56 @@ nav{
 .input-group label{
   align-self: center;
 }
+#clearRangeFilter:focus, #clearRangeFilter:hover{
+  background-color: var(--soft-primary-color);
+}
 .form-label{
   margin: auto 8px;
+}
+
+.product-header{
+  font-weight: 600;
+
+}
+.product-price{
+  color: var(--primary-color);
+  margin: auto;
+  font-size: 1.3rem;
+  font-weight: 600;
+
+}
+.product-cta-btn, .category-cta-btn{
+  text-align: end;
+}
+.product-cta-btn button{
+  padding: 8px 30px;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  color: aliceblue;
+  border: var(--soft-primary-color);
+  background-color: var(--primary-color);
+}
+.product-card{
+  box-shadow: #5e616476 2px 4px 15px .1px;
+}
+.product-card img{
+  border: none;
+}
+
+.category-cta-btn button:focus{
+  background-color: var(--soft-primary-color);
+}
+
+.category-cta-btn button{
+  padding: 8px 18px;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  color: aliceblue;
+  border: var(--soft-primary-color);
+  background-color: var(--primary-color);
+}
+
+.img-thumbnail{
+  padding: 0;
+  margin-top: .25rem;
 }

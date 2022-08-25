@@ -43,32 +43,50 @@ function setCatID(id) {
 function showCategoriesList(){
 
     let htmlContentToAppend = "";
-    for(let i = 0; i < currentCategoriesArray.length; i++){
-        let category = currentCategoriesArray[i];
-
-        if (((minCount == undefined) || (minCount != undefined && parseInt(category.productCount) >= minCount)) &&
-            ((maxCount == undefined) || (maxCount != undefined && parseInt(category.productCount) <= maxCount))){
-
-            htmlContentToAppend += `
-            <div onclick="setCatID(${category.id})" class="list-group-item list-group-item-action cursor-active">
-                <div class="row">
-                    <div class="col-3">
-                        <img src="${category.imgSrc}" alt="${category.description}" class="img-thumbnail">
-                    </div>
-                    <div class="col">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h4 class="mb-1">${category.name}</h4>
-                            <small class="text-muted">${category.productCount} artículos</small>
+    if(currentCategoriesArray.length >= 0){
+        for(let i = 0; i < currentCategoriesArray.length; i++){
+            let category = currentCategoriesArray[i];
+    
+            if (((minCount == undefined) || (minCount != undefined && parseInt(category.productCount) >= minCount)) &&
+                ((maxCount == undefined) || (maxCount != undefined && parseInt(category.productCount) <= maxCount))){
+    
+                htmlContentToAppend += `
+                <li class="cursor-active col-md-6 col-lg-4 p-4" onclick="setCatID(${category.id})" >
+                        <div class="row px-1 pb-4 pt-4 product-card">
+                            <div class="col-">
+                                <div>
+                                    <img src="${category.imgSrc}" class="img-thumbnail" alt="${category.description}">
+                                </div>
+                                
+                            </div>
+                            <div class="col mt-3">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h4 class="mb-1 product-header">${category.name.toUpperCase()}</h4>
+                                </div>
+                                <p class="mb-1">${category.description}</p>
+                            </div>
+                            <div class="row pe-0">
+                             <p class="product-price col">${category.productCount} Artículos</p>
+                             <div class="col category-cta-btn">
+                                <button>
+                                    Ver más
+                                </button>
+                             </div>
+                            </div>
                         </div>
-                        <p class="mb-1">${category.description}</p>
-                    </div>
-                </div>
-            </div>
-            `
+                    </li>
+                `
+            }
         }
-
-        document.getElementById("cat-list-container").innerHTML = htmlContentToAppend;
     }
+    else{
+        htmlContentToAppend = ` <div>
+            <p>
+            No hay categorías que cumplan con estos requisitos</p>
+        </div>`
+    }
+    document.getElementById("cat-list-container").innerHTML = htmlContentToAppend;
+    
 }
 
 function sortAndShowCategories(sortCriteria, categoriesArray){
@@ -83,7 +101,28 @@ function sortAndShowCategories(sortCriteria, categoriesArray){
     //Muestro las categorías ordenadas
     showCategoriesList();
 }
+function sortFunction(){
+    //Obtengo el mínimo y máximo de los intervalos para filtrar por cantidad
+    //de productos por categoría.
+    minCount = document.getElementById("rangeFilterCountMin").value;
+    maxCount = document.getElementById("rangeFilterCountMax").value;
 
+    if ((minCount != undefined) && (minCount != "") && (parseInt(minCount)) >= 0){
+        minCount = parseInt(minCount);
+    }
+    else{
+        minCount = undefined;
+    }
+
+    if ((maxCount != undefined) && (maxCount != "") && (parseInt(maxCount)) >= 0){
+        maxCount = parseInt(maxCount);
+    }
+    else{
+        maxCount = undefined;
+    }
+
+    showCategoriesList();
+}
 //Función que se ejecuta una vez que se haya lanzado el evento de
 //que el documento se encuentra cargado, es decir, se encuentran todos los
 //elementos HTML presentes.
@@ -114,29 +153,6 @@ document.addEventListener("DOMContentLoaded", function(e){
 
         minCount = undefined;
         maxCount = undefined;
-
-        showCategoriesList();
-    });
-
-    document.getElementById("rangeFilterCount").addEventListener("click", function(){
-        //Obtengo el mínimo y máximo de los intervalos para filtrar por cantidad
-        //de productos por categoría.
-        minCount = document.getElementById("rangeFilterCountMin").value;
-        maxCount = document.getElementById("rangeFilterCountMax").value;
-
-        if ((minCount != undefined) && (minCount != "") && (parseInt(minCount)) >= 0){
-            minCount = parseInt(minCount);
-        }
-        else{
-            minCount = undefined;
-        }
-
-        if ((maxCount != undefined) && (maxCount != "") && (parseInt(maxCount)) >= 0){
-            maxCount = parseInt(maxCount);
-        }
-        else{
-            maxCount = undefined;
-        }
 
         showCategoriesList();
     });

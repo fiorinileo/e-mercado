@@ -43,7 +43,7 @@ function showProductsList(){
     // Se extrae el nombre de la categoria almacenado dentro del objeto del JSON dependiendo del ID que esta almacene, siendo variable para todas las categorias existentes.    Se emplea el mismo formato de "Products" para presentar su nombre.
     document.getElementById("title-product").innerHTML = `
         <h2>Productos</h2>
-        <p class="lead" >Verás aquí todos la categoría ${categoryName}</p>
+        <p class="lead" >Verás aquí todos los artículos de la categoría ${categoryName}</p>
         `;
     // Reutilización del código ya creado en "Products", esto se debe a que la visualización que se solicita es idéntica, sustituyendo en este caso las distintas categorias, por los distintos productos pertenecientes a la categoría solicitada.
     let htmlContentToAppend = "";
@@ -51,22 +51,33 @@ function showProductsList(){
         let product = currentProductsArray[i];
         if (((minCount == undefined) || (minCount != undefined && parseInt(product.cost) >= minCount)) &&
             ((maxCount == undefined) || (maxCount != undefined && parseInt(product.cost) <= maxCount))){
-            htmlContentToAppend += `
-            <li class="list-group-item list-group-item-action cursor-active">
-                <div class="row">
-                    <div class="col-3">
-                        <img src="${product.image}" class="img-thumbnail">
-                    </div>
-                    <div class="col">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h4 class="mb-1">${product.name} - ${product.currency} ${product.cost}</h4>
-                            <small class="text-muted">${product.soldCount} vendidos</small>
+                htmlContentToAppend += `
+                <li class="cursor-active col-md-6 col-lg-4 p-4">
+                    <div class="row pb-4 product-card">
+                        <div class="col-">
+                            <div>
+                                <img src="${product.image}" class="img-thumbnail">
+                            </div>
+                            
                         </div>
-                        <p class="mb-1">${product.description}</p>
+                        <div class="col mt-3">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h4 class="mb-1 product-header">${product.name.toUpperCase()}</h4>
+                                <small class="text-muted">${product.soldCount} vendidos</small>
+                            </div>
+                            <p class="mb-1">${product.description}</p>
+                        </div>
+                        <div class="row pe-0">
+                         <p class="product-price col">${product.currency} ${product.cost}</p>
+                         <div class="col product-cta-btn pe-0">
+                            <button>
+                                COMPRAR
+                            </button>
+                         </div>
+                        </div>
                     </div>
-                </div>
-            </li>
-            ` 
+                </li>
+                ` 
         }
         document.getElementById("cat-list-container").innerHTML = htmlContentToAppend;
     }
@@ -150,29 +161,29 @@ function sortAndShowProducts(sortCriteria, ProductsArray){
         showProductsList();
     });
 
-    document.getElementById("rangeFilterPrice").addEventListener("click", function(){
-        //Obtengo el mínimo y máximo de los intervalos para filtrar por cantidad
-        //de productos por categoría.
-        minCount = document.getElementById("rangeFilterPriceMin").value;
-        maxCount = document.getElementById("rangeFilterPriceMax").value;
+   
+function sortFunction(){
+    //Obtengo el mínimo y máximo de los intervalos para filtrar por cantidad
+    //de productos por categoría.
+    minCount = document.getElementById("rangeFilterCountMin").value;
+    maxCount = document.getElementById("rangeFilterCountMax").value;
 
-        if ((minCount != undefined) && (minCount != "") && (parseInt(minCount)) >= 0){
-            minCount = parseInt(minCount);
-        }
-        else{
-            minCount = undefined;
-        }
+    if ((minCount != undefined) && (minCount != "") && (parseInt(minCount)) >= 0){
+        minCount = parseInt(minCount);
+    }
+    else{
+        minCount = undefined;
+    }
 
-        if ((maxCount != undefined) && (maxCount != "") && (parseInt(maxCount)) >= 0){
-            maxCount = parseInt(maxCount);
-        }
-        else{
-            maxCount = undefined;
-        }
+    if ((maxCount != undefined) && (maxCount != "") && (parseInt(maxCount)) >= 0){
+        maxCount = parseInt(maxCount);
+    }
+    else{
+        maxCount = undefined;
+    }
 
-        showProductsList();
-    });
-
+    showProductsList();
+}
 
 
 
