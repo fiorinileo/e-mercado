@@ -111,9 +111,9 @@
             <div class="col-sm-12 col-md-5 col-lg-5 mb-2 row">
               <div class="d-flex justify-content-sm-center">
                 <div>
-                  <label class="form-label" for="search-input">Buscar</label>
+                  <label class="form-label my-2" for="search-input">Buscar</label>
                 </div>
-                <div>
+                <div class="col py-1">
                   <input id="search-input" onkeyup="searchFunction()" type="search" id="form1" class="form-control col-sm-4 pe-4" />
                 </div>
               </div>
@@ -140,20 +140,23 @@
             
           </div>
         </div>
-        <div class="row">
-          <div class="col text-end">
-            <div class="btn-group btn-group-toggle mb-4" data-bs-toggle="buttons">
-              <input type="radio" class="btn-check" name="options" id="sortAsc">
-              <label class="btn btn-light" for="sortAsc">A-Z</label>
-              <input type="radio" class="btn-check" name="options" id="sortDesc">
-              <label class="btn btn-light" for="sortDesc">Z-A</label>
-              <input type="radio" class="btn-check" name="options" id="sortByCount" checked>
-              <label class="btn btn-light" for="sortByCount"><i class="fas fa-sort-amount-down mr-1"></i></label>
+        <div class="container">
+
+          <div class="row">
+            <div class="col text-end px-0">
+              <div class="btn-group btn-group-toggle mb-4" data-bs-toggle="buttons">
+                <input type="radio" class="btn-check" name="options" id="sortAsc">
+                <label class="btn btn-light" for="sortAsc">A-Z</label>
+                <input type="radio" class="btn-check" name="options" id="sortDesc">
+                <label class="btn btn-light" for="sortDesc">Z-A</label>
+                <input type="radio" class="btn-check" name="options" id="sortBySold" checked>
+                <label class="btn btn-light" for="sortBySold"><i class="fas fa-sort-amount-down mr-1"></i></label>
+              </div>
             </div>
           </div>
         </div>
-        <div class="row">
-          <ul class="row" id="cat-list-container">
+        <div class="row justify-content-center">
+          <ul class="row " id="cat-list-container">
 
           </ul>
         </div>

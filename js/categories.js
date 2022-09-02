@@ -52,7 +52,7 @@ function showCategoriesList(){
     
                 htmlContentToAppend += `
                 <li class="cursor-active col-md-6 col-lg-4 p-4" onclick="setCatID(${category.id})" >
-                        <div class="row px-1 pb-4 pt-4 product-card">
+                        <div class="row px-1 pb-4 pt-2 product-card">
                             <div class="col-">
                                 <div>
                                     <img src="${category.imgSrc}" class="img-thumbnail" alt="${category.description}">
