@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>eMercado - Todo lo que busques está aquí</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    
+
   <link href="css/font-awesome.min.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
@@ -125,10 +125,10 @@
                     <p class="font-weight-normal text-center my-2">Precio.</p>
                   </div>
                   <div class="col py-1">
-                    <input class="form-control" type="number" placeholder="min." id="rangeFilterCountMin" onkeyup="sortFunction()">
+                    <input class="form-control" type="number" placeholder="min." id="rangeFilterPriceMin" onkeyup="sortFunction()">
                   </div>
                   <div class="col py-1">
-                    <input class="form-control" type="number" placeholder="máx." id="rangeFilterCountMax" onkeyup="sortFunction()">
+                    <input class="form-control" type="number" placeholder="máx." id="rangeFilterPriceMax" onkeyup="sortFunction()">
                   </div>
                   <div class="col-xs-6 col-lg-2 p-0 d-flex justify-content-center justify-content-md-end">
                     <div class="btn-group product-cta-btn" role="group">
@@ -146,11 +146,11 @@
             <div class="col text-end px-0">
               <div class="btn-group btn-group-toggle mb-4" data-bs-toggle="buttons">
                 <input type="radio" class="btn-check" name="options" id="sortAsc">
-                <label class="btn btn-light" for="sortAsc">A-Z</label>
+                <label class="btn btn-light" for="sortAsc"><i class="fas fa-sort-amount-down mr-1 py-1 px-2">$</i></label>
                 <input type="radio" class="btn-check" name="options" id="sortDesc">
-                <label class="btn btn-light" for="sortDesc">Z-A</label>
+                <label class="btn btn-light" for="sortDesc"><i class="fas fa-sort-amount-down-alt mr-1 py-1 px-2">$</i></label>
                 <input type="radio" class="btn-check" name="options" id="sortBySold" checked>
-                <label class="btn btn-light" for="sortBySold"><i class="fas fa-sort-amount-down mr-1"></i></label>
+                <label class="btn btn-light" for="sortBySold"><i class="fas fa-sort-amount-down mr-1 py-1 px-2">Rel.</i></label>
               </div>
             </div>
           </div>
