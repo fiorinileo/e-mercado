@@ -52,7 +52,7 @@ function showProductsList(){
             ((maxPrice == undefined) || (maxPrice != undefined && parseInt(product.cost) <= maxPrice))){
                 htmlContentToAppend += `
                 <li class="cursor-active col-md-6 col-lg-4 p-4">
-                    <div class="row pb-4 pt-2 px-1 product-card">
+                    <div class="row pb-4 pt-2 px-1 product-card" onclick="windowReplace(${product.id})">
                         <div class="col-">
                             <div>
                                 <img src="${product.image}" class="img-thumbnail">
@@ -86,8 +86,8 @@ function showProductsList(){
 
 
 
-const ORDER_ASC_BY_PRICE = null;
-const ORDER_DESC_BY_PRICE = undefined;
+const ORDER_ASC_BY_PRICE = "0-1";
+const ORDER_DESC_BY_PRICE = "1-0";
 const ORDER_BY_SOLD_COUNT = "Cant.";
 let currentSortCriteria = undefined;
 let minPrice = undefined;
@@ -160,40 +160,14 @@ function sortFunction(){
     showProductsList();
 }
 
-
-
-////
-
-//Función que se ejecuta una vez que se haya lanzado el evento de que el documento se encuentra cargado, es decir, se encuentran todos los elementos HTML presentes.
-document.addEventListener("DOMContentLoaded", function(e){
-    let id = localStorage.catID;
-    if(id){
-        getJSONData("https://japceibal.github.io/emercado-api/cats_products/"+id+".json").then(function(resultObj){
-        if (resultObj.status === "ok"){
-            currentProductsArray = resultObj.data;
-            categoryName = currentProductsArray.catName;
-            currentProductsArray = currentProductsArray.products;
-            showProductsList()
-            //sortAndShowProducts(ORDER_ASC_BY_NAME, resultObj.data);
-        }
-    });
-    }
-    else{
-        this.location.replace("../categories.html");
-    }
-
-});
-
-
 function searchFunction() {
-    // Declare variables
+    // Declararamos variables
     var input, filter, ul, li, p, txtValueP, txtValueH4, h4;
     input = document.getElementById('search-input');
     filter = input.value.toUpperCase();
     ul = document.getElementById("cat-list-container");
     li = Object.values(ul.getElementsByTagName('li'));
   
-    // Loop through all list items, and hide those who don't match the search query
     li.forEach(i => {
         // extraemos contenido de las descripciones
       p = i.getElementsByTagName("p")[0];
@@ -209,3 +183,30 @@ function searchFunction() {
       }
     });
   }
+
+function windowReplace(id){
+        localStorage.setItem("productID", id);
+        window.location = "product-info.html"
+}
+
+
+
+  //Función que se ejecuta una vez que se haya lanzado el evento de que el documento se encuentra cargado, es decir, se encuentran todos los elementos HTML presentes.
+document.addEventListener("DOMContentLoaded", function(e){
+    let id = localStorage.catID;
+    if(id){
+        getJSONData("https://japceibal.github.io/emercado-api/cats_products/"+id+".json").then(function(resultObj){
+        if (resultObj.status === "ok"){
+            currentProductsArray = resultObj.data;
+            categoryName = currentProductsArray.catName;
+            currentProductsArray = currentProductsArray.products;
+            showProductsList()
+            
+        }
+    });
+    }
+    else{
+        this.location.replace("../categories.html");
+    }
+
+});

@@ -10,24 +10,27 @@
   <link href="css/font-awesome.min.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
+  <link rel="stylesheet" href="./css/product-info.css">
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-1">
-    <div class="container">
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color:#2f2d2d;">
+    <!-- Container wrapper -->
+    <div class="container-fluid">
+  
+      <!-- Navbar brand -->
+      <a class="navbar-brand" href="#">Brand</a>
+  
+      <!-- Toggle button -->
+      <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav w-100 justify-content-between">
+  
+      <!-- Collapsible wrapper -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  
+          <!-- Link -->
           <li class="nav-item">
             <a class="nav-link active" href="index.html">Inicio</a>
           </li>
@@ -37,28 +40,100 @@
           <li class="nav-item">
             <a class="nav-link" href="sell.html">Vender</a>
           </li>
-         
-          <li class="nav-item dropdown ">
-              <a class="userPerfil nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <!-- Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="userPerfil nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img class="userPerfil--img" src="./img/img_perfil.png" alt="">
                 <div>
                   <span id="userName" style="color: white;"></span>
                 </div>
               </a>
-            
+            <!-- Dropdown menu -->
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <button class="dropdown-item btn btn-secondary" onclick="cerrarSesion()" id="btn-cerrarSesion" style="display : none"> Cerrar sesión</button>
-            </div>
+                <button class="dropdown-item btn btn-secondary" onclick="cerrarSesion()" id="btn-cerrarSesion" style="display : none"> Cerrar sesión</button>
+              </div>
+          </li>
+  
+        </ul>
+  
+        <ul class="navbar-nav d-flex flex-row me-1">
+          <li class="nav-item me-3 me-lg-0">
+            <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i></a>
           </li>
         </ul>
+        <form class="w-auto">
+          <input type="search" class="form-control" placeholder="Type query" aria-label="Search">
+        </form>
+  
       </div>
     </div>
   </nav>
   <main>
-    <div class="container" id="test">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+    <!-- HTML DESTINADO A LOGIN | Comienzo-->
+    <div class="alert alert-success" style="display: none;" id="alerta-aviso-exito">
+      <strong>Exito!</strong> has iniciado sesion.
+    </div>
+    <div id="modalLogin" style="display: none;">
+      <section class="alert alert-warning" id="alerta-aviso-atencion" style="display: none;">
+        <strong>Atención!</strong> No puedes dejar ningún campo vacio.
+      </section>
+      <div class="container center d-flex">
+        <div>
+          <img src="./img/login.png" alt="logo de JaP e-mercado" />
+        </div>
+        <div class="col-md-4 form-login--container">
+          <div>
+            <h2>
+              Iniciar sesión
+            </h2>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <input
+                name="email"
+                type="email"
+                class="form-control"
+                id="inputEmail"
+                placeholder="EMAIL"
+              />
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <input
+                name="password"
+                type="password"
+                class="form-control"
+                id="inputPassword"
+                placeholder="PASSWORD"
+              />
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary btn-block" id="btn-ingresar">
+            Ingresar
+          </button>
+        </div>
       </div>
+    </div>
+    <!-- HTML DESTINADO A LOGIN | Fin-->
+    
+    <div class="text-center p-4" id="title-product">
+    </div>
+    <div class="container" >
+      <section class="row" id="product-container">
+
+      </section>
+      <section class="row" >
+        <div>
+          <h3>
+            PRODUCTOS QUE TAMBIEN TE PUEDEN INTERESAR
+          </h3>
+        </div>
+        <ul class="row" id="related-products">
+
+        </ul>
+      </section>
     </div>
   </main>
   <footer class="text-muted">
@@ -85,6 +160,7 @@
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
   <script src="js/product-info.js"></script>
+  <script src="js/login.js"></script>
 </body>
 
 </html>
