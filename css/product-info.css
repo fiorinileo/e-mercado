@@ -1,5 +1,4 @@
 #product-info-container{
-    height: 50vh;
     background-repeat:no-repeat ;
     background-size: cover;
     background-position: center;
@@ -36,6 +35,20 @@
 
 .selected-img{
     box-shadow: 3px 1px 7px 3px var(--primary-color);
--webkit-box-shadow: 3px 1px 7px 3px var(--primary-color);
--moz-box-shadow: 3px 1px 7px 3px var(--primary-color);
+    -webkit-box-shadow: 3px 1px 7px 3px var(--primary-color);
+    -moz-box-shadow: 3px 1px 7px 3px var(--primary-color);
+    
+}
+img{
+    transition: all .2s;
+    max-width: 100%;
+}
+
+.checked, .fa-star-half {
+    color: orange;
+  }
+
+.comment-content{
+    margin: 10px;
+    border: gray 1px solid;
 }

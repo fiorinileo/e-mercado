@@ -12,11 +12,19 @@ function showProductInfo(){
                     </div>
                     <div class="col-4">
                         <div class="col mt-3">
+                        <small class="text-muted">Nuevo | ${product.soldCount} vendidos </small>
                             <div class="d-flex w-100 justify-content-between">
                                 <h4 class="mb-1 product-header">${product.name.toUpperCase()}</h4>
-                                <small class="text-muted">${product.soldCount} vendidos</small>
                             </div>
+                            <p id="generalScore">Calificación promedio: 
+                                <span class="fa "></span>
+                                <span class="fa "></span>
+                                <span class="fa "></span>
+                                <span class="fa "></span>
+                                <span class="fa "></span>
+                            </p>
                             <p class="mb-1">${product.description}</p>
+                            
                         </div>
                         <div class="row pe-2 pb-3">
                             <p class="product-price col">${product.currency} ${product.cost}</p>
@@ -38,6 +46,77 @@ function showProductInfo(){
         imagesProduct();
     
 }
+
+function drawComment(id,user,dateTime,description) {
+    document.getElementById("commentList").innerHTML += `
+    <li id="idComment_`+id+`" class="row comment-content">
+        <div>
+        <h4>`+user+`</h4>
+        <p>`+dateTime+`</p>
+        </div>
+        <div id="Score-container">
+            <span class="fa"></span>
+            <span class="fa"></span>
+            <span class="fa"></span>
+            <span class="fa"></span>
+            <span class="fa"></span>
+        </div>
+        <p>`+description+`</p>
+        <div>
+        </div>
+    </li>`;
+}
+
+function products_comments(){
+    for (let i = 0; i < productComments.length; i++) {
+        let commentInfo = productComments[i];
+       drawComment(i,commentInfo.user,commentInfo.dateTime,commentInfo.description);
+    }
+    let totalScore=0;
+
+    for (let i = 0; i < productComments.length; i++) {
+
+        let liScoreID=document.getElementById("idComment_"+i); // seleccionamos el <li>(comentario) para poder trabajar dentro de él
+        let spanScore=liScoreID.getElementsByTagName("span"); // seleccionamos el array de <span> para ubicar cada una de las estrellas
+        totalScore +=  parseInt(productComments[i].score); // almacenamos el total de las estrellas por comentario, y las sumamos todas para obtener el total, de esta forma tener el promedio
+        drawScore(spanScore,productComments[i].score) // utilizamos la función DrawScore, y le pasamos como parámetro, el array de estrellas, y la cantidad.
+    }
+
+    totalScore= totalScore/ productComments.length;
+    let generalScore = document.getElementById("generalScore");
+    let spanGeneralScore = generalScore.getElementsByTagName("span");
+    drawScore(spanGeneralScore,totalScore);
+}
+function dualDigits(num){
+    if (parseInt(num)<10) {
+       return num= "0"+num;
+    }
+    else{
+        return num;
+    }
+}
+document.getElementById("sendComment").addEventListener("click",e =>{
+
+    let comment=document.getElementById("commentDescription").value;
+    let commentScore=document.getElementById("selectedScore").value;
+    let user=localStorage.getItem("userName");
+    const date = new Date();
+    let commentDate = 
+                            date.getFullYear()+"-"+
+                            dualDigits(date.getMonth())+"-"+
+                            dualDigits(date.getDate())+" "+
+                            dualDigits(date.getHours())+":"+
+                            dualDigits(date.getMinutes())+":"+
+                            dualDigits(date.getSeconds());
+    let arrayComments= document.getElementById("commentList");
+    arrayComments = arrayComments.getElementsByTagName("li");
+
+    drawComment(arrayComments.length,user,commentDate,comment);
+
+    let arraySpan = arrayComments[arrayComments.length-1].getElementsByTagName("span");
+    drawScore(arraySpan,commentScore);
+
+});
 
 function showRelatedProducts(){
     const relatedProductList = document.getElementById("related-products");
@@ -71,18 +150,29 @@ function windowReplace(id){
     localStorage.setItem("productID", id);
     window.location = "product-info.html"
 }
-function setImage(index){
+function setImage(imgIndex){
+    //agregamos como imagen principal, la imagen con el índice seleccionado previamente (pasado por parámetro)
     document.getElementById("product-info-container").innerHTML = `
-        <img src="${product.images[index]}">
+        <img src="${product.images[imgIndex]}">
         </img>
     `
+    // recorremos todas las imágenes secundarias, le agregamos un box-shadow a la imágen que se muestra en grande, y a las demás se lo quitamos
+    // para así de esta forma, el usuario puede identificar cuál está visualizando.
     for (let i = 0; i < product.images.length; i++) {
-        let image = product.images[i];
-        image==product.images[index]? document.getElementById("img"+i).classList.add("selected-img") :
+        i==imgIndex ? 
+        document.getElementById("img"+i).classList.add("selected-img") :
         document.getElementById("img"+i).classList.remove("selected-img");
     }
 }
-
+function drawScore(place,value){
+    for (let j = 0; j < (value); j++) {
+       place[j].classList.add("checked");
+       place[j].classList.add("fa-star");
+       if ((value-1)-j>0 && (value-1)-j<1 ) {
+        place[j+1].classList.add("fa-star-half");
+       }
+    }
+}
 
 
 
@@ -96,6 +186,12 @@ document.addEventListener("DOMContentLoaded", function(e){
             product = resultObj.data;
             showProductInfo();
             showRelatedProducts();
+        }
+    });
+    getJSONData("https://japceibal.github.io/emercado-api/products_comments/"+id+".json").then(function(resultObj){
+        if (resultObj.status === "ok"){
+            productComments = resultObj.data;
+            products_comments();
         }
     });
     }
@@ -118,5 +214,12 @@ function imagesProduct(){
                 ` 
         
         document.getElementById("product-list-images").innerHTML = htmlContentToAppend;
+    }
+}
+function scorePrint() {
+    for (let i = 0; i < productComments.length; i++) {
+        const scoreNum = productComments.score[i];
+
+        
     }
 }

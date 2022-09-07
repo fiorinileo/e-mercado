@@ -1,12 +1,7 @@
 :root{
-  --primary-color: #b11a38 ;
-  --soft-primary-color:#f45272;
+  --primary-color: #1f5b64 ;
+  --soft-primary-color:#397f8a;
 }
-
-
-
-
-
 
 .jumbotron,
 .card-body,
@@ -19,9 +14,6 @@
   font-weight: bold;
 }
 
-nav a {
-  text-decoration: none;
-}
 
 li{
   list-style: none;
@@ -45,7 +37,7 @@ li{
   height: 50vh;
   padding: 5em inherit;
   margin-bottom: 0;
-  background-color: #53C0FB;
+  background-color: var(--soft-primary-color);
   background: url('../img/cover_back.png');
   background-size: cover;
   background-position: center;
@@ -261,37 +253,6 @@ a.custom-card:hover {
 
  }
 
- .userPerfil{
-  display: flex;
-  align-items: center;
-  }
-  .userPerfil div{
-
-    margin: 0 0 0 15px;
-  }
- .userPerfil--img{
-  width: 24px;
-  height: 24px;
-} 
-
-nav{
-  height: 40px;
-}
-
-.dropdown-menu{
-
-  background-color: #212529;
-}
-.dropdown-item{
-  color: #fff;
-}
-.dropdown-item:hover{
-  color: #fff;
-  background-color: #3a3d41;
-}
-.navbar-expand-lg .navbar-nav .dropdown-menu{
-  left: 40%;
-}
 
 #btn-cerrarSesion{
   text-align: center;
@@ -385,3 +346,4 @@ nav{
   align-self: center;
   fill: white;
 }
+
