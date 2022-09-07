@@ -1,0 +1,42 @@
+
+ .userPerfil{
+    display: flex;
+    align-items: center;
+    }
+    .userPerfil div{
+  
+      margin: 0 0 0 15px;
+    }
+   .userPerfil--img{
+    width: 24px;
+    height: 24px;
+  } 
+  
+  header{
+    padding: 15px ;
+  }
+  .dropdown-menu{
+  
+    background-color: #212529;
+  }
+  .dropdown-item{
+    color: #fff;
+  }
+  .dropdown-item:hover{
+    color: #fff;
+    background-color: #3a3d41;
+  }
+  .navbar-expand-lg .navbar-nav .dropdown-menu{
+    left: 40%;
+  }.cart-icon{
+    fill: white;
+  }
+  nav a {
+    text-decoration: none;
+  }
+  nav{
+    background-color: var(--primary-color);
+  }
+   main{
+    margin-top: 40px;
+   }
