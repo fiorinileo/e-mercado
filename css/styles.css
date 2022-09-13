@@ -9,7 +9,6 @@
 .site-header {
   font-family: 'Nunito', serif !important;
 }
-
 .jumbotron .display-4 {
   font-weight: bold;
 }
@@ -346,4 +345,7 @@ a.custom-card:hover {
   align-self: center;
   fill: white;
 }
-
+.submitComment textarea{
+min-width: 25%;
+resize: none;
+}

@@ -1,4 +1,36 @@
 
+function drawScore(place,value){
+    document.getElementById("generalScore").innerHTML = `
+                            Calificación promedio: 
+                                <span class="fa "></span>
+                                <span class="fa "></span>
+                                <span class="fa "></span>
+                                <span class="fa "></span>
+                                <span class="fa "></span>`
+    for (let j = 0; j < (value); j++) {
+       place[j].classList.add("checked");
+       place[j].classList.add("fa-star");
+       if ((value-1)-j>0.25 && (value-1)-j<0.75) {
+        place[j+1].classList.add("fa-star-half");
+       }
+       
+    }
+}
+function imagesProduct(){
+    let htmlContentToAppend = "";
+    for(let i = 0; i < product.images.length; i++){
+        let image = product.images[i];
+                htmlContentToAppend += `
+                <li class="cursor-active col-2 d-flex">
+                        <div class="col-">
+                                <img src="${image}" class="img-thumbnail" onclick="setImage(${i})" id="img${i}">
+                        </div>
+                </li>
+                ` 
+        
+        document.getElementById("product-list-images").innerHTML = htmlContentToAppend;
+    }
+}
 function showProductInfo(){
     // Se extrae el nombre de la categoria almacenado dentro del objeto del JSON dependiendo del ID que esta almacene, siendo variable para todas las categorias existentes.    Se emplea el mismo formato de "Products" para presentar su nombre.
     document.getElementById("title-product").innerHTML = `
@@ -16,12 +48,7 @@ function showProductInfo(){
                             <div class="d-flex w-100 justify-content-between">
                                 <h4 class="mb-1 product-header">${product.name.toUpperCase()}</h4>
                             </div>
-                            <p id="generalScore">Calificación promedio: 
-                                <span class="fa "></span>
-                                <span class="fa "></span>
-                                <span class="fa "></span>
-                                <span class="fa "></span>
-                                <span class="fa "></span>
+                            <p id="generalScore">
                             </p>
                             <p class="mb-1">${product.description}</p>
                             
@@ -46,6 +73,9 @@ function showProductInfo(){
         imagesProduct();
     
 }
+/*-----------------------------------------------------------------------------*/ 
+
+
 
 function drawComment(id,user,dateTime,description) {
     document.getElementById("commentList").innerHTML += `
@@ -66,26 +96,29 @@ function drawComment(id,user,dateTime,description) {
         </div>
     </li>`;
 }
-
 function products_comments(){
     for (let i = 0; i < productComments.length; i++) {
         let commentInfo = productComments[i];
        drawComment(i,commentInfo.user,commentInfo.dateTime,commentInfo.description);
     }
-    let totalScore=0;
+   
 
     for (let i = 0; i < productComments.length; i++) {
 
         let liScoreID=document.getElementById("idComment_"+i); // seleccionamos el <li>(comentario) para poder trabajar dentro de él
         let spanScore=liScoreID.getElementsByTagName("span"); // seleccionamos el array de <span> para ubicar cada una de las estrellas
-        totalScore +=  parseInt(productComments[i].score); // almacenamos el total de las estrellas por comentario, y las sumamos todas para obtener el total, de esta forma tener el promedio
         drawScore(spanScore,productComments[i].score) // utilizamos la función DrawScore, y le pasamos como parámetro, el array de estrellas, y la cantidad.
     }
+    
 
-    totalScore= totalScore/ productComments.length;
+}
+function averageScore(){
+    let totalScore=document.getElementById("commentList").getElementsByClassName("checked").length;
+    let totalComments=document.getElementById("commentList").getElementsByTagName("li").length;
+    let avgScore= totalScore/ totalComments;
     let generalScore = document.getElementById("generalScore");
     let spanGeneralScore = generalScore.getElementsByTagName("span");
-    drawScore(spanGeneralScore,totalScore);
+    drawScore(spanGeneralScore,avgScore);
 }
 function dualDigits(num){
     if (parseInt(num)<10) {
@@ -95,29 +128,6 @@ function dualDigits(num){
         return num;
     }
 }
-document.getElementById("sendComment").addEventListener("click",e =>{
-
-    let comment=document.getElementById("commentDescription").value;
-    let commentScore=document.getElementById("selectedScore").value;
-    let user=localStorage.getItem("userName");
-    const date = new Date();
-    let commentDate = 
-                            date.getFullYear()+"-"+
-                            dualDigits(date.getMonth())+"-"+
-                            dualDigits(date.getDate())+" "+
-                            dualDigits(date.getHours())+":"+
-                            dualDigits(date.getMinutes())+":"+
-                            dualDigits(date.getSeconds());
-    let arrayComments= document.getElementById("commentList");
-    arrayComments = arrayComments.getElementsByTagName("li");
-
-    drawComment(arrayComments.length,user,commentDate,comment);
-
-    let arraySpan = arrayComments[arrayComments.length-1].getElementsByTagName("span");
-    drawScore(arraySpan,commentScore);
-
-});
-
 function showRelatedProducts(){
     const relatedProductList = document.getElementById("related-products");
     let htmlContentToAppend = "";
@@ -164,20 +174,94 @@ function setImage(imgIndex){
         document.getElementById("img"+i).classList.remove("selected-img");
     }
 }
-function drawScore(place,value){
-    for (let j = 0; j < (value); j++) {
-       place[j].classList.add("checked");
-       place[j].classList.add("fa-star");
-       if ((value-1)-j>0 && (value-1)-j<1 ) {
-        place[j+1].classList.add("fa-star-half");
-       }
-    }
+
+function saveComment(id,user,dateTime,description,score){
+ let saveComments = [];
+ if (localStorage.getItem("saveComments")){
+    saveComments = JSON.parse(localStorage.getItem("saveComments"));
+ }
+
+ lastcomment = {
+    "productID":localStorage.getItem("productID"),
+    "id":id,
+    "user":user,
+    "dateTime":dateTime,
+    "description":description,
+    "score":score,
+ }
+
+ saveComments.push(lastcomment);
+ 
+ localStorage.setItem("saveComments", JSON.stringify(saveComments));
 }
 
+function loadComments(){
+    let comments = JSON.parse(localStorage.getItem("saveComments")); // obtenemos todos los comentarios realizados en el sitio
+    let saveComments = []  // almacena los comentarios del localstorage que sean únicamente del producto visitado
 
+    comments.forEach(comment => {
+        if(comment.productID == localStorage.getItem("productID")){
+            saveComments.push(comment); // agrega el comentario a saveComments, cuando este coincida con el producto visitado
+        }
+    }); 
 
+    saveComments.forEach(comment =>{
+        drawComment(comment.id,comment.user,comment.dateTime,comment.description);
+        let span = document.getElementById("idComment_"+comment.id).getElementsByTagName("span");
+        drawScore(span,comment.score);
+    }
+        
+        );
+}
+function printSelectedScore(){
+    let  submitScore = document.getElementsByClassName("submitScore"); //creamos un array que contiene todos los span(estrellas)
 
+    for (let index = 0; index < submitScore.length; index++) {
+        let element = submitScore[index];
 
+        element.addEventListener("mouseover", ()=>{//agregamos evento "mouseover" a cada una de las estrellas
+            for (let i = (index); i < submitScore.length; i++) { // este ForLoop recorre todas las estrellas del mismo o mayor indice para eliminarle la clase checked 
+                let elementNotChecked = submitScore[i];
+                elementNotChecked.classList.remove("checked");
+            }
+            for (let i = index; i > -1; i--) {// este ForLoop recorre todas las estrellas del mismo o menor indice para agregarle la clase checked 
+                let elementChecked = submitScore[i];
+                elementChecked.classList.add("checked");
+            }
+           
+        })
+        
+    }
+}
+function scorePrint() {
+    for (let i = 0; i < productComments.length; i++) {
+        const scoreNum = productComments.score[i];
+    }
+}
+document.getElementById("sendComment").addEventListener("click",e =>{
+
+    let comment=document.getElementById("commentDescription").value;
+    let commentScore=document.getElementById("selectedScore").value;
+    let user=localStorage.getItem("userName");
+    const date = new Date();
+    let commentDate = 
+                            date.getFullYear()+"-"+
+                            dualDigits(date.getMonth())+"-"+
+                            dualDigits(date.getDate())+" "+
+                            dualDigits(date.getHours())+":"+
+                            dualDigits(date.getMinutes())+":"+
+                            dualDigits(date.getSeconds());
+    let arrayComments= document.getElementById("commentList");
+    arrayComments = arrayComments.getElementsByTagName("li");
+
+    drawComment(arrayComments.length,user,commentDate,comment);
+    saveComment((arrayComments.length-1),user,commentDate,comment,commentScore);
+    let arraySpan = arrayComments[arrayComments.length-1].getElementsByTagName("span");
+    drawScore(arraySpan,commentScore);
+    document.getElementById("commentDescription").value="";
+    averageScore();
+
+});
 document.addEventListener("DOMContentLoaded", function(e){
     let id = localStorage.productID;
     if(id){
@@ -187,39 +271,23 @@ document.addEventListener("DOMContentLoaded", function(e){
             showProductInfo();
             showRelatedProducts();
         }
-    });
-    getJSONData("https://japceibal.github.io/emercado-api/products_comments/"+id+".json").then(function(resultObj){
-        if (resultObj.status === "ok"){
-            productComments = resultObj.data;
-            products_comments();
-        }
-    });
+        });
+        getJSONData("https://japceibal.github.io/emercado-api/products_comments/"+id+".json").then(function(resultObj){
+            if (resultObj.status === "ok"){
+                productComments = resultObj.data;
+                
+                products_comments();
+                
+                if (localStorage.getItem("saveComments")) {
+                    loadComments();  
+                } 
+                averageScore();
+            }
+        });
+        printSelectedScore();
     }
     else{
         this.location.replace("../categories.html");
     }
 
 });
-
-function imagesProduct(){
-    let htmlContentToAppend = "";
-    for(let i = 0; i < product.images.length; i++){
-        let image = product.images[i];
-                htmlContentToAppend += `
-                <li class="cursor-active col-2 d-flex">
-                        <div class="col-">
-                                <img src="${image}" class="img-thumbnail" onclick="setImage(${i})" id="img${i}">
-                        </div>
-                </li>
-                ` 
-        
-        document.getElementById("product-list-images").innerHTML = htmlContentToAppend;
-    }
-}
-function scorePrint() {
-    for (let i = 0; i < productComments.length; i++) {
-        const scoreNum = productComments.score[i];
-
-        
-    }
-}
