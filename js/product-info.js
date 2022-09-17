@@ -21,9 +21,9 @@ function imagesProduct(){
     for(let i = 0; i < product.images.length; i++){
         let image = product.images[i];
                 htmlContentToAppend += `
-                <li class="cursor-active col-2 d-flex">
+                <li class="cursor-active  col-2 d-flex">
                         <div class="col-">
-                                <img src="${image}" class="img-thumbnail" onclick="setImage(${i})" id="img${i}">
+                                <img src="${image}" class="img-thumbnail hoverAnim" onclick="setImage(${i})" id="img${i}">
                         </div>
                 </li>
                 ` 
@@ -55,8 +55,8 @@ function showProductInfo(){
                         </div>
                         <div class="row pe-2 pb-3">
                             <p class="product-price col">${product.currency} ${product.cost}</p>
-                            <div class="col product-cta-btn pe-0">
-                                <button>
+                            <div class=" col product-cta-btn pe-0">
+                                <button class="hoverAnim-2">
                                     COMPRAR
                                     <svg class="mb-1" viewBox="0 0 576 512"><path d="M253.3 35.1c6.1-11.8 1.5-26.3-10.2-32.4s-26.3-1.5-32.4 10.2L117.6 192H32c-17.7 0-32 14.3-32 32s14.3 32 32 32L83.9 463.5C91 492 116.6 512 146 512H430c29.4 0 55-20 62.1-48.5L544 256c17.7 0 32-14.3 32-32s-14.3-32-32-32H458.4L365.3 12.9C359.2 1.2 344.7-3.4 332.9 2.7s-16.3 20.6-10.2 32.4L404.3 192H171.7L253.3 35.1zM192 304v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16zm96-16c8.8 0 16 7.2 16 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16zm128 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16z"/></svg>
                                 </button>
@@ -121,12 +121,7 @@ function averageScore(){
     drawScore(spanGeneralScore,avgScore);
 }
 function dualDigits(num){
-    if (parseInt(num)<10) {
-       return num= "0"+num;
-    }
-    else{
-        return num;
-    }
+    return (parseInt(num)<10)?  num="0"+num:  num;
 }
 function showRelatedProducts(){
     const relatedProductList = document.getElementById("related-products");
@@ -174,7 +169,6 @@ function setImage(imgIndex){
         document.getElementById("img"+i).classList.remove("selected-img");
     }
 }
-
 function saveComment(id,user,dateTime,description,score){
  let saveComments = [];
  if (localStorage.getItem("saveComments")){
@@ -194,7 +188,6 @@ function saveComment(id,user,dateTime,description,score){
  
  localStorage.setItem("saveComments", JSON.stringify(saveComments));
 }
-
 function loadComments(){
     let comments = JSON.parse(localStorage.getItem("saveComments")); // obtenemos todos los comentarios realizados en el sitio
     let saveComments = []  // almacena los comentarios del localstorage que sean únicamente del producto visitado
@@ -213,24 +206,33 @@ function loadComments(){
         
         );
 }
+function printScoreselected( submitScore,index){
+    for (let i = (index); i < submitScore.length; i++) { // este ForLoop recorre todas las estrellas del mismo o mayor indice para eliminarle la clase checked 
+        let elementNotChecked = submitScore[i];
+        elementNotChecked.classList.remove("checked");
+    }
+    for (let i = index; i > -1; i--) {// este ForLoop recorre todas las estrellas del mismo o menor indice para agregarle la clase checked 
+        let elementChecked = submitScore[i];
+        elementChecked.classList.add("checked");
+    }
+}
 function printSelectedScore(){
     let  submitScore = document.getElementsByClassName("submitScore"); //creamos un array que contiene todos los span(estrellas)
-
+    let selectedscore=true;
     for (let index = 0; index < submitScore.length; index++) {
         let element = submitScore[index];
-
-        element.addEventListener("mouseover", ()=>{//agregamos evento "mouseover" a cada una de las estrellas
-            for (let i = (index); i < submitScore.length; i++) { // este ForLoop recorre todas las estrellas del mismo o mayor indice para eliminarle la clase checked 
-                let elementNotChecked = submitScore[i];
-                elementNotChecked.classList.remove("checked");
-            }
-            for (let i = index; i > -1; i--) {// este ForLoop recorre todas las estrellas del mismo o menor indice para agregarle la clase checked 
-                let elementChecked = submitScore[i];
-                elementChecked.classList.add("checked");
-            }
-           
+        element.addEventListener("click",()=>{
+        if (selectedscore) {
+            selectedscore=false;
+        }
+        printScoreselected(submitScore,index)
+        numberScore =document.getElementsByClassName("submitScore checked").length;
         })
-        
+            element.addEventListener("mouseover", ()=>{//agregamos evento "mouseover" a cada una de las estrellas
+            if (selectedscore) {
+                printScoreselected(submitScore,index);
+        }
+        })
     }
 }
 function scorePrint() {
@@ -239,29 +241,33 @@ function scorePrint() {
     }
 }
 document.getElementById("sendComment").addEventListener("click",e =>{
-
     let comment=document.getElementById("commentDescription").value;
-    let commentScore=document.getElementById("selectedScore").value;
-    let user=localStorage.getItem("userName");
-    const date = new Date();
-    let commentDate = 
-                            date.getFullYear()+"-"+
-                            dualDigits(date.getMonth())+"-"+
-                            dualDigits(date.getDate())+" "+
-                            dualDigits(date.getHours())+":"+
-                            dualDigits(date.getMinutes())+":"+
-                            dualDigits(date.getSeconds());
-    let arrayComments= document.getElementById("commentList");
-    arrayComments = arrayComments.getElementsByTagName("li");
+    if (comment) {
+        let user=localStorage.getItem("userName");
+        const date = new Date();
+        let commentDate = 
+                                date.getFullYear()+"-"+
+                                dualDigits(date.getMonth())+"-"+
+                                dualDigits(date.getDate())+" "+
+                                dualDigits(date.getHours())+":"+
+                                dualDigits(date.getMinutes())+":"+
+                                dualDigits(date.getSeconds());
+        let arrayComments= document.getElementById("commentList");
+        arrayComments = arrayComments.getElementsByTagName("li");
 
-    drawComment(arrayComments.length,user,commentDate,comment);
-    saveComment((arrayComments.length-1),user,commentDate,comment,commentScore);
-    let arraySpan = arrayComments[arrayComments.length-1].getElementsByTagName("span");
-    drawScore(arraySpan,commentScore);
-    document.getElementById("commentDescription").value="";
-    averageScore();
+        drawComment(arrayComments.length,user,commentDate,comment);
+        saveComment((arrayComments.length-1),user,commentDate,comment,numberScore);
+        let arraySpan = arrayComments[arrayComments.length-1].getElementsByTagName("span");
+        drawScore(arraySpan,numberScore);
+        document.getElementById("commentDescription").value="";
+        averageScore();
+
+    } else {
+        alert("Ingrese un comentario para enviarlo.")
+    }
 
 });
+
 document.addEventListener("DOMContentLoaded", function(e){
     let id = localStorage.productID;
     if(id){
