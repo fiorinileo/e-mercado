@@ -44,7 +44,7 @@
     background-color: var(--soft-primary-color);
   }
    main{
-    margin-top: 40px;
+    margin-top: 33px;
    }
 .active{
   text-decoration: underline 2px solid #fff;

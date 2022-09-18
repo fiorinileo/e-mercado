@@ -10,7 +10,7 @@ function drawScore(place,value){
     for (let j = 0; j < (value); j++) {
        place[j].classList.add("checked");
        place[j].classList.add("fa-star");
-       if ((value-1)-j>0.25 && (value-1)-j<0.75) {
+       if ((value-1)-j>0.24 && (value-1)-j<0.76) {
         place[j+1].classList.add("fa-star-half");
        }
        
@@ -247,7 +247,7 @@ document.getElementById("sendComment").addEventListener("click",e =>{
         const date = new Date();
         let commentDate = 
                                 date.getFullYear()+"-"+
-                                dualDigits(date.getMonth())+"-"+
+                                (parseInt(dualDigits(date.getMonth()))+1)+"-"+
                                 dualDigits(date.getDate())+" "+
                                 dualDigits(date.getHours())+":"+
                                 dualDigits(date.getMinutes())+":"+
