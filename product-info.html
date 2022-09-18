@@ -133,23 +133,29 @@
             COMENTARIOS
           </h3>
         </div>
-        <ul id="commentList">
+        <ul id="commentList" class="row">
           
         </ul>
         <div class="row">
           <div>
             <h3>Agrega un comentario</h3>
           </div>
-          <div class="col-12" id="selectedScore">
+          <li class="row col-6 comment-content">
+            <div>
+            <h4 id="commentUser"></h4>
+            <p id="commentDate"></p>
+            </div>
+            <div class="col-12" id="selectedScore">
               <span class="fa hoverAnim-2 fa-star checked submitScore" id="submitScore_0"></span>
               <span class="fa hoverAnim-2 fa-star submitScore" id="submitScore_1"></span>
               <span class="fa hoverAnim-2 fa-star submitScore" id="submitScore_2"></span>
               <span class="fa hoverAnim-2 fa-star submitScore" id="submitScore_3"></span>
               <span class="fa hoverAnim-2 fa-star submitScore" id="submitScore_4"></span> 
-          </div>
-          <div class="col-12">
-            <textarea id="commentDescription" placeholder="Comparte tu experiencia"></textarea>
-          </div>
+            </div>
+              <textarea id="commentDescription" class="mt-2"placeholder="Comparte tu experiencia"></textarea>
+            <div>
+            </div>
+        </li>
           <div class="col-12">
             <button class="btn-productRelated hoverAnim justify-content-center" id="sendComment">Enviar</button>
           </div>

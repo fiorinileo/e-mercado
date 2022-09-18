@@ -23,7 +23,9 @@
     font-size: 4rem;
     font-style: italic;
 }
-
+#commentList{
+    justify-content: space-between;
+}
 .btn-productRelated{
     
     max-width: 100px;
@@ -58,7 +60,21 @@ img{
   }
 
 .comment-content{
-    margin: 10px;
-    border: gray 1px solid;
+    margin: 20px -29px;
+    background-color: var(--bs-secondary);
+    border-radius: 50px;
+    padding: 30px;
+    background: #e0e0e0;
+    box-shadow: 27px 27px 53px #bebebe, -2px -2px 53px #ffffff;
 }
 
+
+textarea{
+    background-color: transparent;
+    border: none;
+}
+textarea:focus-visible{
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
