@@ -27,16 +27,10 @@
   }
   .navbar-expand-lg .navbar-nav .dropdown-menu{
     top: 101%;
-  }.cart-icon{
-    fill: white;
   }
   .cart-icon{
     fill: white;
   }
-  .cart-icon:hover{
-    stroke: #212529;
-    fill: #212529;
-    }
   nav a {
     text-decoration: none;
   }
@@ -51,18 +45,19 @@
 }
   #userName{
     margin: 0 14px;
+    align-self: center;
+  }
+  #userName:focus, #userName:active{
+    color: #fff;
+    background-color: #395055;
+    border-color: #bbc5d4;
+    box-shadow: none;
   }
 .btn-primary{
   background-color: var(--primary-color);
   border-color: rgba(255, 255, 255, 0);
 }
-a.btn-primary:hover{
-  background-color: #8ab9c0;
-  color: #212529;
-  stroke: #212529;
-  fill: #212529;
-  border-color: rgba(255, 255, 255, 0);
-}
+
 #navbarSupportedContent ul{
   min-width: 180px;
   justify-content: space-around;
@@ -76,3 +71,28 @@ a.btn-primary:hover{
   font-weight: bold;
   justify-content: space-between;
 }
+
+
+/*------------------------------- CARRITO DE COMPRAS  -------------------------------*/
+
+a.btn-primary:hover{
+  background-color: #8ab9c0;
+  color: #212529;
+  border-color: rgba(255, 255, 255, 0);
+}
+#boxCart{
+  position: relative;
+}
+#boxCart strong{
+  color: #fff;
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    top: -2px;
+    left: calc(40% - -6px);
+    background-color: #a6250f;
+    border-radius: 50%;
+}
+
+
+/*----------------------------- FIN CARRITO DE COMPRAS--------------------------------*/
