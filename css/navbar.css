@@ -74,5 +74,5 @@ a.btn-primary:hover{
 #navbarSupportedContent{
 
   font-weight: bold;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
