@@ -2,10 +2,11 @@
 function cerrarSesion(){
         document.getElementById("btn-cerrarSesion").style.display = "none";
         document.getElementById("userName").innerHTML = "";
-    
+      document.getElementById("boxCart").getElementsByTagName("strong")[0].innerHTML =  "0";
         localStorage.removeItem("session");
         localStorage.removeItem("userName");
         localStorage.removeItem("catID");
+        drawCart();
         login();
     }
 
@@ -43,6 +44,8 @@ function login() {
 
         /* Validamos que haya ingresado datos en los inputs */
         if (email.trim() != "" && password.trim() != "") {
+            
+        
             localStorage.setItem("userName",email);
             document.getElementById("userName").innerHTML = localStorage.getItem("userName"); 
             navbar.forEach(link =>link.removeAttribute('hidden', 'hidden'));
@@ -58,6 +61,8 @@ function login() {
 
             document.getElementsByTagName("html")[0].classList.remove("overflow-hidden");
             
+            showProductInCart();
+            drawCart();
             
         } else {
 
@@ -67,7 +72,6 @@ function login() {
               document.getElementById("alerta-aviso-atencion").style.display =
                 "none";
             }, 3000);
-
         }
       });
     } 

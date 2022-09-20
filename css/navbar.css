@@ -94,5 +94,8 @@ a.btn-primary:hover{
     border-radius: 50%;
 }
 
-
+#listCartDropdown{
+  max-height: 50vh;
+  overflow-y:scroll;
+}
 /*----------------------------- FIN CARRITO DE COMPRAS--------------------------------*/

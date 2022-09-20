@@ -3,6 +3,7 @@
     background-size: cover;
     background-position: center;
     border-radius: 8px;
+    
 }
 .hoverAnim:hover {
     transition: all ease 0.2s;
@@ -17,6 +18,12 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+#product-info-container + div{
+    border-radius: 50px;
+    background: #e0e0e0;
+    box-shadow:  37px 37px 74px #bebebe,
+                -37px -37px 74px #ffffff;
 }
 #product-info-container h4{
     color: #fff;

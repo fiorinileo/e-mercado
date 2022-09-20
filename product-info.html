@@ -45,18 +45,28 @@
           </ul>
     
           <ul class="navbar-nav d-flex flex-row me-1">
+          
             <li class="nav-item me-3 me-lg-0">
-              <a href="path/to/shopping/cart" class="btn btn-primary" id="boxCart" >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" width="30px" height="30px" viewBox="0 0 10.772 8.788" enable-background="new 0 0 10.772 8.788" class="cart-icon">
-                  <path d="M4.038,7.846c0-0.483,0.393-0.876,0.877-0.876s0.878,0.393,0.878,0.876c0,0.486-0.394,0.877-0.878,0.877  S4.038,8.333,4.038,7.846L4.038,7.846z"/>
-                  <path d="M7.238,7.846c0-0.483,0.393-0.876,0.879-0.876c0.48,0,0.873,0.393,0.873,0.876  c0,0.486-0.393,0.877-0.873,0.877C7.63,8.723,7.238,8.333,7.238,7.846L7.238,7.846z"/>
-                  <path d="M10.255,2.024H9.587L8.345,4.809L4.813,4.805L3.461,1.392L3.12,0.694c-0.124-0.343-0.32-0.631-0.666-0.631  H0.75c-0.348,0-0.646,0.255-0.662,0.568C0.071,0.943,0.344,1.201,0.692,1.201H1.43c0.35,0,0.738,0.265,0.863,0.59l1.502,3.867  c0.127,0.322,0.512,0.59,0.863,0.59h3.799c0.35,0,0.748-0.262,0.881-0.584l1.299-3.056C10.775,2.286,10.601,2.024,10.255,2.024z"/>
-                  </svg>
-                    <strong class=" text-center">
-                      0
-                    </strong>
-              </a>
               
+              <div class="dropdown">
+                <a type="button" class="btn btn-primary dropdown-toggle" id="boxCart"
+                  data-toggle="dropdown"
+                  role="button"
+                  aria-expanded="false
+                  ">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" width="30px" height="30px" viewBox="0 0 10.772 8.788" enable-background="new 0 0 10.772 8.788" class="cart-icon">
+                      <path d="M4.038,7.846c0-0.483,0.393-0.876,0.877-0.876s0.878,0.393,0.878,0.876c0,0.486-0.394,0.877-0.878,0.877  S4.038,8.333,4.038,7.846L4.038,7.846z"/>
+                      <path d="M7.238,7.846c0-0.483,0.393-0.876,0.879-0.876c0.48,0,0.873,0.393,0.873,0.876  c0,0.486-0.393,0.877-0.873,0.877C7.63,8.723,7.238,8.333,7.238,7.846L7.238,7.846z"/>
+                      <path d="M10.255,2.024H9.587L8.345,4.809L4.813,4.805L3.461,1.392L3.12,0.694c-0.124-0.343-0.32-0.631-0.666-0.631  H0.75c-0.348,0-0.646,0.255-0.662,0.568C0.071,0.943,0.344,1.201,0.692,1.201H1.43c0.35,0,0.738,0.265,0.863,0.59l1.502,3.867  c0.127,0.322,0.512,0.59,0.863,0.59h3.799c0.35,0,0.748-0.262,0.881-0.584l1.299-3.056C10.775,2.286,10.601,2.024,10.255,2.024z"/>
+                      </svg>
+                        <strong class=" text-center">
+                          0
+                        </strong>
+                  </a>
+                  <ul class="dropdown-menu" id="listCartDropdown" aria-labelledby="dropdownMenuButton">
+                    
+                  </ul>
+              </div>
             </li>
              <!-- Dropdown -->
              <li class="nav-item dropdown btn-group open">
@@ -70,12 +80,11 @@
                 </div>
             </li>
           </ul>
-    
         </div>
       </div>
     </nav>
   </header>
-  
+
   <main>
     <!-- HTML DESTINADO A LOGIN | Comienzo-->
     <div class="alert alert-success" style="display: none;" id="alerta-aviso-exito">
@@ -136,7 +145,7 @@
       <!-- PRODUCTO | Fin -->
 
       <!-- COMENTARIOS | Inicio -->
-      <section>
+      <section class="my-5 ">
         <div>
           <h3>
             COMENTARIOS
@@ -173,7 +182,7 @@
       <!-- COMENTARIOS | Fin -->
 
       <!-- PRODUCTOS RELACIONADOS | Inicio -->
-      <section class="row" >
+      <section class="row mt-4" >
         <div>
           <h3>
             PRODUCTOS QUE TAMBIEN TE PUEDEN INTERESAR
