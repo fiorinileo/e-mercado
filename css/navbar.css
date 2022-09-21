@@ -36,6 +36,7 @@
   }
   nav{
     background-color: var(--soft-primary-color);
+    height: 63px;
   }
    main{
     margin-top: 33px;
