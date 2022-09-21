@@ -74,7 +74,11 @@
                           </strong>
                     </a>
                     <ul class="dropdown-menu" id="listCartDropdown" aria-labelledby="dropdownMenuButton">
-                      
+                      <li class="dropdown-item row d-flex" id="EmptyCart">
+                        <h4 class="col-12">
+                          Carrito vacío
+                        </h4>
+                      </li>
                     </ul>
                 </div>
               </li>
@@ -85,7 +89,7 @@
                   data-toggle="dropdown"
                   href="#"
                   id="userName"
-                  ><i class="fa fa-user fa-fw"></i> User</a
+                  ><i class="fa fa-user fa-fw"></i> <span id="userName">User</span></a
                 >
 
                 <!-- Dropdown menu -->
@@ -266,6 +270,14 @@
         </p>
       </div>
     </footer>
+    <div id="spinner-wrapper">
+      <div class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

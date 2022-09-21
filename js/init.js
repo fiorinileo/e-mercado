@@ -43,12 +43,15 @@ function showProductInCart(){
   let userName = localStorage.getItem("userName");
   let cartUsers = {};
   cartUsers = JSON.parse(localStorage.getItem("cartUsers"));
+  if (cartUsers) {
   let cart = cartUsers[userName];
             let totalCant=0;
             for (const idProduct in cart) {
              totalCant+=cart[idProduct];
             }
             document.getElementById("boxCart").getElementsByTagName("strong")[0].innerHTML=totalCant;
+    }
+  
 }
 function deleteItemCart(idProduct){
   const userName = localStorage.getItem("userName");
@@ -58,53 +61,56 @@ function deleteItemCart(idProduct){
   cartUsers[userName] = userCart;
   localStorage.setItem("cartUsers",JSON.stringify(cartUsers))
   drawCart();
-    showProductInCart();
-    emptyCart();
+  showProductInCart();
+    
   
   
 }
 function drawCart(){
-  console.log(document.getElementById("listCartDropdown")+" primer log");
   const userName = localStorage.getItem("userName");
   const boxCart = document.getElementById("listCartDropdown");
   boxCart.innerHTML = "";
-  let userCart = JSON.parse(localStorage.getItem("cartUsers"))[userName];
-  for (const article in userCart) {
-    getJSONData(
-      "https://japceibal.github.io/emercado-api/products/" + article + ".json"
-    ).then(function (resultObj) {
-      console.log("entra hasat el fondo");
-            if (resultObj.status === "ok") {
-              product = resultObj.data;
-              let articleCant = userCart[article];
-              let totalCost = product.cost*articleCant;
-              let cartItem = `
-                      <li class="dropdown-item row d-flex">
-                      <h4 class="col-12" style="width:300px">
-                          ${product.name}
-                        </h4>
-                      <div class="col-6 p-0">
-                            <img src="${product.images[0]}" class="img-thumbnail ">
-                      </div>
-                      <div class="col-6 row">
-                        <p class="col-3 " >
-                          x${articleCant}
-                        </p>
-                        <span onclick="deleteItemCart(${product.id})"class="col-9 justify-content-end d-flex pt-1"><i class="fa fa-trash" aria-hidden="true"></i></span>
-                        <p class="col" >
-                          ${product.currency}
-                          ${totalCost}
-                        </p>
-                      </div>
-                    </li>
-                  ` 
-                  boxCart.innerHTML += cartItem
-                }
-                
-          }
-          );
+  
+  if (userName) {
+    let userCart = JSON.parse(localStorage.getItem("cartUsers"))[userName];
+    for (const article in userCart) {
+      getJSONData(
+        "https://japceibal.github.io/emercado-api/products/" + article + ".json"
+      ).then(function (resultObj) {
+              if (resultObj.status === "ok") {
+                product = resultObj.data;
+                let articleCant = userCart[article];
+                let totalCost = product.cost*articleCant;
+                let cartItem = `
+                        <li class="dropdown-item row d-flex">
+                        <h4 class="col-12" style="width:300px">
+                            ${product.name}
+                          </h4>
+                        <div class="col-6 p-0">
+                              <img src="${product.images[0]}" class="img-thumbnail ">
+                        </div>
+                        <div class="col-6 row">
+                          <p class="col-3 " >
+                            x${articleCant}
+                          </p>
+                          <span onclick="deleteItemCart(${product.id})"class="col-9 justify-content-end d-flex pt-1"><i class="fa fa-trash" aria-hidden="true"></i></span>
+                          <p class="col" >
+                            ${product.currency} ${totalCost}</div>
+                      </li>
+                    ` 
+                    boxCart.innerHTML += cartItem
+                  }
+            }
+            );
+    }
+    if (userCart == undefined || JSON.stringify(userCart).length<3) {
+      emptyCart();
+    }
   }
-  emptyCart();
+  else{
+    emptyCart();
+  }
+ 
 }
 function emptyCart(){
   const listDropdown = document.getElementById("listCartDropdown"); 
@@ -116,7 +122,6 @@ function emptyCart(){
     </h4>
   </li>`;
   listDropdown.innerHTML = liEmpty;
-  console.log("SE IMPRIME");
   }
   else{
     if(document.getElementById("EmptyCart")){
@@ -126,9 +131,12 @@ function emptyCart(){
 
 }
 document.addEventListener("DOMContentLoaded", ()=>{
-  showProductInCart();
-  drawCart();
-  emptyCart();
+  cartUsers = JSON.parse(localStorage.getItem("cartUsers"));
+  if (cartUsers) {
+    showProductInCart();
+    drawCart();
+  }
+    
   
 });
 
