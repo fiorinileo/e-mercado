@@ -3,6 +3,7 @@
     background-size: cover;
     background-position: center;
     border-radius: 8px;
+    z-index: 10;
     
 }
 .hoverAnim:hover {
@@ -25,6 +26,9 @@
     box-shadow:  37px 37px 74px #bebebe,
                 -37px -37px 74px #ffffff;
 }
+#product-container>div {   
+    justify-content: space-between;
+}
 #product-info-container h4{
     color: #fff;
     font-size: 4rem;
@@ -32,6 +36,18 @@
 }
 #commentList{
     justify-content: space-between;
+}
+#inputCantidad{
+    position: relative;
+}
+#inputCantidad svg{
+    position: absolute;
+    width: 20px;
+    right: 24px;
+}
+#nudCant{
+    border: none;
+    border-radius: 8px;
 }
 .btn-productRelated{
     
