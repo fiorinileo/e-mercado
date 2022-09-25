@@ -2,15 +2,39 @@
   --primary-color: #1f5b64 ;
   --soft-primary-color:#397f8a;
 }
+#dotted-e{
+  width: 32px;
+}
+.jumbotron{
+  background-image: url("../img/cover_back-img.png");
+  min-height: 250px;
+}
+h1{
+  margin-top: 50px;
+  font-family: 'Manjari';
+  font-weight: 700;
+  color: #2595ae;
+  font-size: 3rem;
+}
+.slogan{
+  color: #54a396;
+  font-family: 'Manjari';
+  font-weight: 400;
+  font-size: 1.4rem;
 
+}.slogan span{
+  font-weight: 700;
+  color: #3b8765;
+}
+.slogan + p{
+  color: #5f5f5f;
+  font-family: 'Manjari';
+}
 .jumbotron,
 .card-body,
 .container,
 .site-header {
   font-family: 'Nunito', serif !important;
-}
-.jumbotron .display-4 {
-  font-weight: bold;
 }
 
 
@@ -30,15 +54,15 @@ li{
   .bd-placeholder-img-lg {
     font-size: 3.5rem;
   }
+  .navbar-brand::after{
+    content: "E-Mercado";
+  }
 }
 
 .jumbotron {
-  height: 50vh;
   padding: 5em inherit;
   margin-bottom: 0;
-  background-color: var(--soft-primary-color);
-  background: url('../img/cover_back.png');
-  background-size: cover;
+  background-size:contain ;
   background-position: center;
   background-repeat: no-repeat;
   color: black;
@@ -275,7 +299,6 @@ a.custom-card:hover {
 }
 .product-price{
   color: var(--primary-color);
-  margin: auto;
   font-size: 1.3rem;
   font-weight: 600;
 

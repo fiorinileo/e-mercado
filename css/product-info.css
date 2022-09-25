@@ -1,3 +1,4 @@
+
 #product-info-container{
     background-repeat:no-repeat ;
     background-size: cover;
@@ -20,14 +21,20 @@
     flex-direction: column;
     justify-content: space-between;
 }
-#product-info-container + div{
-    border-radius: 50px;
+#product-info-container + div {
+    z-index: 5;
+    margin-bottom: 10px;
+}
+#product-info-container + div + div{
+    border-radius: 0 0 50px 50px;
     background: #e0e0e0;
     box-shadow:  37px 37px 74px #bebebe,
                 -37px -37px 74px #ffffff;
 }
 #product-container>div {   
+    --bs-gutter-x:0;
     justify-content: space-between;
+    padding: 0;
 }
 #product-info-container h4{
     color: #fff;
@@ -46,6 +53,8 @@
     right: 24px;
 }
 #nudCant{
+    text-align: center;
+    margin-left: 20px;
     border: none;
     border-radius: 8px;
 }

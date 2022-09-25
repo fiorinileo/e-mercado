@@ -1,7 +1,7 @@
 var date = new Date();
 function drawScore(place, value) {
   document.getElementById("generalScore").innerHTML = `
-                            Calificación promedio: 
+                            Calificación: 
                                 <span class="fa "></span>
                                 <span class="fa "></span>
                                 <span class="fa "></span>
@@ -32,17 +32,17 @@ function imagesProduct() {
   }
 }
 function showProductInfo() {
-  // Se extrae el nombre de la categoria almacenado dentro del objeto del JSON dependiendo del ID que esta almacene, siendo variable para todas las categorias existentes.    Se emplea el mismo formato de "Products" para presentar su nombre.
-  document.getElementById("title-product").innerHTML = `
-        <h2>${product.name}</h2>
-        `;
   // Reutilización del código ya creado en "Products", esto se debe a que la visualización que se solicita es idéntica, sustituyendo en este caso las distintas categorias, por los distintos productos pertenecientes a la categoría solicitada.
   let htmlContentToAppend = "";
   htmlContentToAppend += `
                 <div class="row">
-                    <div class="col-7 px-0" id="product-info-container">
+                    <div class="col-12 px-0" id="product-info-container">
                     </div>
-                    <div class="col-4 p-5">
+                    <div class="row" >
+                        <ul class="row col-12 p-0 m-0" id="product-list-images">
+                        </ul>
+                    </div>
+                    <div class="col-12 p-5">
                         <div class="col mt-3">
                         <small class="text-muted">Nuevo | ${
                           product.soldCount
@@ -52,16 +52,18 @@ function showProductInfo() {
                             </div>
                             <p id="generalScore">
                             </p>
+                            <h5>
+                              Descripción: 
+                            </h5>
                             <p class="mb-1">${product.description}</p>
                             
                         </div>
-                        <div class="row pe-2 pb-3 m-auto">
-                            <div class="col-12 row">
-                                <p class="product-price col-8">${product.currency} ${product.cost}</p>
-                                <span id="inputCantidad" class="col-6">
-                                  <input class="col" type=number id="nudCant" min=1 max=100 value="1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg> 
-                                
+                        <div class="row pe-2 pb-3 ">
+                            <div class="col-12 row ">
+                                <p class="product-price col-12 mt-4">${product.currency} ${product.cost}</p>
+                                <span id="inputCantidad" class="col-12">
+                                <span> Cantidad: </span>
+                                  <input class="col" type=number id="nudCant" min=1 max=100 value="1">                                
                                 </span>
                             </div>
                             <div class="col-xl-8 col-lg-6 product-cta-btn px-0 mt-3 mx-auto">
@@ -73,10 +75,7 @@ function showProductInfo() {
                         </div>
                     </div>  
                 </div>
-                <div class="row" >
-                    <ul class="row col-7 p-0 m-0" id="product-list-images">
-                    </ul>
-                </div>
+                
                 `;
   document.getElementById("product-container").innerHTML = htmlContentToAppend;
   imagesProduct();
@@ -87,7 +86,7 @@ function drawComment(id, user, dateTime, description) {
     `
     <li id="idComment_` +
     id +
-    `" class="row col-6 hoverAnim-2 comment-content">
+    `" class="row col-12 hoverAnim-2 comment-content">
         <div>
         <h4>` +
     user +
@@ -148,7 +147,7 @@ function showRelatedProducts() {
   for (let i = 0; i < product.relatedProducts.length; i++) {
     let relatedProduct = product.relatedProducts[i];
     htmlContentToAppend += `
-                <li class="cursor-active col-md-6 col-lg-4 p-4">
+                <li class="cursor-active col-12 col-md-6 col-lg-4 p-4">
                 <div class="row pb-4 pt-2 px-1 product-card" onclick="windowReplace(${
                   relatedProduct.id
                 })">

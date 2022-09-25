@@ -38,12 +38,15 @@ input[type=number] {
   .cart-icon{
     fill: white;
   }
+  .dropdown-toggle::after{
+    content: none;
+  }
   nav a {
     text-decoration: none;
   }
   nav{
     background-color: var(--soft-primary-color);
-    height: 63px;
+    
   }
    main{
     margin-top: 33px;
@@ -54,6 +57,9 @@ input[type=number] {
   #userName{
     margin: 0 14px;
     align-self: center;
+  }
+  #userName::after{
+    content: "";
   }
   #userName:focus, #userName:active{
     color: #fff;
