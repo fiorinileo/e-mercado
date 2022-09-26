@@ -22,7 +22,8 @@ input[type=number] {
   header{
     padding: 15px ;
   }
-  .dropdown-menu{
+  .navbar-nav .dropdown-menu ,#listCartDropdown.dropdown-menu {
+    position: absolute;
     background-color: #212529;
   }
   .dropdown-item{
@@ -113,7 +114,7 @@ a.btn-primary:hover{
   overflow-y:scroll;
 }
 /*----------------------------- FIN CARRITO DE COMPRAS--------------------------------*/
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   nav{
     height: 63px;
   }

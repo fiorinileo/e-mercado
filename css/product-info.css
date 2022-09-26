@@ -33,7 +33,6 @@
 }
 #product-container>div {   
     --bs-gutter-x:0;
-    justify-content: space-between;
     padding: 0;
 }
 #product-info-container h4{

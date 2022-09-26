@@ -20,7 +20,7 @@ function imagesProduct() {
   for (let i = 0; i < product.images.length; i++) {
     let image = product.images[i];
     htmlContentToAppend += `
-                <li class="cursor-active p-auto  col col-lg-6 d-flex">
+                <li class="cursor-active p-auto  col col-lg-12 d-flex">
                         <div class="col-">
                                 <img src="${image}" class="img-thumbnail hoverAnim" onclick="setImage(${i})" id="img${i}">
                         </div>
@@ -35,14 +35,14 @@ function showProductInfo() {
   // Reutilización del código ya creado en "Products", esto se debe a que la visualización que se solicita es idéntica, sustituyendo en este caso las distintas categorias, por los distintos productos pertenecientes a la categoría solicitada.
   let htmlContentToAppend = "";
   htmlContentToAppend += `
-                <div class="row">
+                <div class="row justify-content-center">
                     <div class="col-12 col-lg-7 px-0" id="product-info-container">
                     </div>
-                    <div class="row col-lg-5 p-0 m-0" >
+                    <div class="row col-lg-2 p-0 m-0" >
                         <ul class="row col-12 p-0 m-0" id="product-list-images">
                         </ul>
                     </div>
-                    <div class="col-12 p-5">
+                    <div class="col-lg-9 p-5">
                         <div class="col mt-3">
                         <small class="text-muted">Nuevo | ${
                           product.soldCount
@@ -86,7 +86,7 @@ function drawComment(id, user, dateTime, description) {
     `
     <li id="idComment_` +
     id +
-    `" class="row col-12 hoverAnim-2 comment-content">
+    `" class="row col-lg-6 hoverAnim-2 comment-content">
         <div>
         <h4>` +
     user +
