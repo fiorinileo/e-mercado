@@ -7,7 +7,7 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <meta name="google-signin-scope" content="profile email">
-    <meta name="google-signin-client_id" content="723615790319-hs2mo63ng9jm84f8l3frmqgfdep2im9m.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="723615790319-hs2mo63ng9jm84f8l3frmqgfdep2im9m.apps.googleusercontent.com    ">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <title>eMercado - Todo lo que busques está aquí</title>
 
@@ -155,23 +155,15 @@
             <div>
               <h2>Iniciar sesión</h2>
             </div>
-            <div class="g-signin2" data-onsuccess="onSignIn" data-theme="light"></div>
-            <script>
-              function onSignIn(googleUser) {
-                // Useful data for your client-side scripts:
-                var profile = googleUser.getBasicProfile();
-                
-                console.log('Full Name: ' + profile.getName());
-                console.log('Given Name: ' + profile.getGivenName());
-                console.log('Family Name: ' + profile.getFamilyName());
-                console.log("Image URL: " + profile.getImageUrl());
-                console.log("Email: " + profile.getEmail());
-        
-                // The ID token you need to pass to your backend:
-                var id_token = googleUser.getAuthResponse().id_token;
-                console.log("ID Token: " + id_token);
-              }
-            </script>
+            <div class="login_google" > 
+              <script src="https://accounts.google.com/gsi/client" async  defer></script> 
+                      <div     id="g_id_onload"    data-client_id="723615790319-hs2mo63ng9jm84f8l3frmqgfdep2im9m.apps.googleusercontent.com"data-login_uri="./index.html"data-auto_prompt="false">
+
+                      </div>
+                       <div class="g_id_signin" data-type="standard"  data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular"           data-logo_alignment="left">
+
+                       </div>
+                      </div>
             <div class="row mb-3">
               <div class="col-sm-12">
                 <input
@@ -210,7 +202,7 @@
           <div class="jumbotron col-md-5"></div>
           <div class="col-md-7">
             <h1>
-              <img src="./img/cover_back-e.png" id="dotted-e"></img>·mercado
+              <img src="./img/cover_back-e.png" id="dotted-e">·mercado
             </h1>
             <p class="slogan">
               tu <span>e_commerce</span> favorito

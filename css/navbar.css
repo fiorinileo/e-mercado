@@ -113,3 +113,14 @@ a.btn-primary:hover{
   overflow-y:scroll;
 }
 /*----------------------------- FIN CARRITO DE COMPRAS--------------------------------*/
+@media (min-width: 768px) {
+  nav{
+    height: 63px;
+  }
+}
+@media (min-width: 992px) {
+
+  .navbar-nav{
+    order: 1;
+  }
+}

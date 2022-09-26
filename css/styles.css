@@ -71,6 +71,7 @@ li{
 
 @media (min-width: 768px) {
   .jumbotron {
+    height: 40vh;
     padding-top: 6rem;
     padding-bottom: 6rem;
   }
@@ -307,6 +308,7 @@ a.custom-card:hover {
   text-align: end;
 }
 .product-cta-btn button{
+  min-width: 140px;
   width: 100%;
   justify-content: center;
   padding: 8px 10px;
