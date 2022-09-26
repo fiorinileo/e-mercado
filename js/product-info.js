@@ -1,4 +1,4 @@
-
+var date = new Date();
 function drawScore(place, value) {
   document.getElementById("generalScore").innerHTML = `
                             Calificación: 
@@ -19,30 +19,50 @@ function imagesProduct() {
   let htmlContentToAppend = "";
   for (let i = 0; i < product.images.length; i++) {
     let image = product.images[i];
-    htmlContentToAppend += `
-                <li class="cursor-active p-auto  col col-lg-12 d-flex">
-                        <div class="col-">
+                if (i==0) {
+                  htmlContentToAppend += `
+                <li class="carousel-item active" data-bs-interval="2500">
                                 <img src="${image}" class="img-thumbnail hoverAnim" onclick="setImage(${i})" id="img${i}">
-                        </div>
                 </li>
                 `;
-
-    document.getElementById("product-list-images").innerHTML =
-      htmlContentToAppend;
+                } else {
+                  htmlContentToAppend += `
+                <li class="carousel-item" data-bs-interval="2500">
+                                <img src="${image}" class="img-thumbnail hoverAnim" onclick="setImage(${i})" id="img${i}">
+                </li>
+                `;
+                }
+      document.getElementById("product-list-images").innerHTML=htmlContentToAppend;
   }
 }
 function showProductInfo() {
   // Reutilización del código ya creado en "Products", esto se debe a que la visualización que se solicita es idéntica, sustituyendo en este caso las distintas categorias, por los distintos productos pertenecientes a la categoría solicitada.
   let htmlContentToAppend = "";
   htmlContentToAppend += `
-                <div class="row justify-content-center">
-                    <div class="col-12 col-lg-7 px-0" id="product-info-container">
-                    </div>
-                    <div class="row col-lg-2 p-0 m-0" >
-                        <ul class="row col-12 p-0 m-0" id="product-list-images">
+  
+                      <div id="carouselExampleIndicators" class="carousel slide row col-7" data-bs-ride="carousel" >
+                        <div class="carousel-indicators" >
+                          <img src="${product.images[0]}" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></img>
+                          <img src="${product.images[1]}" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></img>
+                          <img src="${product.images[2]}" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></img>
+                          <img src="${product.images[3]}" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></img>
+                        </div>
+                        <ul class="carousel-inner" id="product-list-images">
+                         
                         </ul>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 14" fill="#333"  ><path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/></svg></span>
+                          <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
-                    <div class="col-lg-9 p-5">
+
+                <div class="row justify-content-center col-5">
+                    
+                    <div class="col-lg-12 p-5 product_info">
                         <div class="col mt-3">
                         <small class="text-muted">Nuevo | ${
                           product.soldCount
@@ -177,8 +197,9 @@ function windowReplace(id) {
   localStorage.setItem("productID", id);
   window.location = "product-info.html";
 }
+
 function setImage(imgIndex) {
-  //agregamos como imagen principal, la imagen con el índice seleccionado previamente (pasado por parámetro)
+  /* //agregamos como imagen principal, la imagen con el índice seleccionado previamente (pasado por parámetro)
   document.getElementById("product-info-container").innerHTML = `
         <img src="${product.images[imgIndex]}">
         </img>
@@ -187,10 +208,11 @@ function setImage(imgIndex) {
   // para así de esta forma, el usuario puede identificar cuál está visualizando.
   for (let i = 0; i < product.images.length; i++) {
     i == imgIndex
-      ? document.getElementById("img" + i).classList.add("selected-img")
-      : document.getElementById("img" + i).classList.remove("selected-img");
-  }
+      ? document.getElementById("img" + i).classList.add("active")
+      : document.getElementById("img" + i).classList.remove("active");
+  } */
 }
+
 function saveComment(id, user, dateTime, description, score) {
   let saveComments = [];
   if (localStorage.getItem("saveComments")) {

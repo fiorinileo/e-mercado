@@ -25,11 +25,21 @@
     z-index: 5;
     margin-bottom: 10px;
 }
-#product-info-container + div + div{
-    border-radius: 0 0 50px 50px;
+.carousel-indicators [data-bs-target]{
+    width: 140px;
+    height: auto;
+}
+.carousel-indicators {
+    margin: auto;
+}
+.product_info{
+    border-radius: 0 0 50px 0;
     background: #e0e0e0;
     box-shadow:  37px 37px 74px #bebebe,
                 -37px -37px 74px #ffffff;
+}
+#carouselExampleIndicators ul{
+    margin-bottom: 0;
 }
 #product-container>div {   
     --bs-gutter-x:0;
@@ -109,3 +119,4 @@ textarea:focus-visible{
     border: none;
     outline: none;
 }
+
