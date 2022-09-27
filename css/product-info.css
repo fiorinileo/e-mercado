@@ -31,15 +31,25 @@
 }
 .carousel-indicators {
     margin: auto;
+    bottom: -50px;
 }
 .product_info{
+
+    margin-left: 30px;
+    border-left: 1px solid;
+    margin-top: 0.55rem;
     border-radius: 0 0 50px 0;
-    background: #e0e0e0;
-    box-shadow:  37px 37px 74px #bebebe,
-                -37px -37px 74px #ffffff;
 }
 #carouselExampleIndicators ul{
     margin-bottom: 0;
+}
+#product-container{
+    padding: 80px;
+    background-color: #fff;
+    border-radius: 10px;
+}
+.img-thumbnail{
+    border: none;
 }
 #product-container>div {   
     --bs-gutter-x:0;
@@ -51,6 +61,7 @@
     font-style: italic;
 }
 #commentList{
+    padding-right: 2rem;
     justify-content: space-between;
 }
 #inputCantidad{
@@ -85,12 +96,6 @@
     background-color: var(--soft-primary-color);
 }
 
-.selected-img{
-    box-shadow: 3px 1px 7px 3px var(--primary-color);
-    -webkit-box-shadow: 3px 1px 7px 3px var(--primary-color);
-    -moz-box-shadow: 3px 1px 7px 3px var(--primary-color);
-    
-}
 img{
     transition: all .2s;
     max-width: 100%;
@@ -101,12 +106,11 @@ img{
   }
 
 .comment-content{
-    margin: 20px -29px;
+    margin: 20px 50px;
     background-color: var(--bs-secondary);
     border-radius: 50px;
     padding: 30px;
     background: #e0e0e0;
-    box-shadow: 27px 27px 53px #bebebe, -2px -2px 53px #ffffff;
 }
 
 

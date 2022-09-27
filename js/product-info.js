@@ -22,13 +22,13 @@ function imagesProduct() {
                 if (i==0) {
                   htmlContentToAppend += `
                 <li class="carousel-item active" data-bs-interval="2500">
-                                <img src="${image}" class="img-thumbnail hoverAnim" onclick="setImage(${i})" id="img${i}">
+                                <img src="${image}" class="img-thumbnail " onclick="setImage(${i})" id="img${i}">
                 </li>
                 `;
                 } else {
                   htmlContentToAppend += `
                 <li class="carousel-item" data-bs-interval="2500">
-                                <img src="${image}" class="img-thumbnail hoverAnim" onclick="setImage(${i})" id="img${i}">
+                                <img src="${image}" class="img-thumbnail " onclick="setImage(${i})" id="img${i}">
                 </li>
                 `;
                 }
@@ -106,7 +106,7 @@ function drawComment(id, user, dateTime, description) {
     `
     <li id="idComment_` +
     id +
-    `" class="row col-lg-6 hoverAnim-2 comment-content">
+    `" class="row col-lg-5 hoverAnim-2 comment-content">
         <div>
         <h4>` +
     user +

@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function(){
   const navbar = document.querySelectorAll("#navbarNav a");
   if(localStorage.getItem("session")){
     document.getElementById("btn-cerrarSesion").style.display = "inline-block";
-    document.getElementById("userName").innerHTML = (localStorage.getItem("userName")).substring(0,9)+".";   
+    document.getElementById("userName").innerHTML = (localStorage.getItem("userName")).substring(0,9)+"...";   
   }
   else{
     document.getElementsByTagName("nav")[0].getElementsByTagName("div")[0].style.display = "none";

@@ -322,6 +322,9 @@ a.custom-card:hover {
 .product-card{
   box-shadow: #5e616476 2px 4px 15px .1px;
 }
+.product-card>.col>p{
+  min-height: 48px;
+}
 .product-card img{
   border: none;
 }
