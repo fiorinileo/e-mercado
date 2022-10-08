@@ -190,29 +190,12 @@ function showRelatedProducts() {
                 `;
 
     document.getElementById("related-products").innerHTML = htmlContentToAppend;
-    setImage(0);
   }
 }
 function windowReplace(id) {
   localStorage.setItem("productID", id);
   window.location = "product-info.html";
 }
-
-function setImage(imgIndex) {
-  /* //agregamos como imagen principal, la imagen con el índice seleccionado previamente (pasado por parámetro)
-  document.getElementById("product-info-container").innerHTML = `
-        <img src="${product.images[imgIndex]}">
-        </img>
-    `;
-  // recorremos todas las imágenes secundarias, le agregamos un box-shadow a la imágen que se muestra en grande, y a las demás se lo quitamos
-  // para así de esta forma, el usuario puede identificar cuál está visualizando.
-  for (let i = 0; i < product.images.length; i++) {
-    i == imgIndex
-      ? document.getElementById("img" + i).classList.add("active")
-      : document.getElementById("img" + i).classList.remove("active");
-  } */
-}
-
 function saveComment(id, user, dateTime, description, score) {
   let saveComments = [];
   if (localStorage.getItem("saveComments")) {
@@ -345,42 +328,59 @@ document.addEventListener("DOMContentLoaded", ()=> {
           showProductInfo();
           showRelatedProducts();
           document.getElementById("buy_btn").addEventListener("click", () => {//creamos el evento de escucha a "click" en el boton de comprar
-            let userName = localStorage.getItem("userName");//cargamos el nombre de usuario en [userName]
-            let cartUsers = {};//declaramos el objeto cartUser
-            if (localStorage.getItem("cartUsers")) {//checkeamos que exista "cartUsers" en localStorage, Si existe =>
-              cartUsers = JSON.parse(localStorage.getItem("cartUsers"));//cargamos cartUsers con lo que ya está almacenado en localStorage
-              let cart = {}//declaramos el objeto "cart"
-              if (cartUsers[userName]) {//decidimos si existe el usuario dentro del objeto cartUsers, si existe =>
-                let cart = cartUsers[userName];//cargamos en "cart" el contenido ubicado en cartUsers.userName (carrito del usuario)
-                if (cart[currentProduct]) {//checkeamos si existe el producto en el carrito del usuario, si existe=>
-                  let cant =
-                    cart[currentProduct] +
-                    parseInt(document.getElementById("nudCant").value);//sumamos la cantidad previa de dicho producto con la seleccionada previamente en el nud(numeric Up Down)
-                  cart[currentProduct] = cant;//asignamos en "cart" la cantidad sumada previamente en la variable "cant"
-                  cartUsers[userName] = cart;//asignamos la nueva cantidad del producto ya existente
-                } else {//si no existe el producto en el carrito del usuario =>
-                  cart[currentProduct] = parseInt(
-                    document.getElementById("nudCant").value
-                  );//guardamos en el carrito del usuario el nuevo artículo, junto con su cantidad
-                  cartUsers[userName] = cart;//añadimos en el carrito general el carrito del usuario
+            if (document.getElementById("nudCant").value>0) {
+              let userName = localStorage.getItem("userName");//cargamos el nombre de usuario en [userName]
+              let cartUsers = {};//declaramos el objeto cartUser
+              if (localStorage.getItem("cartUsers")) {//checkeamos que exista "cartUsers" en localStorage, Si existe =>
+                cartUsers = JSON.parse(localStorage.getItem("cartUsers"));//cargamos cartUsers con lo que ya está almacenado en localStorage
+                let userCart = {}//declaramos el objeto "userCart"
+                if (cartUsers[userName]) {//decidimos si existe el usuario dentro del objeto cartUsers, si existe =>
+                  let userCart = cartUsers[userName];//cargamos en "cart" el contenido ubicado en cartUsers.userName (carrito del usuario)
+                  if (userCart[currentProduct]) {//checkeamos si existe el producto en el carrito del usuario, si existe=>
+                    let count = userCart[currentProduct].count + parseInt(document.getElementById("nudCant").value);//sumamos la cantidad previa de dicho producto con la seleccionada previamente en el nud(numeric Up Down)
+                    userCart[currentProduct] = {
+                        name:product.name,
+                        count:count,
+                        cost:product.cost,
+                        currency:product.currency,
+                    };//asignamos en "cart" la cantidad sumada previamente en la variable "cant"
+                    cartUsers[userName] = userCart;//asignamos la nueva cantidad del producto ya existente
+                  } else {//si no existe el producto en el carrito del usuario =>
+                    userCart[currentProduct] = {
+                      name:product.name,
+                      count:parseInt(document.getElementById("nudCant").value),
+                      cost:product.cost,
+                      currency:product.currency,
+                    }//guardamos en el carrito del usuario el nuevo artículo, junto con su cantidad
+                    cartUsers[userName] = userCart;//añadimos en el carrito general el carrito del usuario
+                  }
+                } else {//si no existe el usuario dentro del carrito general =>
+                  userCart[currentProduct] = {
+                    name:product.name,
+                    count:parseInt(document.getElementById("nudCant").value),
+                    cost:product.cost,
+                    currency:product.currency,
+                  };//guardamos en el carrito del usuario el producto y su cantidad
+                  cartUsers[userName] = userCart;//guardamos el carrito del usuario en el carrito general
                 }
-              } else {//si no existe el usuario dentro del carrito general =>
-                cart[currentProduct] = parseInt(
-                  document.getElementById("nudCant").value
-                );//guardamos en el carrito del usuario el producto y su cantidad
-                cartUsers[userName] = cart;//guardamos el carrito del usuario en el carrito general
-              }
-              }
-            else{//si no existe cartUsers en localStorage =>
-              let cart = {}//declaramos el objeto "cart"
-              cart[currentProduct] = parseInt(
-                document.getElementById("nudCant").value
-              );//guardamos en el carrito del usuario el producto y su cantidad
-              cartUsers[userName] = cart;//guardamos el carrito del usuario en el carrito general
-            }                
-            localStorage.setItem("cartUsers", JSON.stringify(cartUsers));//guardamos el carrito general(con todos los usuarios) en localStorage
-            showProductInCart();
-            drawCart();
+                }
+              else{//si no existe cartUsers en localStorage =>
+                let userCart = {}//declaramos el objeto "userCart"
+                userCart[currentProduct] = {
+                  name:product.name,
+                  count:parseInt(document.getElementById("nudCant").value),
+                  cost:product.cost,
+                  currency:product.currency,
+                };//guardamos en el carrito del usuario el producto y su cantidad
+                cartUsers[userName] = userCart;//guardamos el carrito del usuario en el carrito general
+              }                
+              localStorage.setItem("cartUsers", JSON.stringify(cartUsers));//guardamos el carrito general(con todos los usuarios) en localStorage
+              showProductInCart();
+              drawCart();
+            }
+            else{
+              alert("Debes ingresar un valor positivo entero");
+            }
             }
             );
         }
