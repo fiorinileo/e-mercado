@@ -40,17 +40,26 @@ function chgCount(action,idProduct){ //cambia la cantidad del articulo en el car
   let userName = localStorage.getItem("userName");
   let cartUsers = JSON.parse(localStorage.getItem("cartUsers"));
   let userCart = cartUsers[userName];
-  if(action) // en el caso de que la acción sea true se suma 1, en caso de que sea false, se resta
+  if(action) {// en el caso de que la acción sea true se suma 1, en caso de que sea false, se resta
     userCart[idProduct].count++;
+  }
   else{
-    userCart[idProduct].count==1? //preguntamos si la cantidad que tiene de ese producto es igual a 1
-      delete userCart[idProduct]://en el caso de que la cantidad sea igual a 1 eliminamos el producto directamente
+    if (userCart[idProduct].count==1) {//preguntamos si la cantidad que tiene de ese producto es igual a 1
+      delete userCart[idProduct];  //en el caso de que la cantidad sea igual a 1 eliminamos el producto directamente  
+    }
+    else{
       userCart[idProduct].count--; // en el caso que sea mayor, la reducimos en una unidad
+    } 
   }
   
   cartUsers[userName] = userCart;
   localStorage.setItem("cartUsers",JSON.stringify(cartUsers));
   drawCart();
+  
+  if (document.getElementById("productListCart")) {
+    drawCartList()
+  } 
+
 }
 function showProductInCart(){ //m Muestra la cantidad total de productos que tiene en el carrito dentro del navbar en una burbuja roja
 
@@ -72,32 +81,35 @@ function deleteItemCart(idProduct){
   let cartUsers = JSON.parse(localStorage.getItem("cartUsers"));
   let userCart = cartUsers[userName];
   delete userCart[idProduct];
+  if (document.getElementById("productListCart")) { 
+    document.getElementById("productListCart").removeChild(document.getElementById("id_"+idProduct)); //boramos el li del carrito que tenga como id ese producto
+  } 
   cartUsers[userName] = userCart;
   localStorage.setItem("cartUsers",JSON.stringify(cartUsers))
   drawCart();  
 }
 function drawCart(){
   const userName = localStorage.getItem("userName");
-  const boxCart = document.getElementById("listCartDropdown");
-  boxCart.innerHTML = "";
-  
   if (userName) {
     let userCart = JSON.parse(localStorage.getItem("cartUsers"))[userName];
+    let cartItem = "";
     let totalCostUYU = 0;
     let totalCostUSD = 0;
     for (const article in userCart) {
                 let product = userCart[article]
                 let totalCost = product.cost*product.count
+                let name = product.name;
+                name.length>19?
+                 name = (product.name).substring(0,20)+"...":{};
                 product.currency == "UYU"?
                 totalCostUYU += totalCost:
                 totalCostUSD += totalCost;
-                
-                let cartItem = `
+                 cartItem += `
                         <li class="dropdown-item row d-flex">
                         <h4 class="col-12" style="width:300px">
-                            ${product.name}
+                            ${name}
                           </h4>
-                        <div class="col-6 p-0">
+                        <div class="col-6 p-0"  onclick="windowReplace(${article})" title="Ir a ver producto: ${name}">
                               <img src="./img/prod${article}_1.jpg" class="img-thumbnail ">
                         </div>
                         <div class="col-6 row">
@@ -111,9 +123,15 @@ function drawCart(){
                             ${product.currency} ${totalCost}</div>
                       </li>
                     ` 
-                    boxCart.innerHTML += cartItem
     }
-    boxCart.innerHTML += `
+    document.getElementById("CartDropdown").innerHTML = `
+     <ul id="listCartDropdown">
+      <li class="dropdown-item row d-flex" id="EmptyCart">
+        <h4 class="col-12">
+          Carrito vacío
+        </h4>
+      </li>
+    </ul>
     <div class="priceContainer">
       <div>
         <div>
@@ -127,8 +145,20 @@ function drawCart(){
           </p>
         </div>
       </div>
+      <div class="btn--verCarrito">
+        <div>
+          <a href="cart.html">
+              Ver carrito
+          </a>
+        </div>
+      </div>
     </div>
     `
+
+    const boxCart = document.getElementById("listCartDropdown");
+    boxCart.innerHTML = "";
+    boxCart.innerHTML += cartItem
+
     if (userCart == undefined || JSON.stringify(userCart).length<3) {
       emptyCart();
     }
@@ -148,6 +178,15 @@ function emptyCart(){
     </h4>
   </li>`;
   listDropdown.innerHTML = liEmpty;
+  if (document.getElementById("productListCart")) {
+    document.getElementById("productListCart").innerHTML=`
+    <li class="row d-flex">
+      <h4 class="col-12">
+        Carrito vacío
+      </h4>
+    </li>
+    `
+   }
   }
   else{
     if(document.getElementById("EmptyCart")){
@@ -155,6 +194,10 @@ function emptyCart(){
     }
   }
 
+}
+function windowReplace(id) {
+  localStorage.setItem("productID", id);
+  window.location = "product-info.html";
 }
 document.addEventListener("DOMContentLoaded", ()=>{
   cartUsers = JSON.parse(localStorage.getItem("cartUsers"));

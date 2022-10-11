@@ -11,6 +11,7 @@
   <link href="css/font-awesome.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
   <link rel="stylesheet" href="./css/navbar.css">
+  <link rel="stylesheet" href="./css/cart.css">
 </head>
 
 <body>
@@ -39,13 +40,15 @@
                         0
                       </strong>
                 </a>
-                <ul class="dropdown-menu" id="listCartDropdown" aria-labelledby="dropdownMenuButton">
-                  <li class="dropdown-item row d-flex" id="EmptyCart">
-                    <h4 class="col-12">
-                      Carrito vacío
-                    </h4>
-                  </li>
-                </ul>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="CartDropdown">
+                  <ul id="listCartDropdown">
+                    <li class="dropdown-item row d-flex" id="EmptyCart">
+                      <h4 class="col-12">
+                        Carrito vacío
+                      </h4>
+                    </li>
+                  </ul>
+                </div>
             </div>
           </li>
           <!-- Dropdown -->
@@ -166,8 +169,50 @@
             </div>
           </div>
         </div>
-    <div class="container">
-      
+    <div class="container fullCart">
+      <div class="row">
+        <h1>Carrito de compras</h1>
+        <div class="row col-7 productContainer">
+          <div class="row col-12">
+            <h2 class="col-2" id="count"></h2>
+            <h2 class="col"> Lote de artículos</h2>
+          </div>
+          <div class="row col">
+            <ul class="row col" id="productListCart">
+            </ul>
+          </div>
+        </div>
+        <div class="col-4 row">
+          <div class="row col">
+            <div class="col-12">
+              <h2>Costos</h2>
+              <p id="Prices"></p>
+            </div>
+          </div>
+          <div class="row col-12">
+            <h2>
+              Tipo de envío
+            </h2>
+            <div>
+              <div>
+                <input type="radio" id="Premium" name="delivery"checked>
+                <label for="Premium">Premium</label>
+              </div>
+              <div>
+                <input type="radio" id="Express" name="delivery"checked>
+                <label for="Express">Express</label>
+              </div>
+              <div>
+                <input type="radio" id="Standard" name="delivery" checked>
+                <label for="Standard">Standard</label>
+              </div>
+          </div>
+          </div>
+          <div class="row col-12">
+            <h2>Formas de pago</h2>
+            <button class="btn-selectMethod">Seleccionar método de pago</button>
+          </div>
+      </div>
     </div>
   </main>
   <footer class="text-muted">

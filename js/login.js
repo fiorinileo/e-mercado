@@ -1,4 +1,3 @@
-
 function cerrarSesion(){
         document.getElementById("btn-cerrarSesion").style.display = "none";
         document.getElementById("userName").innerHTML = "";
@@ -10,8 +9,6 @@ function cerrarSesion(){
         login();
         drawCart();
     }
-
-
 document.addEventListener("DOMContentLoaded", function(){
   const btningresar = document.getElementById("btn-ingresar");
   const btnCerrarSesion = document.getElementById("btn-cerrarSesion");
@@ -47,6 +44,35 @@ document.addEventListener("DOMContentLoaded", function(){
         localStorage.setItem("session", true);// almacenamos en el navegador que el usuario esta logeado
         btnCerrarSesion.style.display = "inline-block"; //hacemos visible el boton "cerrar sesión"
 
+        if (email === "25801") {
+          if ( !localStorage.getItem("cartUsers") || localStorage.getItem("cartUsers")[email] ) {
+            getJSONData(CART_INFO_URL+"25801.json").then((resultObj)=>{
+              if (resultObj.status == "ok") {
+                let cartResponse = resultObj.data;
+                let cartUsers = JSON.parse(localStorage.getItem("cartUsers"));
+                if (!cartUsers) {
+                  cartUsers = {}
+                }
+                let userCart = {};
+                cartResponse.articles.forEach((article)=>{
+                  let prodID = article.id
+                   userCart[prodID] =  {
+                                              name:article.name,
+                                              count:article.count,
+                                              cost:article.unitCost,
+                                              currency:article.currency,
+                                            }
+                });
+                
+                cartUsers[cartResponse.user] = userCart;
+                localStorage.setItem("cartUsers", JSON.stringify(cartUsers));
+              }
+              showProductInCart();
+              drawCart();
+            });
+          }
+          
+        }
         document.getElementsByTagName("html")[0].classList.remove("overflow-hidden");
         cartUsers = JSON.parse(localStorage.getItem("cartUsers"));
         if (cartUsers) {
@@ -63,8 +89,6 @@ document.addEventListener("DOMContentLoaded", function(){
     }
   });
 })
-
-
 function login() {
   document.getElementsByTagName("html")[0].classList.add("overflow-hidden");
   const modalLogin = document.getElementById("modalLogin");

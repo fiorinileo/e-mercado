@@ -192,10 +192,7 @@ function showRelatedProducts() {
     document.getElementById("related-products").innerHTML = htmlContentToAppend;
   }
 }
-function windowReplace(id) {
-  localStorage.setItem("productID", id);
-  window.location = "product-info.html";
-}
+
 function saveComment(id, user, dateTime, description, score) {
   let saveComments = [];
   if (localStorage.getItem("saveComments")) {
