@@ -1,0 +1,50 @@
+h1{
+    padding: 20px;
+    text-align: center;
+}
+h2{
+    border-bottom: 2px var(--primary-color) solid;
+    width: 100%;
+    text-align: center;
+}
+.productContainer, .productContainer+div{
+    flex-flow: column;
+    margin: 10px;
+    border-radius: 12px;
+}
+.fullCart p{
+    font-size: 20px;
+}
+.productContainer>div:nth-child(2){
+    max-height: 60vh;
+    overflow-y: auto;
+}
+#productListCart>li{
+    border: solid 1px rgba(212, 212, 212, 0.49);
+    padding: 5px;
+    margin: 5px  auto;
+}
+main>div.container{
+    background: none;
+    padding: 0 100px;
+    box-shadow: none;
+    -webkit-box-shadow:none;
+}
+.btn-selectMethod{
+    text-decoration: none;
+    padding: 6px 10px;
+    font-size: 1.2rem;
+    text-align: center;
+    border-radius: 4px;
+    color: aliceblue;
+    border: var(--soft-primary-color);
+    background-color: var(--primary-color);
+}
+.btn-selectMethod:hover{
+    transition: all .2s ;
+    color: aliceblue;
+    background-color: var(--soft-primary-color);
+}
+main{
+    background-color: #fff;
+}
