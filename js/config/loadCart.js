@@ -1,0 +1,1 @@
+// Función que cargará únicamente el carrito del usuario logeado en Local Storage

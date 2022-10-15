@@ -1,0 +1,1 @@
+// Función que cargará los comentarios realizados por los usuarios en Local Storage sobre el producto que se está visitando

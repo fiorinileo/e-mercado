@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
+    <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css"
+    />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <meta name="google-signin-scope" content="profile email">
-    <meta name="google-signin-client_id" content="723615790319-hs2mo63ng9jm84f8l3frmqgfdep2im9m.apps.googleusercontent.com    ">
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <title>eMercado - Todo lo que busques está aquí</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,9 +20,11 @@
       href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;1,400;1,700&display=swap"
       rel="stylesheet"
     />
-
-    <link href="https://fonts.googleapis.com/css2?family=Manjari:wght@400;700&display=swap" rel="stylesheet">
-    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manjari:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="./css/navbar.css" />
@@ -34,26 +39,43 @@
           <a class="navbar-brand" href="#"></a>
           <ul class="navbar-nav d-flex flex-row me-1">
             <li class="nav-item me-3 me-lg-0">
-            
               <div class="dropdown">
-                <a type="button" class="btn btn-primary dropdown-toggle" id="boxCart"
-                data-bs-toggle="dropdown"
-                role="button"
-                data-bs-auto-close="outside"
-                aria-expanded="false
-                ">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" width="30px" height="30px" viewBox="0 0 10.772 8.788" enable-background="new 0 0 10.772 8.788" class="cart-icon">
-                      <path d="M4.038,7.846c0-0.483,0.393-0.876,0.877-0.876s0.878,0.393,0.878,0.876c0,0.486-0.394,0.877-0.878,0.877  S4.038,8.333,4.038,7.846L4.038,7.846z"/>
-                      <path d="M7.238,7.846c0-0.483,0.393-0.876,0.879-0.876c0.48,0,0.873,0.393,0.873,0.876  c0,0.486-0.393,0.877-0.873,0.877C7.63,8.723,7.238,8.333,7.238,7.846L7.238,7.846z"/>
-                      <path d="M10.255,2.024H9.587L8.345,4.809L4.813,4.805L3.461,1.392L3.12,0.694c-0.124-0.343-0.32-0.631-0.666-0.631  H0.75c-0.348,0-0.646,0.255-0.662,0.568C0.071,0.943,0.344,1.201,0.692,1.201H1.43c0.35,0,0.738,0.265,0.863,0.59l1.502,3.867  c0.127,0.322,0.512,0.59,0.863,0.59h3.799c0.35,0,0.748-0.262,0.881-0.584l1.299-3.056C10.775,2.286,10.601,2.024,10.255,2.024z"/>
-                      </svg>
-                        <strong class=" text-center">
-                          0
-                        </strong>
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="CartDropdown">
-                    
-                  </div>
+                <a
+                  type="button"
+                  class="btn btn-primary dropdown-toggle"
+                  id="boxCart"
+                  data-bs-toggle="dropdown"
+                  role="button"
+                  data-bs-auto-close="outside"
+                  aria-expanded="false
+                "
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="#FFFFFF"
+                    width="30px"
+                    height="30px"
+                    viewBox="0 0 10.772 8.788"
+                    enable-background="new 0 0 10.772 8.788"
+                    class="cart-icon"
+                  >
+                    <path
+                      d="M4.038,7.846c0-0.483,0.393-0.876,0.877-0.876s0.878,0.393,0.878,0.876c0,0.486-0.394,0.877-0.878,0.877  S4.038,8.333,4.038,7.846L4.038,7.846z"
+                    />
+                    <path
+                      d="M7.238,7.846c0-0.483,0.393-0.876,0.879-0.876c0.48,0,0.873,0.393,0.873,0.876  c0,0.486-0.393,0.877-0.873,0.877C7.63,8.723,7.238,8.333,7.238,7.846L7.238,7.846z"
+                    />
+                    <path
+                      d="M10.255,2.024H9.587L8.345,4.809L4.813,4.805L3.461,1.392L3.12,0.694c-0.124-0.343-0.32-0.631-0.666-0.631  H0.75c-0.348,0-0.646,0.255-0.662,0.568C0.071,0.943,0.344,1.201,0.692,1.201H1.43c0.35,0,0.738,0.265,0.863,0.59l1.502,3.867  c0.127,0.322,0.512,0.59,0.863,0.59h3.799c0.35,0,0.748-0.262,0.881-0.584l1.299-3.056C10.775,2.286,10.601,2.024,10.255,2.024z"
+                    />
+                  </svg>
+                  <strong class="text-center"> 0 </strong>
+                </a>
+                <div
+                  class="dropdown-menu"
+                  aria-labelledby="dropdownMenuButton"
+                  id="CartDropdown"
+                ></div>
               </div>
             </li>
             <!-- Dropdown -->
@@ -63,9 +85,10 @@
                 data-toggle="dropdown"
                 href="#"
                 id="userName"
-                ><i class="fa fa-user fa-fw"></i> <span id="userName">User</span></a
+                ><i class="fa fa-user fa-fw"></i>
+                <span id="userName">User</span></a
               >
-    
+
               <!-- Dropdown menu -->
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a
@@ -95,7 +118,7 @@
           </ul>
           <!-- Toggle button -->
           <button
-          class="navbar-toggler"
+            class="navbar-toggler"
             type="button"
             data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -105,7 +128,7 @@
           >
             <i class="fas fa-bars"></i>
           </button>
-          
+
           <!-- Collapsible wrapper -->
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mb-2 mb-lg-0">
@@ -120,9 +143,7 @@
                 <a class="nav-link" href="sell.html">Vender</a>
               </li>
             </ul>
-      
           </div>
-          
         </div>
       </nav>
     </header>
@@ -152,15 +173,9 @@
             <div>
               <h2>Iniciar sesión</h2>
             </div>
-            <div class="login_google" > 
-              <script src="https://accounts.google.com/gsi/client" async  defer></script> 
-                      <div     id="g_id_onload"    data-client_id="723615790319-hs2mo63ng9jm84f8l3frmqgfdep2im9m.apps.googleusercontent.com"data-login_uri="./index.html"data-auto_prompt="false">
-
-                      </div>
-                       <div class="g_id_signin" data-type="standard"  data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular"           data-logo_alignment="left">
-
-                       </div>
-                      </div>
+            <button id="googleLogin" class="btn btn-info  w-100 mb-4" type="submit">  <!-- Botón para ingresar con google -->
+              Google
+            </button>
             <div class="row mb-3">
               <div class="col-sm-12">
                 <input
@@ -195,20 +210,17 @@
       </div>
 
       <div class="text-center row container m-auto">
-        
-          <div class="jumbotron col-md-5"></div>
-          <div class="col-md-7">
-            <h1>
-              <img src="./img/cover_back-e.png" id="dotted-e">·mercado
-            </h1>
-            <p class="slogan">
-              tu <span>e_commerce</span> favorito
-            </p>
-            <p>
-              Este sitio es una herramienta generada con fines estrictamente educativos. No realiza compras o ventas reales a terceros. Tampoco administra datos personales o de clientes. Todo lo expresado en este dominio no tiene validez comercial. 
-            </p>
-          </div>
-        
+        <div class="jumbotron col-md-5"></div>
+        <div class="col-md-7">
+          <h1><img src="./img/cover_back-e.png" id="dotted-e" />·mercado</h1>
+          <p class="slogan">tu <span>e_commerce</span> favorito</p>
+          <p>
+            Este sitio es una herramienta generada con fines estrictamente
+            educativos. No realiza compras o ventas reales a terceros. Tampoco
+            administra datos personales o de clientes. Todo lo expresado en este
+            dominio no tiene validez comercial.
+          </p>
+        </div>
       </div>
       <div class="album py-5 bg-light">
         <div class="container">
@@ -304,7 +316,8 @@
         <div></div>
       </div>
     </div>
-    
+    <script type="module" src="./js/config/firebase.js"></script>
+    <script type="module" src="./js/config/googleLogin.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -321,8 +334,8 @@
       crossorigin="anonymous"
     ></script>
     <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/index.js"></script>
     <script src="js/init.js"></script>
+    <script src="js/index.js"></script>
     <script src="js/login.js"></script>
   </body>
 </html>
