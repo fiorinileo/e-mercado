@@ -1,3 +1,5 @@
+import {getJSONData} from "./init.js"
+import {CATEGORIES_URL} from "./init.js"
 
 const ORDER_ASC_BY_NAME = "AZ";
 const ORDER_DESC_BY_NAME = "ZA";
@@ -158,3 +160,5 @@ document.addEventListener("DOMContentLoaded", function(e){
         showCategoriesList();
     });
 });
+
+window.setCatID = setCatID;

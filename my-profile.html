@@ -34,76 +34,93 @@
       <div class="container">
         <!-- Navbar brand -->
         <a class="navbar-brand" href="#"></a>
-        <ul class="navbar-nav d-flex flex-row me-1">
-          <li class="nav-item me-3 me-lg-0">
+        <ul class="navbar-nav d-flex flex-row me-1" id="navbar-actions--logged">
+          <!-- Logged in -->
+                <li class="nav-item me-3 me-lg-0 logged-in">
+                  <div class="dropdown">
+                    <a
+                      type="button"
+                      class="btn btn-primary dropdown-toggle"
+                      id="boxCart"
+                      data-bs-toggle="dropdown"
+                      role="button"
+                      data-bs-auto-close="outside"
+                      aria-expanded="false
+                    "
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="#FFFFFF"
+                        width="30px"
+                        height="30px"
+                        viewBox="0 0 10.772 8.788"
+                        enable-background="new 0 0 10.772 8.788"
+                        class="cart-icon"
+                      >
+                        <path
+                          d="M4.038,7.846c0-0.483,0.393-0.876,0.877-0.876s0.878,0.393,0.878,0.876c0,0.486-0.394,0.877-0.878,0.877  S4.038,8.333,4.038,7.846L4.038,7.846z"
+                        />
+                        <path
+                          d="M7.238,7.846c0-0.483,0.393-0.876,0.879-0.876c0.48,0,0.873,0.393,0.873,0.876  c0,0.486-0.393,0.877-0.873,0.877C7.63,8.723,7.238,8.333,7.238,7.846L7.238,7.846z"
+                        />
+                        <path
+                          d="M10.255,2.024H9.587L8.345,4.809L4.813,4.805L3.461,1.392L3.12,0.694c-0.124-0.343-0.32-0.631-0.666-0.631  H0.75c-0.348,0-0.646,0.255-0.662,0.568C0.071,0.943,0.344,1.201,0.692,1.201H1.43c0.35,0,0.738,0.265,0.863,0.59l1.502,3.867  c0.127,0.322,0.512,0.59,0.863,0.59h3.799c0.35,0,0.748-0.262,0.881-0.584l1.299-3.056C10.775,2.286,10.601,2.024,10.255,2.024z"
+                        />
+                      </svg>
+                      <strong class="text-center"> 0 </strong>
+                    </a>
+                    <div
+                      class="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton"
+                      id="CartDropdown"
+                    ></div>
+                  </div>
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown btn-group open logged-in">
+                  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="userName" href="#"><i class="fa fa-user fa-fw"></i> <span >User</span></a>
+
+                  <!-- Dropdown menu -->
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a
+                      class="dropdown-item btn btn-secondary text-center"
+                      href="./cart.html"
+                      style="display: block"
+                    >
+                      Ver carrito</a
+                    >
+                    <a
+                      class="dropdown-item btn btn-secondary text-center"
+                      href="./my-profile.html"
+                      style="display: block"
+                    >
+                      Mi perfil</a
+                    >
+                    <button
+                      class="dropdown-item btn btn-secondary"
+                      
+                      id="logout"
+                      style="display: block"
+                    >
+                      Cerrar sesión
+                    </button>
+                  </div>
+                </li>
+          <!-- Logged in -->
+          <!-- Logged out-->
+          <li class="nav-item logged-out">
+            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#signinModal">Signin</a>
+          </li>
+         
+          <li class="nav-item logged-out">
+            <a class="nav-link"  data-bs-toggle="modal" data-bs-target="#signupModal">Signup</a>
+          </li>
+          <!-- Loged out-->
           
-            <div class="dropdown">
-              <a type="button" class="btn btn-primary dropdown-toggle" id="boxCart"
-              data-bs-toggle="dropdown"
-              role="button"
-              data-bs-auto-close="outside"
-              aria-expanded="false
-              ">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" width="30px" height="30px" viewBox="0 0 10.772 8.788" enable-background="new 0 0 10.772 8.788" class="cart-icon">
-                    <path d="M4.038,7.846c0-0.483,0.393-0.876,0.877-0.876s0.878,0.393,0.878,0.876c0,0.486-0.394,0.877-0.878,0.877  S4.038,8.333,4.038,7.846L4.038,7.846z"/>
-                    <path d="M7.238,7.846c0-0.483,0.393-0.876,0.879-0.876c0.48,0,0.873,0.393,0.873,0.876  c0,0.486-0.393,0.877-0.873,0.877C7.63,8.723,7.238,8.333,7.238,7.846L7.238,7.846z"/>
-                    <path d="M10.255,2.024H9.587L8.345,4.809L4.813,4.805L3.461,1.392L3.12,0.694c-0.124-0.343-0.32-0.631-0.666-0.631  H0.75c-0.348,0-0.646,0.255-0.662,0.568C0.071,0.943,0.344,1.201,0.692,1.201H1.43c0.35,0,0.738,0.265,0.863,0.59l1.502,3.867  c0.127,0.322,0.512,0.59,0.863,0.59h3.799c0.35,0,0.748-0.262,0.881-0.584l1.299-3.056C10.775,2.286,10.601,2.024,10.255,2.024z"/>
-                    </svg>
-                      <strong class=" text-center">
-                        0
-                      </strong>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="CartDropdown">
-                  <ul id="listCartDropdown">
-                    <li class="dropdown-item row d-flex" id="EmptyCart">
-                      <h4 class="col-12">
-                        Carrito vacío
-                      </h4>
-                    </li>
-                  </ul>
-                </div>
-            </div>
-          </li>
-          <!-- Dropdown -->
-          <li class="nav-item dropdown btn-group open">
-            <a
-              class="btn btn-primary dropdown-toggle"
-              data-toggle="dropdown"
-              href="#"
-              id="userName"
-              ><i class="fa fa-user fa-fw"></i> <span id="userName">User</span></a
-            >
-  
-            <!-- Dropdown menu -->
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a
-                class="dropdown-item btn btn-secondary text-center"
-                href="./cart.html"
-                style="display: block"
-              >
-                Ver carrito</a
-              >
-              <a
-                class="dropdown-item btn btn-secondary text-center"
-                href="./my-profile.html"
-                style="display: block"
-              >
-                Mi perfil</a
-              >
-              <button
-                class="dropdown-item btn btn-secondary"
-                onclick="cerrarSesion()"
-                id="btn-cerrarSesion"
-                style="display: block"
-              >
-                Cerrar sesión
-              </button>
-            </div>
-          </li>
         </ul>
         <!-- Toggle button -->
         <button
-        class="navbar-toggler"
+          class="navbar-toggler"
           type="button"
           data-toggle="collapse"
           data-target="#navbarSupportedContent"
@@ -113,7 +130,7 @@
         >
           <i class="fas fa-bars"></i>
         </button>
-        
+
         <!-- Collapsible wrapper -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mb-2 mb-lg-0">
@@ -128,9 +145,7 @@
               <a class="nav-link" href="sell.html">Vender</a>
             </li>
           </ul>
-    
         </div>
-        
       </div>
     </nav>
   </header>
@@ -151,9 +166,66 @@
       <p>Clickea <a target="_blank" href="Letra.pdf">aquí</a> para descargar la letra del obligatorio.</p>
     </div>
   </footer>
+     <!--  Signin Modal -->
+     <div class="modal fade" id="signinModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fs-5" id="exampleModalLabel">Iniciar Sesión</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+           </div>
+           <div class="modal-body">
+             
+             <button id="googleLogin" class="btn btn-info  w-100 mb-4" type="submit">
+               Google
+             </button>
+             <form action="" id="signin-Form">
+               <label for="email">email:</label>
+               <input type="email" id="signin-email" required placeholder="Email" class="form-control mb-3">
+               
+               <label for="email">password:</label>
+               <input type="password" id="signin-password" required placeholder="********" class="form-control mb-3">
+       
+                 <button type="submit" class="btn btn-primary">
+                     Login
+                 </button>
+               </form>
+           </div>   
+       </div>
+     </div>
+     </div>
+   <!-- Fin Signin Modal --> 
+   <!-- SignUp Modal -->
+   <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog">
+     <div class="modal-content">
+         <div class="modal-header">
+           <h1 class="modal-title fs-5" id="exampleModalLabel">Sign Up</h1>
+           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+           </div>
+           <div class="modal-body">
+               <form action="" id="signup-form">
+                   <label for="email" >email:</label>
+                   <input type="email" id="signup-email" required placeholder="Email" class="form-control mb-3">
+ 
+                   <label for="email">password:</label>
+                   <input type="password" id="signup-password" required placeholder="********" class="form-control mb-3">
+ 
+                   <button type="submit" class="btn btn-primary">
+                       Login
+                   </button>
+               </form>
+           </div>
+       </div>
+     </div>
+   </div>
+   <!-- Fin SignUp Modal --> 
+   <!--  -->
+     <script type="module" src="./js/main.js"></script>
+ 
   <script type="module" src="./js/config/firebase.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
-  <script src="js/init.js"></script>
+  <script type="module" src="js/init.js"></script>
   <script src="js/my-profile.js"></script>
 </body>
 

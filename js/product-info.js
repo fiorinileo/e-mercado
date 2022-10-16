@@ -1,3 +1,6 @@
+import { saveCart } from "./config/firebase.js"
+import {getJSONData} from "./init.js"
+import { windowReplace } from "./init.js";
 var date = new Date();
 function drawScore(place, value) {
   document.getElementById("generalScore").innerHTML = `
@@ -15,7 +18,7 @@ function drawScore(place, value) {
     }
   }
 }
-function imagesProduct() {
+function imagesProduct(product) {
   let htmlContentToAppend = "";
   for (let i = 0; i < product.images.length; i++) {
     let image = product.images[i];
@@ -35,7 +38,7 @@ function imagesProduct() {
       document.getElementById("product-list-images").innerHTML=htmlContentToAppend;
   }
 }
-function showProductInfo() {
+function showProductInfo(product) {
   // Reutilización del código ya creado en "Products", esto se debe a que la visualización que se solicita es idéntica, sustituyendo en este caso las distintas categorias, por los distintos productos pertenecientes a la categoría solicitada.
   let htmlContentToAppend = "";
   htmlContentToAppend += `
@@ -98,7 +101,7 @@ function showProductInfo() {
                 
                 `;
   document.getElementById("product-container").innerHTML = htmlContentToAppend;
-  imagesProduct();
+  imagesProduct(product);
 }
 /*-----------------------------------------------------------------------------*/
 function drawComment(id, user, dateTime, description) {
@@ -129,7 +132,7 @@ function drawComment(id, user, dateTime, description) {
         </div>
     </li>`;
 }
-function products_comments() {
+function products_comments(productComments) {
   for (let i = 0; i < productComments.length; i++) {
     let commentInfo = productComments[i];
     drawComment(
@@ -161,7 +164,7 @@ function averageScore() {
 function dualDigits(num) {
   return parseInt(num) < 10 ? (num = "0" + num) : num;
 }
-function showRelatedProducts() {
+function showRelatedProducts(product) {
   const relatedProductList = document.getElementById("related-products");
   let htmlContentToAppend = "";
   for (let i = 0; i < product.relatedProducts.length; i++) {
@@ -192,14 +195,13 @@ function showRelatedProducts() {
     document.getElementById("related-products").innerHTML = htmlContentToAppend;
   }
 }
-
 function saveComment(id, user, dateTime, description, score) {
   let saveComments = [];
   if (localStorage.getItem("saveComments")) {
     saveComments = JSON.parse(localStorage.getItem("saveComments"));
   }
 
-  lastcomment = {
+  let lastcomment = {
     productID: localStorage.getItem("productID"),
     id: id,
     user: user,
@@ -257,7 +259,7 @@ function printSelectedScore() {
         selectedscore = false;
       }
       printScoreselected(submitScore, index);
-      numberScore = document.getElementsByClassName(
+      let numberScore = document.getElementsByClassName(
         "submitScore checked"
       ).length;
     });
@@ -269,7 +271,7 @@ function printSelectedScore() {
     });
   }
 }
-function scorePrint() {
+function scorePrint(productComments) {
   for (let i = 0; i < productComments.length; i++) {
     const scoreNum = productComments.score[i];
   }
@@ -294,7 +296,7 @@ document.getElementById("sendComment").addEventListener("click", () => {
       dualDigits(date.getSeconds());
     let arrayComments = document.getElementById("commentList");
     arrayComments = arrayComments.getElementsByTagName("li");
-    numberScore = document.getElementsByClassName("submitScore checked").length;
+    let numberScore = document.getElementsByClassName("submitScore checked").length;
     drawComment(arrayComments.length, user, commentDate, comment);
     saveComment(
       arrayComments.length - 1,
@@ -320,65 +322,43 @@ document.addEventListener("DOMContentLoaded", ()=> {
     )
       .then(function (resultObj) {
         if (resultObj.status === "ok") {
-          product = resultObj.data;
-          currentProduct = String(product.id);
-          showProductInfo();
-          showRelatedProducts();
+          var product = resultObj.data;
+          var currentProduct = String(product.id);
+          showProductInfo(product);
+          showRelatedProducts(product);
+
           document.getElementById("buy_btn").addEventListener("click", () => {//creamos el evento de escucha a "click" en el boton de comprar
-            if (document.getElementById("nudCant").value>0) {
-              let userName = localStorage.getItem("userName");//cargamos el nombre de usuario en [userName]
-              let cartUsers = {};//declaramos el objeto cartUser
-              if (localStorage.getItem("cartUsers")) {//checkeamos que exista "cartUsers" en localStorage, Si existe =>
-                cartUsers = JSON.parse(localStorage.getItem("cartUsers"));//cargamos cartUsers con lo que ya está almacenado en localStorage
-                let userCart = {}//declaramos el objeto "userCart"
-                if (cartUsers[userName]) {//decidimos si existe el usuario dentro del objeto cartUsers, si existe =>
-                  let userCart = cartUsers[userName];//cargamos en "cart" el contenido ubicado en cartUsers.userName (carrito del usuario)
-                  if (userCart[currentProduct]) {//checkeamos si existe el producto en el carrito del usuario, si existe=>
-                    let count = userCart[currentProduct].count + parseInt(document.getElementById("nudCant").value);//sumamos la cantidad previa de dicho producto con la seleccionada previamente en el nud(numeric Up Down)
-                    userCart[currentProduct] = {
-                        name:product.name,
-                        count:count,
-                        cost:product.cost,
-                        currency:product.currency,
-                    };//asignamos en "cart" la cantidad sumada previamente en la variable "cant"
-                    cartUsers[userName] = userCart;//asignamos la nueva cantidad del producto ya existente
-                  } else {//si no existe el producto en el carrito del usuario =>
-                    userCart[currentProduct] = {
-                      name:product.name,
-                      count:parseInt(document.getElementById("nudCant").value),
-                      cost:product.cost,
-                      currency:product.currency,
-                    }//guardamos en el carrito del usuario el nuevo artículo, junto con su cantidad
-                    cartUsers[userName] = userCart;//añadimos en el carrito general el carrito del usuario
+              if (localStorage.getItem("userName")) { //comprobamos que el usuario está logeado
+            
+                if (document.getElementById("nudCant").value>0) {
+
+                  let userName = localStorage.getItem("userName");//cargamos el nombre de usuario en [userName]
+                  let cart = JSON.parse(localStorage.getItem("cart"));//declaramos el objeto cartUser
+                  let count = parseInt(document.getElementById("nudCant").value);//sumamos la cantidad previa de dicho producto con la seleccionada previamente en el nud(numeric Up Down)
+                  if (cart[currentProduct]) { // si existe en el carrito, le sumamos a count, la cantidad previa
+                    console.log(cart[currentProduct].count);
+                    console.log(cart[currentProduct].count+=count);
+                    count+=cart[currentProduct].count
                   }
-                } else {//si no existe el usuario dentro del carrito general =>
-                  userCart[currentProduct] = {
-                    name:product.name,
-                    count:parseInt(document.getElementById("nudCant").value),
-                    cost:product.cost,
-                    currency:product.currency,
-                  };//guardamos en el carrito del usuario el producto y su cantidad
-                  cartUsers[userName] = userCart;//guardamos el carrito del usuario en el carrito general
+                  else{
+                    cart[currentProduct] = {
+                      cost:product.cost,
+                      count:count,
+                      name:product.name,
+                      currency: product.currency
+                    }
+                  }
+
+                  saveCart(userName,currentProduct,product.cost,count,product.name,product.currency)
+                  localStorage.setItem("cart", JSON.stringify(cart));//guardamos el carrito general(con todos los usuarios) en localStorage
+                  showProductInCart();
+                  drawCart();
                 }
+                else{
+                  alert("Debes ingresar un valor positivo entero");
                 }
-              else{//si no existe cartUsers en localStorage =>
-                let userCart = {}//declaramos el objeto "userCart"
-                userCart[currentProduct] = {
-                  name:product.name,
-                  count:parseInt(document.getElementById("nudCant").value),
-                  cost:product.cost,
-                  currency:product.currency,
-                };//guardamos en el carrito del usuario el producto y su cantidad
-                cartUsers[userName] = userCart;//guardamos el carrito del usuario en el carrito general
-              }                
-              localStorage.setItem("cartUsers", JSON.stringify(cartUsers));//guardamos el carrito general(con todos los usuarios) en localStorage
-              showProductInCart();
-              drawCart();
             }
-            else{
-              alert("Debes ingresar un valor positivo entero");
-            }
-            }
+          }
             );
         }
       })
@@ -389,9 +369,9 @@ document.addEventListener("DOMContentLoaded", ()=> {
             ".json"
         ).then(function (resultObj) {
           if (resultObj.status === "ok") {
-            productComments = resultObj.data;
+            let productComments = resultObj.data;
 
-            products_comments();
+            products_comments(productComments);
 
             if (localStorage.getItem("saveComments")) {
               loadComments();
@@ -413,3 +393,5 @@ document.addEventListener("DOMContentLoaded", ()=> {
     this.location.replace("../categories.html");
   }
 });
+
+window.windowReplace=windowReplace;

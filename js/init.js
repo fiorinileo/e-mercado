@@ -1,19 +1,19 @@
-
-const CATEGORIES_URL = "https://japceibal.github.io/emercado-api/cats/cat.json";
-const PUBLISH_PRODUCT_URL = "https://japceibal.github.io/emercado-api/sell/publish.json";
-const PRODUCTS_URL = "https://japceibal.github.io/emercado-api/cats_products/";
-const PRODUCT_INFO_URL = "https://japceibal.github.io/emercado-api/products/";
-const PRODUCT_INFO_COMMENTS_URL = "https://japceibal.github.io/emercado-api/products_comments/";
-const CART_INFO_URL = "https://japceibal.github.io/emercado-api/user_cart/";
-const CART_BUY_URL = "https://japceibal.github.io/emercado-api/cart/buy.json";
-const EXT_TYPE = ".json";
-let showSpinner = function(){
+import {saveCart,deleteProduct} from "./config/firebase.js"
+export const CATEGORIES_URL = "https://japceibal.github.io/emercado-api/cats/cat.json";
+export const PUBLISH_PRODUCT_URL = "https://japceibal.github.io/emercado-api/sell/publish.json";
+export const PRODUCTS_URL = "https://japceibal.github.io/emercado-api/cats_products/";
+export const PRODUCT_INFO_URL = "https://japceibal.github.io/emercado-api/products/";
+export const PRODUCT_INFO_COMMENTS_URL = "https://japceibal.github.io/emercado-api/products_comments/";
+export const CART_INFO_URL = "https://japceibal.github.io/emercado-api/user_cart/";
+export const CART_BUY_URL = "https://japceibal.github.io/emercado-api/cart/buy.json";
+export const EXT_TYPE = ".json";
+export let showSpinner = function(){
   document.getElementById("spinner-wrapper").style.display = "block";
 }
-let hideSpinner = function(){
+export let hideSpinner = function(){
   document.getElementById("spinner-wrapper").style.display = "none";
 }
-let getJSONData =  function (url){
+export let getJSONData =  function (url){
     let result = {};
     showSpinner();
     return fetch(url)
@@ -37,67 +37,67 @@ let getJSONData =  function (url){
         return result;
     });
 }
-function chgCount(action,idProduct){ //cambia la cantidad del articulo en el carrito del usuario
+export function chgCount(action,idProduct){ //cambia la cantidad del articulo en el carrito del usuario
   let userName = localStorage.getItem("userName");
-  let cartUsers = JSON.parse(localStorage.getItem("cartUsers"));
-  let userCart = cartUsers[userName];
+  let cart = JSON.parse(localStorage.getItem("cart"));
+  let product = cart[idProduct];
   if(action) {// en el caso de que la acción sea true se suma 1, en caso de que sea false, se resta
-    userCart[idProduct].count++;
+    product.count++;
+    saveCart(userName,idProduct,product.cost,product.count,product.name,product.currency)
+
   }
   else{
-    if (userCart[idProduct].count==1) {//preguntamos si la cantidad que tiene de ese producto es igual a 1
-      delete userCart[idProduct];  //en el caso de que la cantidad sea igual a 1 eliminamos el producto directamente  
+    if (product.count==1) {//preguntamos si la cantidad que tiene de ese producto es igual a 1
+      delete cart[idProduct];  //en el caso de que la cantidad sea igual a 1 eliminamos el producto directamente  
+      deleteProduct(userName,idProduct)
     }
     else{
-      userCart[idProduct].count--; // en el caso que sea mayor, la reducimos en una unidad
+      product.count--; // en el caso que sea mayor, la reducimos en una unidad
+      saveCart(userName,idProduct,product.cost,product.count,product.name,product.currency)
     } 
   }
-  
-  cartUsers[userName] = userCart;
-  localStorage.setItem("cartUsers",JSON.stringify(cartUsers));
+  localStorage.setItem("cart",JSON.stringify(cart));
   drawCart();
   
   if (document.getElementById("productListCart")) {
     drawCartList()
   } 
-
 }
-function showProductInCart(){ //m Muestra la cantidad total de productos que tiene en el carrito dentro del navbar en una burbuja roja
+export function showProductInCart(){ //m Muestra la cantidad total de productos que tiene en el carrito dentro del navbar en una burbuja roja
 
   let userName = localStorage.getItem("userName");
-  let cartUsers = {};
-  cartUsers = JSON.parse(localStorage.getItem("cartUsers"));
-  if (cartUsers) {
-  let userCart = cartUsers[userName];
+  let cart = {};
+  cart = JSON.parse(localStorage.getItem("cart"));
+  if (cart) {
             let totalCant=0;
-            for (const idProduct in userCart) {
-             totalCant+=userCart[idProduct].count;
+            for (const idProduct in cart) {
+             totalCant+=cart[idProduct].count;
             }
             document.getElementById("boxCart").getElementsByTagName("strong")[0].innerHTML=totalCant;
     }
   
 }
-function deleteItemCart(idProduct){
+export function deleteItemCart(idProduct){
   const userName = localStorage.getItem("userName");
-  let cartUsers = JSON.parse(localStorage.getItem("cartUsers"));
-  let userCart = cartUsers[userName];
-  delete userCart[idProduct];
+  let cart = JSON.parse(localStorage.getItem("cart"));
+  delete cart[idProduct];
+  deleteProduct(userName,idProduct)
   if (document.getElementById("productListCart")) { 
     document.getElementById("productListCart").removeChild(document.getElementById("id_"+idProduct)); //boramos el li del carrito que tenga como id ese producto
   } 
-  cartUsers[userName] = userCart;
-  localStorage.setItem("cartUsers",JSON.stringify(cartUsers))
+  localStorage.setItem("cart",JSON.stringify(cart))
   drawCart();  
 }
-function drawCart(){
+export function drawCart(){
+
   const userName = localStorage.getItem("userName");
   if (userName) {
-    let userCart = JSON.parse(localStorage.getItem("cartUsers"))[userName];
+    let cart = JSON.parse(localStorage.getItem("cart"));
     let cartItem = "";
     let totalCostUYU = 0;
     let totalCostUSD = 0;
-    for (const article in userCart) {
-                let product = userCart[article]
+    for (const article in cart) {
+                let product = cart[article]
                 let totalCost = product.cost*product.count
                 let name = product.name;
                 name.length>19?
@@ -160,7 +160,7 @@ function drawCart(){
     boxCart.innerHTML = "";
     boxCart.innerHTML += cartItem
 
-    if (userCart == undefined || JSON.stringify(userCart).length<3) {
+    if (cart == undefined || JSON.stringify(cart).length<3) {
       emptyCart();
     }
   }
@@ -169,7 +169,7 @@ function drawCart(){
   }
   showProductInCart();
 }
-function emptyCart(){
+export function emptyCart(){
   const listDropdown = document.getElementById("listCartDropdown"); 
   let liEmpty = "";
   if(listDropdown.getElementsByTagName("li").length<1){
@@ -196,14 +196,16 @@ function emptyCart(){
   }
 
 }
-function windowReplace(id) {
+export function windowReplace(id) {
   localStorage.setItem("productID", id);
   window.location = "product-info.html";
 }
+
 document.addEventListener("DOMContentLoaded", ()=>{
-  cartUsers = JSON.parse(localStorage.getItem("cartUsers"));
-  if (cartUsers) {
+  let userName = localStorage.getItem("userName");
+  if (userName) {
     drawCart();
+    document.getElementById("userName").innerHTML=userName.substring(0,9)+"...";
   }
   
 
@@ -211,8 +213,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 
 
-
-
+window.chgCount = chgCount;
+window.deleteItemCart=deleteItemCart;
 
 
 

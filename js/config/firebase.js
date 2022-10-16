@@ -2,8 +2,8 @@
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"
-import { getFirestore } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js"
+import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"
+import { getFirestore, addDoc,collection, setDoc, doc, getDocs,getDoc, updateDoc, deleteField } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
       
@@ -20,4 +20,30 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db= getFirestore(app)
+export const db= getFirestore(app);
+
+
+export const saveCart = (userName,productId,cost,count,productName,currency) =>{
+   setDoc(doc(db,"cartUsers",userName),
+  {
+      [productId]:{
+        cost:cost,
+        count:count,
+        currency:currency,
+        name:productName
+      } 
+    
+  },{ merge: true })
+}
+export const deleteProduct = async (userName,productId)=>{
+  const cart = doc(db,"cartUsers",userName);
+  await updateDoc(cart, {
+    [productId]: deleteField()
+});
+}
+export const getCart = async (userName)=>{
+  const docSnap= await getDoc(doc(db,"cartUsers",userName));
+  if (docSnap.exists()){
+    return docSnap.data();
+  }
+}

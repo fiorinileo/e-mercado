@@ -4,13 +4,14 @@ import { auth } from "./firebase.js"
 
 
 const googlebtn = document.getElementById("googleLogin");
-console.log("carga google");
 googlebtn.addEventListener("click",async ()=>{
     const provider = new GoogleAuthProvider()
         try {
             const credentials =  await signInWithPopup(auth,provider);
             bootstrap.Modal.getInstance(document.querySelector("#signinModal")).hide()
-            console.log(credentials.user.displayName);
+            document.getElementById("userName").innerHTML= `<img class="img-thumbnail" src=${credentials.user.photoURL} width="24px"> <span>${credentials.user.displayName}</span>`;
+            
+            localStorage.setItem('userName',credentials.user.email);
         } catch (error) {
             console.log(error);
         }
