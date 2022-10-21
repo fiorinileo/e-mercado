@@ -1,17 +1,43 @@
+var totalCostUSD = 0;
+function printShipCost(){
+      let shipCost = document.getElementById("shipCost");
+      let totalCost = document.getElementById("totalCost")
+
+       if (document.getElementById("Premium").checked) {
+        shipCost.innerHTML= parseInt(totalCostUSD*0.15)
+        totalCost.innerHTML= totalCostUSD+parseInt(totalCostUSD*0.15)
+       }
+       else if(document.getElementById("Express").checked){
+        shipCost.innerHTML= parseInt(totalCostUSD*0.07)
+        totalCost.innerHTML= totalCostUSD+parseInt(totalCostUSD*0.07)
+       }
+       else if(document.getElementById("Standard").checked){
+        shipCost.innerHTML= parseInt(totalCostUSD*0.05)
+        totalCost.innerHTML= totalCostUSD+parseInt(totalCostUSD*0.05)
+       }
+       else{
+        shipCost.innerHTML = "------";
+        totalCost.innerHTML = "------";
+       }
+}
 export function drawCartList() {
+  totalCostUSD = 0;
     const cart = JSON.parse(localStorage.getItem("cart"));
-    console.log(cart);
     if (cart) {
-      console.log(cart);
       let cartItem= "";
-      let totalCostUYU = 0;
-      let totalCostUSD = 0;
       for (const article in cart) {
                   let product = cart[article]
                   let totalCost = product.cost*product.count
-                  product.currency == "UYU"?
-                  totalCostUYU += totalCost:
-                  totalCostUSD += totalCost;
+                  if (product.currency == "UYU") {
+                    totalCost = totalCost/42;
+                    totalCost=parseInt(totalCost);
+                    totalCostUSD += totalCost;
+                  }
+                  else{
+                    totalCostUSD += totalCost;
+                  }
+                  
+                   
                    cartItem += `
                    <li class="row" id="id_${article}" >
                      <div class="col-6" onclick="windowReplace(${article})">
@@ -32,7 +58,7 @@ export function drawCartList() {
                        </p>
                        <p class="col">
                          Total:
-                         ${product.currency} ${totalCost}
+                         USD ${totalCost}
                        </p>
                          </div>
                    </li>
@@ -44,14 +70,25 @@ export function drawCartList() {
         }
         document.getElementById("Prices").innerHTML = `
              <p>
-               Total de UYU: $ ${totalCostUYU}
+               Subtotal en USD: $ ${totalCostUSD}
              </p>
              <p>
-               Total de USD: $ ${totalCostUSD}
+                Costo de envío: $ <span id="shipCost"></span>
+             </p>
+             <p>
+                Total: $ <span id="totalCost"></span>
              </p>
        `
+       printShipCost()
     }
 }
 document.addEventListener("DOMContentLoaded",()=>{
     drawCartList();
+    
+    document.getElementsByName("delivery").forEach((button)=>{
+      button.addEventListener("click",()=>{
+        printShipCost()
+      })
+    })
+    
 });

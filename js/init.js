@@ -107,7 +107,7 @@ export function drawCart(){
                 name.length>19?
                  name = (product.name).substring(0,20)+"...":{};
                 product.currency == "UYU"?
-                totalCostUYU += totalCost:
+                totalCostUSD += totalCost/42:
                 totalCostUSD += totalCost;
                  cartItem += `
                         <li class="dropdown-item row d-flex">
@@ -141,12 +141,7 @@ export function drawCart(){
       <div>
         <div>
           <p>
-            Total de UYU: $ ${totalCostUYU}
-          </p>
-        </div>
-        <div>
-          <p>
-            Total de USD: $ ${totalCostUSD}
+            Total en USD: $ ${totalCostUSD}
           </p>
         </div>
       </div>
