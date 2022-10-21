@@ -1,6 +1,6 @@
 import { saveCart } from "./config/firebase.js"
-import {getJSONData} from "./init.js"
-import { windowReplace } from "./init.js";
+import {getJSONData, showProductInCart, windowReplace, drawCart } from "./init.js"
+
 var date = new Date();
 function drawScore(place, value) {
   document.getElementById("generalScore").innerHTML = `
@@ -335,12 +335,28 @@ document.addEventListener("DOMContentLoaded", ()=> {
                   let userName = localStorage.getItem("userName");//cargamos el nombre de usuario en [userName]
                   let cart = JSON.parse(localStorage.getItem("cart"));//declaramos el objeto cartUser
                   let count = parseInt(document.getElementById("nudCant").value);//sumamos la cantidad previa de dicho producto con la seleccionada previamente en el nud(numeric Up Down)
-                  if (cart[currentProduct]) { // si existe en el carrito, le sumamos a count, la cantidad previa
-                    console.log(cart[currentProduct].count);
-                    console.log(cart[currentProduct].count+=count);
-                    count+=cart[currentProduct].count
+                  if (cart) { // si existe en el carrito, le sumamos a count, la cantidad previa
+                    if (cart[currentProduct]) {
+                      count+=cart[currentProduct].count;
+                      cart[currentProduct] = {
+                        cost:product.cost,
+                        count:count,
+                        name:product.name,
+                        currency: product.currency
+                      }
+                    }
+                    else{
+                      cart[currentProduct] = {
+                      cost:product.cost,
+                      count:count,
+                      name:product.name,
+                      currency: product.currency
+                    }
+                    }
+                    
                   }
                   else{
+                    cart = {}
                     cart[currentProduct] = {
                       cost:product.cost,
                       count:count,
@@ -348,7 +364,6 @@ document.addEventListener("DOMContentLoaded", ()=> {
                       currency: product.currency
                     }
                   }
-
                   saveCart(userName,currentProduct,product.cost,count,product.name,product.currency)
                   localStorage.setItem("cart", JSON.stringify(cart));//guardamos el carrito general(con todos los usuarios) en localStorage
                   showProductInCart();

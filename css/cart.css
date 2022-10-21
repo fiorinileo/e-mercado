@@ -8,21 +8,31 @@ h2{
     text-align: center;
 }
 .productContainer, .productContainer+div{
+    align-self: flex-start;
     flex-flow: column;
-    margin: 10px;
     border-radius: 12px;
+}
+.productContainer{
+    padding-right: 35px;
 }
 .fullCart p{
     font-size: 20px;
 }
 .productContainer>div:nth-child(2){
     max-height: 60vh;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 #productListCart>li{
     border: solid 1px rgba(212, 212, 212, 0.49);
     padding: 5px;
     margin: 5px  auto;
+}
+#productListCart>li>div:last-child{
+    padding: 10px 10px 0 5px;
+    --bs-gutter-x: 0rem;
+}
+#productListCart img{
+    cursor: pointer;
 }
 main>div.container{
     background: none;
@@ -47,4 +57,11 @@ main>div.container{
 }
 main{
     background-color: #fff;
+}
+.direccionEnvio label{
+    width: 100%;
+    margin-top: 10px;
+}
+.billing>div{
+    margin-bottom: 40px;
 }

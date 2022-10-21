@@ -1,3 +1,4 @@
+import { drawCartList } from "./cart.js";
 import {saveCart,deleteProduct} from "./config/firebase.js"
 export const CATEGORIES_URL = "https://japceibal.github.io/emercado-api/cats/cat.json";
 export const PUBLISH_PRODUCT_URL = "https://japceibal.github.io/emercado-api/sell/publish.json";
@@ -86,12 +87,15 @@ export function deleteItemCart(idProduct){
     document.getElementById("productListCart").removeChild(document.getElementById("id_"+idProduct)); //boramos el li del carrito que tenga como id ese producto
   } 
   localStorage.setItem("cart",JSON.stringify(cart))
-  drawCart();  
+  drawCart(); 
+  if (document.getElementById("productListCart")) {
+    drawCartList()
+  }  
 }
 export function drawCart(){
 
-  const userName = localStorage.getItem("userName");
-  if (userName) {
+
+  if (localStorage.getItem("userName")) {
     let cart = JSON.parse(localStorage.getItem("cart"));
     let cartItem = "";
     let totalCostUYU = 0;
