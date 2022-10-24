@@ -136,7 +136,7 @@
     </nav>
   </header>
   <main>
-    <div id="buttonDiv"></div> 
+      <div id="buttonDiv"></div> 
       <section class="alert alert-success" style="display: none;" id="alerta-aviso-exito">
         <strong>Exito!</strong> has iniciado sesion.
       </section>
@@ -185,10 +185,10 @@
             </div>
           </div>
         </div>
-        <div class="container fullCart">
+        <div class="container fullCart p-0 px-md-5">
           <div class="row">
             <h1>Carrito de compras</h1>
-            <div class="row col-8 productContainer">
+            <div class="row col-md-8 col-12 productContainer mx-0 p-0 mb-3">
               <div class="row col-12">
                 <h2 class="col-2" id="count"></h2>
                 <h2 class="col"> Lote de artículos</h2>
@@ -198,7 +198,7 @@
                 </ul>
               </div>
             </div>
-            <div class="col-4 row billing">
+            <form class="col-md-4 col-12 row billing">
               <div class="row col-12">
                   <h2>Costos</h2>
                   <p id="Prices" class="mb-0"></p>
@@ -209,15 +209,15 @@
                 </h2>
                 <div>
                   <div>
-                    <input type="radio" id="Premium" name="delivery">
+                    <input type="radio" id="Premium" name="delivery" required>
                     <label for="Premium"><b>Premium</b> 2 a 5 días (15%)</label>
                   </div>
                   <div>
-                    <input type="radio" id="Express" name="delivery">
+                    <input type="radio" id="Express" name="delivery" required>
                     <label for="Express"><b>Express</b> 5 a 11 días (7%)</label>
                   </div>
                   <div>
-                    <input type="radio" id="Standard" name="delivery" >
+                    <input type="radio" id="Standard" name="delivery" required >
                     <label for="Standard"><b>Standard</b> 12 a 15 días (5%)</label>
                   </div>
               </div>
@@ -230,25 +230,79 @@
                   <div>
                     <label for="calle">Calle</label>
                     
-                    <input type="text" id="calle" name="delivery">
+                    <input type="text" id="calle" name="delivery"required>
                   </div>
                   <div>
                     <label for="numeroPuerta">Número de puerta</label>
                     
-                    <input type="text" id="numeroPuerta" name="delivery" >
+                    <input type="text" id="numeroPuerta" name="delivery" required >
                   </div>
                   <div>
                     <label for="esquina">Esquina</label>
                     
-                    <input type="text" id="esquina" name="delivery" >
+                    <input type="text" id="esquina" name="delivery" required>
                   </div>
               </div>
               </div>
               <div class="row col-12">
                 <h2>Formas de pago</h2>
-                <button class="btn-selectMethod">Seleccionar método de pago</button>
+                <button class="btn-selectMethod"  data-bs-toggle="modal" data-bs-target="#paymentMethodModal">Seleccionar método de pago</button>
               </div>
-          </div>
+               <!-- Modal Metodo de pago  -->
+              <div class="modal fade " id="paymentMethodModal" tabindex="-1">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Escoge tu método de pago</h5>
+                    </div>
+                    <form action="#" class="needs-validation" novalidate>
+                    <div class="modal-body">
+                        <div class="row paymentMethodContainer" id="creditCardContainer">
+                          <label>
+                              <input type="radio" name="paymentMethod" id="radio-creditCard"> 
+                              Pago con tarjeta
+                            </label>
+                            <div class="col-md-7 col-12 mx-2">
+                              <label for="input-creditCard">Número de tarjeta</label>
+                              <input type="text"type="number" ondrop="return false;" onpaste="return false;"
+                              onkeypress="return event.charCode>=48 && event.charCode<=57" minlength="16" maxlength="16" required class="w-100">
+                            </div>
+                            <div class="col-md-4 col-12 mx-2 p-0"> 
+                              <label for="input-creditCard">Código de seguridad</label>
+                              <input type="text"type="number" ondrop="return false;" onpaste="return false;"
+                              onkeypress="return event.charCode>=48 && event.charCode<=57" maxlength="4" required class="w-100">
+                            </div>
+                            <div class="col-12 row ms-4">
+                              <label>Fecha de vencimiento</label>
+                              <div class="expiration row col-md-3 justify-content-center">
+                                    <input type="number"required class="col-5 p-1 m-0" name="month" placeholder="MM" maxlength="2" max="12" min="1"/>
+                                    <span class="col-2 px-1 text-center">/</span>
+                                    <input type="number" class="col-5 p-1 m-0" name="year" placeholder="YY" maxlength="2" max="28" min="22" required />
+                              </div>
+                            </div>
+                        </div>
+                        <div class="row paymentMethodContainer" id="bankTransferContainer">
+                          <label><input type="radio" name="paymentMethod" id="radio-bankTransfer">Transferencia bancaria</label>
+                          <div>
+                            <label for="input-creditCard">Número de cuenta</label>
+                            <input type="number" required>
+                          </div>
+                        </div>
+                        
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <!-- Fin Modal Metodo de pago  -->
+              <div class="row col-12">
+                <h2>Finalizar compra</h2>
+                <button type="submit" class="btn-selectMethod" id="btn-finalizarCompra">Finalizar Compra</button>
+              </div>
+          </form>
         </div>
   </main>
   <footer class="text-muted">
@@ -323,6 +377,9 @@
    </div>
  </div>
  <!-- Fin SignUp Modal --> 
+
+
+
   <script type="module" src="./js/main.js"></script>
   <script type="module" src="./js/config/firebase.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

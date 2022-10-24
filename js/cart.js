@@ -82,13 +82,87 @@ export function drawCartList() {
        printShipCost()
     }
 }
-document.addEventListener("DOMContentLoaded",()=>{
-    drawCartList();
+function paymentMethodSelected(){
+
+  let inputsCard = document.getElementById("creditCardContainer").getElementsByTagName("input");
+  let inputsBank = document.getElementById("bankTransferContainer").getElementsByTagName("input");
+
+  if (document.getElementById("radio-creditCard").checked) { // cuando se le da al botón de tarjeta
+    for (let i = 0; i < inputsCard.length; i++) {
+      inputsCard[i].disabled=false; //se habilitan los campos (diabled=false) para tarjeta
+    }
+    for (let i = 0; i <inputsBank.length; i++) {
+          inputsBank[i].disabled=true; //  y se deshabilitan los campos de bank 
+    }
+  } else if (document.getElementById("radio-bankTransfer").checked) { //cuando se le da al botón de bank
+    for (let i = 0; i < inputsCard.length; i++) {
+      inputsCard[i].disabled=true;  // se deshabilitan los campos de tarjeta
+    }
+    for (let i = 0; i <inputsBank.length; i++) {
+      inputsBank[i].disabled=false; // y se habilitan los campos de bank (disabled = false)
+    }
+  } 
+  else{
+    for (let i = 0; i < inputsCard.length; i++) {
+      inputsCard[i].disabled=true;  // se deshabilitan los campos de tarjeta
+    }
+    for (let i = 0; i <inputsBank.length; i++) {
+      inputsBank[i].disabled=true; // y se habilitan los campos de bank (disabled = false)
+    }
+  }
+  document.getElementById("bankTransferContainer").getElementsByTagName("input")[0].disabled=false;
+  document.getElementById("creditCardContainer").getElementsByTagName("input")[0].disabled=false;
+}
+function addressValidate(){
+  let street = document.getElementById("calle");
+  let doorNum = document.getElementById("numeroPuerta");
+  let streetCorner = document.getElementById("esquina");
+
+  if (street.value.trim() == "") {
+    alert("Por favor, no deje el campo vacío");
+    street.style.border="solid 1px red";
+  }
+  if (doorNum.value.trim() == "") {
     
+  }
+  if ( streetCorner.value.trim() == "" ) {
+    
+  }
+}
+document.addEventListener("DOMContentLoaded",()=>{
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+(() => {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.querySelectorAll('.needs-validation')
+
+      // Loop over them and prevent submission
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+    drawCartList();
+    paymentMethodSelected();
+    document.getElementsByName("paymentMethod").forEach((button)=>{
+      button.addEventListener("click",()=>{
+        paymentMethodSelected();
+      })
+    })
     document.getElementsByName("delivery").forEach((button)=>{
       button.addEventListener("click",()=>{
         printShipCost()
       })
     })
-    
+    document.getElementById("btn-finalizarCompra").addEventListener("click",()=>{
+      
+      addressValidate();
+    })
 });

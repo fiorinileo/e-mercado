@@ -36,7 +36,6 @@ h2{
 }
 main>div.container{
     background: none;
-    padding: 0 100px;
     box-shadow: none;
     -webkit-box-shadow:none;
 }
@@ -64,4 +63,15 @@ main{
 }
 .billing>div{
     margin-bottom: 40px;
+}
+.expiration {
+    border: 1px solid #bbbbbb;
+}
+.expiration input {
+    border: 0;
+}
+.paymentMethodContainer{
+    border-bottom: 1px solid;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
 }
