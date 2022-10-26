@@ -8,8 +8,8 @@ const signinForm = document.querySelector("#signin-Form");
 signinForm.addEventListener("submit", async (e)=>{
     e.preventDefault();
 
-    const email = signinForm["signin-email"].value;
-    const password = signinForm["signin-password"].value;
+    const email =  (signinForm["signin-email"].value).toLowerCase();
+    const password = (signinForm["signin-password"].value).toLowerCase();
     
     try {
         await signInWithEmailAndPassword(auth,email,password);

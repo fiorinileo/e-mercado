@@ -1,29 +1,18 @@
 import {getJSONData} from "./init.js"
 import {CATEGORIES_URL} from "./init.js"
-
-
-
-
-
-
 //  Los comentarios de todos los documentos están realizados con el
 // AJUSTE DE PÁRRAFO QUE OFRECE VISUAL STUDIO CODE,
 // se recomienda encarecidamente activar esta opción  
 // ATAJO DE TECLADO OFRECIDO:  Alt + Z 
-
-
 document.getElementById("sortAsc").addEventListener("click", function(){
     sortAndShowProducts(ORDER_ASC_BY_PRICE);
 });
-
 document.getElementById("sortDesc").addEventListener("click", function(){
     sortAndShowProducts(ORDER_DESC_BY_PRICE);
 });
-
 document.getElementById("sortBySold").addEventListener("click", function(){
     sortAndShowProducts(ORDER_BY_SOLD_COUNT);
 });
-
 document.getElementById("clearRangeFilter").addEventListener("click", function(){
     document.getElementById("rangeFilterPriceMin").value = "";
     document.getElementById("rangeFilterPriceMax").value = "";
@@ -33,9 +22,6 @@ document.getElementById("clearRangeFilter").addEventListener("click", function()
 
     showProductsList();
 });
-
-
-
 // Se crea listado para guardar el JSON de una categoria de productos brindado por el servidor.
 let currentProductsArray = [];
 let categoryName = null;
@@ -84,18 +70,13 @@ function showProductsList(){
         document.getElementById("cat-list-container").innerHTML = htmlContentToAppend;
     }
 }
-
-
-
-
 const ORDER_ASC_BY_PRICE = "0-1";
 const ORDER_DESC_BY_PRICE = "1-0";
 const ORDER_BY_SOLD_COUNT = "Cant.";
 let currentSortCriteria = undefined;
 let minPrice = undefined;
 let maxPrice = undefined;
-
-function sortProducts(criteria, array){
+export function sortProducts(criteria, array){
     let result = [];
     if (criteria === ORDER_DESC_BY_PRICE)
     {
@@ -123,7 +104,7 @@ function sortProducts(criteria, array){
 
     return result;
 }
-function sortAndShowProducts(sortCriteria, ProductsArray){
+export function sortAndShowProducts(sortCriteria, ProductsArray){
     currentSortCriteria = sortCriteria;
 
     if(ProductsArray != undefined){
@@ -134,12 +115,8 @@ function sortAndShowProducts(sortCriteria, ProductsArray){
 
     //Muestro las categorías ordenadas
     showProductsList();
-}
-
-
-
-   
-function sortFunction(){
+} 
+export function sortFunction(){
     //Obtengo el mínimo y máximo de los intervalos para filtrar por cantidad
     //de productos por categoría.
     minPrice = document.getElementById("rangeFilterPriceMin").value;
@@ -161,8 +138,7 @@ function sortFunction(){
 
     showProductsList();
 }
-
-function searchFunction() {
+export function searchFunction() {
     // Declararamos variables
     var input, filter, ul, li, p, txtValueP, txtValueH4, h4;
     input = document.getElementById('search-input');
@@ -184,8 +160,7 @@ function searchFunction() {
         i.style.display = "none";
       }
     });
-  }
-
+}
 export function windowReplace(id){
         localStorage.setItem("productID", id);
         window.location = "product-info.html"

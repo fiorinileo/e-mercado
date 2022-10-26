@@ -1,3 +1,6 @@
+import { loadCart } from "./config/loadCart.js";
+import { windowReplace } from "./init.js";
+
 var totalCostUSD = 0;
 function printShipCost(){
       let shipCost = document.getElementById("shipCost");
@@ -131,24 +134,8 @@ function addressValidate(){
 }
 document.addEventListener("DOMContentLoaded",()=>{
   // Example starter JavaScript for disabling form submissions if there are invalid fields
-(() => {
-  'use strict'
 
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  const forms = document.querySelectorAll('.needs-validation')
-
-      // Loop over them and prevent submission
-      Array.from(forms).forEach(form => {
-        form.addEventListener('submit', event => {
-          if (!form.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
-          }
-
-          form.classList.add('was-validated')
-        }, false)
-      })
-    })()
+    loadCart();
     drawCartList();
     paymentMethodSelected();
     document.getElementsByName("paymentMethod").forEach((button)=>{
@@ -161,8 +148,17 @@ document.addEventListener("DOMContentLoaded",()=>{
         printShipCost()
       })
     })
-    document.getElementById("btn-finalizarCompra").addEventListener("click",()=>{
+    
+    document.getElementById("btn-finalizarCompra").addEventListener("click",(event)=>{
+      let formPayMethod = document.getElementById("form-payMethod");
+      let form = document.getElementsByTagName("form")[0];
       
-      addressValidate();
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        formPayMethod.classList.add('was-validated')
+        form.classList.add('was-validated')
+      
     })
 });

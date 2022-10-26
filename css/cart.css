@@ -61,6 +61,9 @@ main{
     width: 100%;
     margin-top: 10px;
 }
+.billing{
+    max-height: 68vh;
+}
 .billing>div{
     margin-bottom: 40px;
 }
