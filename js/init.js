@@ -1,5 +1,6 @@
 import { drawCartList } from "./cart.js";
 import {saveCart,deleteProduct} from "./config/firebase.js"
+import { loadCart } from "./config/loadCart.js";
 export const CATEGORIES_URL = "https://japceibal.github.io/emercado-api/cats/cat.json";
 export const PUBLISH_PRODUCT_URL = "https://japceibal.github.io/emercado-api/sell/publish.json";
 export const PRODUCTS_URL = "https://japceibal.github.io/emercado-api/cats_products/";
@@ -98,7 +99,6 @@ export function drawCart(){
   if (localStorage.getItem("userName")) {
     let cart = JSON.parse(localStorage.getItem("cart"));
     let cartItem = "";
-    let totalCostUYU = 0;
     let totalCostUSD = 0;
     for (const article in cart) {
                 let product = cart[article]
@@ -107,8 +107,8 @@ export function drawCart(){
                 name.length>19?
                  name = (product.name).substring(0,20)+"...":{};
                 product.currency == "UYU"?
-                totalCostUSD += totalCost/42:
-                totalCostUSD += totalCost;
+                totalCostUSD += parseInt(totalCost/42):
+                totalCostUSD += parseInt(totalCost);
                  cartItem += `
                         <li class="dropdown-item row d-flex">
                         <h4 class="col-12" style="width:300px">
@@ -203,7 +203,7 @@ export function windowReplace(id) {
 document.addEventListener("DOMContentLoaded", ()=>{
   let userName = localStorage.getItem("userName");
   if (userName) {
-    drawCart();
+    loadCart();
     document.getElementById("userName").innerHTML=userName.substring(0,9)+"...";
   }
   

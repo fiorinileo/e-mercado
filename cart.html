@@ -197,12 +197,12 @@
                 <ul class="row col" id="productListCart">
                 </ul>
               </div>
+              <div class="col-12 mt-3">
+                <h2 >Costos</h2>
+                <p id="Prices" class="mb-0"></p>
+              </div>
             </div>
             <form class="col-md-4 col-12 row billing">
-              <div class="row col-12">
-                  <h2>Costos</h2>
-                  <p id="Prices" class="mb-0"></p>
-              </div>
               <div class="row col-12">
                 <h2>
                   Tipo de envío
@@ -220,10 +220,10 @@
                     <input type="radio" id="Standard" name="delivery" required >
                     <label for="Standard"><b>Standard</b> 12 a 15 días (5%)</label>
                   </div>
-              </div>
+                </div>
               </div>
               <div class="row col-12">
-                <h2>
+                <h2 >
                   Dirección de envío
                 </h2>
                 <div class="direccionEnvio">
@@ -247,6 +247,10 @@
               <div class="row col-12">
                 <h2>Formas de pago</h2>
                 <button class="btn-selectMethod"  data-bs-toggle="modal" data-bs-target="#paymentMethodModal">Seleccionar método de pago</button>
+              </div>
+              <div class="col-12">
+                <h2>Finalizar compra</h2>
+                <button type="submit" class="btn-selectMethod" id="btn-finalizarCompra">Finalizar Compra</button>
               </div>
                <!-- Modal Metodo de pago  -->
               <div class="modal fade " id="paymentMethodModal" tabindex="-1">
@@ -298,10 +302,8 @@
                 </div>
               </div>
               <!-- Fin Modal Metodo de pago  -->
-              <div class="row col-12">
-                <h2>Finalizar compra</h2>
-                <button type="submit" class="btn-selectMethod" id="btn-finalizarCompra">Finalizar Compra</button>
-              </div>
+              
+              
           </form>
         </div>
   </main>
