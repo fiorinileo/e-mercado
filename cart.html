@@ -256,6 +256,9 @@
               <div class="row col-12">
                 <h2>Formas de pago</h2>
                 <button class="btn-selectMethod"  type="button" data-bs-toggle="modal" data-bs-target="#paymentMethodModal">Seleccionar método de pago</button>
+                <div class="invalid-feedback" style="display: none;" id="invalid-payMethod">
+                  Ingresa un método de pago
+                </div>
               </div>
               <div class="col-12">
                 <h2>Finalizar compra</h2>
@@ -340,7 +343,7 @@
  </div>
  <!-- Fin SignUp Modal --> 
                <!-- Modal Metodo de pago  -->
-               <div class="modal fade " id="paymentMethodModal" tabindex="-1">
+               <div class="modal fade" id="paymentMethodModal" tabindex="-1">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -350,7 +353,7 @@
                       <form id="form-payMethod" class="needs-validation" novalidate>
                         <div class="row paymentMethodContainer" id="creditCardContainer">
                           <div>
-                            <input type="radio" class="form-check-input" name="paymentMethod" id="radio-creditCard"> 
+                            <input type="radio" class="form-check-input" name="paymentMethod" id="radio-creditCard" required> 
                             <label class="form-check-label" for="radio-creditCard">Pago con tarjeta de crédito o débito</label>
                           </div>
                           <div class="col-md-7 col-12 mx-2">
@@ -383,7 +386,7 @@
                         </div>
                         <div class="row paymentMethodContainer" id="bankTransferContainer">
                           <div>
-                            <input type="radio" class="form-check-input" name="paymentMethod" id="radio-bankTransfer">
+                            <input type="radio" class="form-check-input" name="paymentMethod" id="radio-bankTransfer" required>
                             <label class="form-check-label">Transferencia bancaria</label>
                           </div>
                           <div>

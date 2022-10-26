@@ -10,9 +10,12 @@ document.getElementById("sortAsc").addEventListener("click", function(){
 document.getElementById("sortDesc").addEventListener("click", function(){
     sortAndShowProducts(ORDER_DESC_BY_PRICE);
 });
-document.getElementById("sortBySold").addEventListener("click", function(){
-    sortAndShowProducts(ORDER_BY_SOLD_COUNT);
-});
+if (document.getElementById("sortBySold")) {
+    document.getElementById("sortBySold").addEventListener("click", function(){
+        sortAndShowProducts(ORDER_BY_SOLD_COUNT);
+    });
+}
+
 document.getElementById("clearRangeFilter").addEventListener("click", function(){
     document.getElementById("rangeFilterPriceMin").value = "";
     document.getElementById("rangeFilterPriceMax").value = "";

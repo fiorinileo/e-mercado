@@ -132,9 +132,27 @@ function addressValidate(){
     
   }
 }
+function payMethodValidate(){ //función que valida el método de pago
+  let formPayMethod = document.getElementById("form-payMethod");
+
+    if (!formPayMethod.checkValidity()) {
+      document.getElementById("invalid-payMethod").style.display="block"
+    }
+    else{
+      document.getElementById("invalid-payMethod").style.display="none"
+    }
+}
+if (document.getElementById("paymentMethodModal")) {
+  document.getElementById("paymentMethodModal").addEventListener("hidden.bs.modal",()=>{ // cuando se cierra el modal, se ejecuta la validación
+    payMethodValidate();
+  })
+}
+
+
 document.addEventListener("DOMContentLoaded",()=>{
   // Example starter JavaScript for disabling form submissions if there are invalid fields
 
+    
     loadCart();
     drawCartList();
     paymentMethodSelected();
@@ -152,13 +170,23 @@ document.addEventListener("DOMContentLoaded",()=>{
     document.getElementById("btn-finalizarCompra").addEventListener("click",(event)=>{
       let formPayMethod = document.getElementById("form-payMethod");
       let form = document.getElementsByTagName("form")[0];
-      
-        if (!form.checkValidity()) {
+        if (!form.checkValidity() || !formPayMethod.checkValidity()) {
           event.preventDefault()
           event.stopPropagation()
+          if (!formPayMethod.checkValidity()) {
+            document.getElementById("invalid-payMethod").style.display="block"
+          }
+          else{
+            document.getElementById("invalid-payMethod").style.display="none"
+          }
+        }
+        else{
+          document.getElementById("invalid-payMethod").style.display="none"
+          alert("esta todo gucci")
         }
         formPayMethod.classList.add('was-validated')
         form.classList.add('was-validated')
       
     })
+    
 });
