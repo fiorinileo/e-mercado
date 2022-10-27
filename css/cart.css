@@ -78,3 +78,6 @@ main{
     padding-bottom: 10px;
     margin-bottom: 20px;
 }
+#expirationDateCard>input.form-control{
+    width: 40%;
+}

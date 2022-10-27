@@ -76,14 +76,14 @@ export function drawCartList() {
 
         }
         document.getElementById("Prices").innerHTML = `
-             <p>
-               Subtotal en USD: $ ${totalCostUSD}
+             <p class="col-4">
+              <b>Subtotal en USD:</b> $ ${totalCostUSD}
              </p>
-             <p>
-                Costo de envío: $ <span id="shipCost"></span>
+             <p class="col-4">
+                <b>Costo de envío:</b> $ <span id="shipCost"></span>
              </p>
-             <p>
-                Total: $ <span id="totalCost"></span>
+             <p class="col-4">
+              <b>Total: </b>$ <span id="totalCost"></span>
              </p>
        `
        printShipCost()
@@ -122,21 +122,28 @@ function paymentMethodSelected(){
       document.getElementById("creditCardContainer").getElementsByTagName("input")[0].disabled=false;
   }
 }
-function addressValidate(){
-  let street = document.getElementById("calle");
-  let doorNum = document.getElementById("numeroPuerta");
-  let streetCorner = document.getElementById("esquina");
-
-  if (street.value.trim() == "") {
-    alert("Por favor, no deje el campo vacío");
-    street.style.border="solid 1px red";
-  }
-  if (doorNum.value.trim() == "") {
+function billingValidate(){
+  document.getElementById("btn-finalizarCompra").addEventListener("click",(event)=>{
+    let formPayMethod = document.getElementById("form-payMethod");
+    let form = document.getElementsByTagName("form")[0];
+      if (!form.checkValidity() || !formPayMethod.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+        if (!formPayMethod.checkValidity()) {
+          document.getElementById("invalid-payMethod").style.display="block"
+        }
+        else{
+          document.getElementById("invalid-payMethod").style.display="none"
+        }
+      }
+      else{
+        document.getElementById("invalid-payMethod").style.display="none"
+        alert("esta todo gucci")
+      }
+      formPayMethod.classList.add('was-validated')
+      form.classList.add('was-validated')
     
-  }
-  if ( streetCorner.value.trim() == "" ) {
-    
-  }
+  })
 }
 function payMethodValidate(){ //función que valida el método de pago
   let formPayMethod = document.getElementById("form-payMethod");
@@ -173,27 +180,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       })
     })
     if (document.getElementById("btn-finalizarCompra")) {
-      document.getElementById("btn-finalizarCompra").addEventListener("click",(event)=>{
-        let formPayMethod = document.getElementById("form-payMethod");
-        let form = document.getElementsByTagName("form")[0];
-          if (!form.checkValidity() || !formPayMethod.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
-            if (!formPayMethod.checkValidity()) {
-              document.getElementById("invalid-payMethod").style.display="block"
-            }
-            else{
-              document.getElementById("invalid-payMethod").style.display="none"
-            }
-          }
-          else{
-            document.getElementById("invalid-payMethod").style.display="none"
-            alert("esta todo gucci")
-          }
-          formPayMethod.classList.add('was-validated')
-          form.classList.add('was-validated')
-        
-      })
+      billingValidate();
     }
     
     

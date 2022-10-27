@@ -199,8 +199,8 @@
                 </ul>
               </div>
               <div class="col-12 mt-3">
-                <h2 >Costos</h2>
-                <p id="Prices" class="mb-0"></p>
+                <h2>Costos</h2>
+                <p id="Prices" class="mb-0 row"></p>
               </div>
             </div>
             <form class="col-md-4 col-12 row billing needs-validation" novalidate>
@@ -260,7 +260,7 @@
                   Ingresa un método de pago
                 </div>
               </div>
-              <div class="col-12">
+              <div class="col-12 row">
                 <h2>Finalizar compra</h2>
                 <button type="submit" class="btn-selectMethod" id="btn-finalizarCompra">Finalizar Compra</button>
               </div>
@@ -367,17 +367,17 @@
                           <div class="col-md-4 col-12 mx-2 p-0"> 
                               <label for="input-creditCard">Código de seguridad</label>
                               <input class="input-group-text form-control"  type="text"type="number" ondrop="return false;" onpaste="return false;"
-                              onkeypress="return event.charCode>=48 && event.charCode<=57" maxlength="4" required class="w-100">
+                              onkeypress="return event.charCode>=48 && event.charCode<=57" minlength="3" maxlength="4" required class="w-100">
                               <div class="invalid-feedback">
                                 Ingresa tu Código de seguridad 
                               </div>
                           </div>
                           <div class="col-12 row ms-4">
                               <label>Fecha de vencimiento</label>
-                              <div class="expiration row col-md-3 justify-content-center">
-                                    <input type="number"required class="col-5 p-1 m-0" name="month" placeholder="MM" maxlength="2" max="12" min="1"/>
+                              <div class="expiration row col-md-6 justify-content-center" id="expirationDateCard">
+                                    <input type="number"required class="col-3 p-1 m-0 form-control" name="month" placeholder="MM" maxlength="2" max="12" min="1"/>
                                     <span class="col-2 px-1 text-center">/</span>
-                                    <input  class="input-group-text form-control" type="number" class="col-5 p-1 m-0" name="year" placeholder="YY" maxlength="2" max="28" min="22" required />
+                                    <input  class="input-group-text form-control col-3 p-1 m-0" type="number"  name="year" placeholder="YY" maxlength="2" max="32" min="22" required />
                                     <div class="invalid-feedback">
                                       Ingresa la fecha de vencimiento de tu tarjeta 
                                     </div>
@@ -386,12 +386,13 @@
                         </div>
                         <div class="row paymentMethodContainer" id="bankTransferContainer">
                           <div>
-                            <input type="radio" class="form-check-input" name="paymentMethod" id="radio-bankTransfer" required>
+                            <input type="radio" class="form-check-input" name="paymentMethod" id="radio-bankTransfer"  required>
                             <label class="form-check-label">Transferencia bancaria</label>
                           </div>
                           <div>
                             <label for="input-creditCard">Número de cuenta</label>
-                            <input class="input-group-text form-control" type="number" required>
+                            <input class="input-group-text form-control" type="text" ondrop="return false;" onpaste="return false;"
+                            onkeypress="return event.charCode>=48 && event.charCode<=57" minlength="20" maxlength="20" required>
                             <div  class="invalid-feedback">Ingresa tu número de cuenta</div>
                           </div>
                         </div>
