@@ -19,7 +19,7 @@ if (document.getElementById("sortBySold")) {
 document.getElementById("clearRangeFilter").addEventListener("click", function(){
     document.getElementById("rangeFilterPriceMin").value = "";
     document.getElementById("rangeFilterPriceMax").value = "";
-
+    document.getElementById('search-input').value="";
     minPrice = undefined;
     maxPrice = undefined;
 
@@ -189,3 +189,5 @@ document.addEventListener("DOMContentLoaded", function(e){
 });
 
 window.windowReplace=windowReplace;
+window.searchFunction = searchFunction;
+window.sortFunction=sortFunction;

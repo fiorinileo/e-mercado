@@ -1,6 +1,5 @@
-import {getJSONData} from "./init.js"
-import {CATEGORIES_URL} from "./init.js"
-import { searchFunction, sortAndShowProducts } from "./products.js";
+import {getJSONData} from "./init.js";
+import {CATEGORIES_URL} from "./init.js";
 
 const ORDER_ASC_BY_NAME = "AZ";
 const ORDER_DESC_BY_NAME = "ZA";
@@ -163,3 +162,4 @@ document.addEventListener("DOMContentLoaded", function(e){
 });
 
 window.setCatID = setCatID;
+window.sortFunction = sortFunction;
