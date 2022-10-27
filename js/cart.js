@@ -124,8 +124,9 @@ function paymentMethodSelected(){
 }
 function billingValidate(){
   document.getElementById("btn-finalizarCompra").addEventListener("click",(event)=>{
-    let formPayMethod = document.getElementById("form-payMethod");
-    let form = document.getElementsByTagName("form")[0];
+    if (Object.keys(JSON.parse(localStorage.getItem("cart"))).length>0) {
+      let formPayMethod = document.getElementById("form-payMethod");
+      let form = document.getElementsByTagName("form")[0];
       if (!form.checkValidity() || !formPayMethod.checkValidity()) {
         event.preventDefault()
         event.stopPropagation()
@@ -142,6 +143,11 @@ function billingValidate(){
       }
       formPayMethod.classList.add('was-validated')
       form.classList.add('was-validated')
+    }
+    else{
+      alert("Debes seleccionar un artículo primero")
+    }
+    
     
   })
 }
@@ -180,8 +186,10 @@ document.addEventListener("DOMContentLoaded",()=>{
       })
     })
     if (document.getElementById("btn-finalizarCompra")) {
-      billingValidate();
+      billingValidate()
     }
     
     
 });
+
+window.windowReplace = windowReplace;
