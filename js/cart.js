@@ -1,4 +1,5 @@
 import { loadCart } from "./config/loadCart.js";
+import { showMessage } from "./config/showMessage.js";
 import { windowReplace } from "./init.js";
 
 var totalCostUSD = 0;
@@ -122,30 +123,38 @@ function paymentMethodSelected(){
       document.getElementById("creditCardContainer").getElementsByTagName("input")[0].disabled=false;
   }
 }
-function billingValidate(){
-  document.getElementById("btn-finalizarCompra").addEventListener("click",(event)=>{
-    if (Object.keys(JSON.parse(localStorage.getItem("cart"))).length>0) {
-      let formPayMethod = document.getElementById("form-payMethod");
-      let form = document.getElementsByTagName("form")[0];
-      if (!form.checkValidity() || !formPayMethod.checkValidity()) {
-        event.preventDefault()
-        event.stopPropagation()
-        if (!formPayMethod.checkValidity()) {
+function billingValidate(){ // Función que valida todos los campos de la factura electrónica
+  document.getElementById("btn-finalizarCompra").addEventListener("click",(event)=>{ // una vez se ejecuta el botón comprar
+    event.preventDefault() // se evita que se recargue la página
+    event.stopPropagation()
+    if (Object.keys(JSON.parse(localStorage.getItem("cart"))).length>0) { //  Si el carrito tiene artículos:
+      // Se ejecuta =>
+      let formPayMethod = document.getElementById("form-payMethod"); // traemos el formulario del modal que contiene el método de pago
+      let formShipMethod = document.getElementsByTagName("form")[0];  // Traemos el formulario de metodo de envío
+      if (!formShipMethod.checkValidity() || !formPayMethod.checkValidity()) { // si los formularios no cumplen con los campos solicitados:
+        // Se ejecuta =>
+        showMessage("Por favor, complete todos los campos.",false);
+        if (!formPayMethod.checkValidity()) { // si el formulario del modal no cumple con los requerimientos
+          // se muestra un mensaje de campos invalidos
           document.getElementById("invalid-payMethod").style.display="block"
         }
-        else{
+        else{ // si el formulario del modal cumple con los requerimientos
+           // se deja de mostrar el mensaje de campos invalidos
           document.getElementById("invalid-payMethod").style.display="none"
         }
       }
-      else{
-        document.getElementById("invalid-payMethod").style.display="none"
-        alert("esta todo gucci")
-      }
+      else{ //si los dos formularios cumplen con los campos solicitados:
+        // Se ejecuta =>
+        document.getElementById("invalid-payMethod").style.display="none" // se deja de mostrar los mensajes inválidos
+        showMessage("Se ha completado su pedido con EXITO!",true) // se visualiza un toast con mensaje de Exito
+      } 
+      // Se agregan a los dos formularios las clases de "was-validated" para darle feedback al usuario
       formPayMethod.classList.add('was-validated')
-      form.classList.add('was-validated')
+      formShipMethod.classList.add('was-validated')
     }
-    else{
-      alert("Debes seleccionar un artículo primero")
+    else{ // Si el carrito NO contiene artículos:
+
+      showMessage("Debes seleccionar un artículo primero",false) // se visualiza un toast con mensaje de agregar un artículo, con link a "categories.html"
     }
     
     
@@ -168,25 +177,28 @@ if (document.getElementById("paymentMethodModal")) {
 }
 
 
-document.addEventListener("DOMContentLoaded",()=>{
+document.addEventListener("DOMContentLoaded",async ()=>{
   // Example starter JavaScript for disabling form submissions if there are invalid fields
 
-    
-    loadCart();
-    drawCartList();
-    paymentMethodSelected();
-    document.getElementsByName("paymentMethod").forEach((button)=>{
-      button.addEventListener("click",()=>{
-        paymentMethodSelected();
+    if (localStorage.getItem("userName")) {
+      await loadCart();
+       drawCartList();
+      paymentMethodSelected();
+      
+      document.getElementsByName("paymentMethod").forEach((button)=>{
+        button.addEventListener("click",()=>{
+          paymentMethodSelected();
+        })
       })
-    })
-    document.getElementsByName("delivery").forEach((button)=>{
-      button.addEventListener("click",()=>{
-        printShipCost()
+      document.getElementsByName("delivery").forEach((button)=>{
+        button.addEventListener("click",()=>{
+          printShipCost()
+        })
       })
-    })
-    if (document.getElementById("btn-finalizarCompra")) {
-      billingValidate()
+      if (document.getElementById("btn-finalizarCompra")) {
+        billingValidate()
+      }
+      
     }
     
     

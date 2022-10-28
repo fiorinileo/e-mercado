@@ -47,3 +47,20 @@ export const getCart = async (userName)=>{
     return docSnap.data();
   }
 }
+
+/* Función para guardar comentarios en Firebase */
+export const saveComment = (userName,score,description,dateTime,productId,commentId) =>{
+  setDoc(doc(db,"comments","comments_"+productId),
+ {
+     [commentId]:{userName,score,description,dateTime} 
+   
+ },{ merge: true })
+}
+
+/*Función para traer comentarios de Firebase*/
+export const getComments = async (productId)=>{
+  const docSnap= await getDoc(doc(db,"comments","comments_"+productId));
+  if (docSnap.exists()){
+    return docSnap.data();
+  }
+}

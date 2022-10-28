@@ -1,5 +1,5 @@
 import { signOut } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"
-import { drawCart } from "../init.js";
+import { drawCart, windowReplace } from "../init.js";
 import { auth} from "./firebase.js"
 
 const logout = document.querySelector('#logout');
@@ -13,6 +13,7 @@ logout.addEventListener("click", async()=>{
         localStorage.removeItem("userName");
         localStorage.removeItem("catID");
         drawCart();
-    
+        location.replace("../../index.html")
 })
 
+window.windowReplace=windowReplace;

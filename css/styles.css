@@ -2,6 +2,9 @@
   --primary-color: #1f5b64 ;
   --soft-primary-color:#397f8a;
 }
+.toast-close{
+  opacity: 1;
+}
 #dotted-e{
   width: 32px;
 }

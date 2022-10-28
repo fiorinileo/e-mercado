@@ -5,6 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>eMercado - Todo lo que busques está aquí</title>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -12,6 +13,7 @@
   <link href="css/styles.css" rel="stylesheet">
   <link rel="stylesheet" href="./css/navbar.css">
   <link rel="stylesheet" href="./css/cart.css">
+
 </head>
 
 <body>
@@ -136,7 +138,7 @@
       </div>
     </nav>
   </header>
-  <main>
+   <main class="pb-5">
       <div id="buttonDiv"></div> 
       <section class="alert alert-success" style="display: none;" id="alerta-aviso-exito">
         <strong>Exito!</strong> has iniciado sesion.
@@ -217,9 +219,12 @@
                     <input  class="form-check-input"type="radio" id="Express" name="delivery" required>
                     <label class="form-check-label" for="Express"><b>Express</b> 5 a 11 días (7%)</label>
                   </div>
-                  <div>
+                  <div class="position-relative ">
                     <input class="form-check-input"type="radio" id="Standard" name="delivery" required >
                     <label class="form-check-label" for="Standard"><b>Standard</b> 12 a 15 días (5%)</label>
+                    <div class="invalid-tooltip">
+                      Ingresa un tipo de envío
+                    </div>
                   </div>
                 </div>
               </div>
@@ -228,35 +233,35 @@
                   Dirección de envío
                 </h2>
                 <div class="direccionEnvio">
-                  <div>
+                  <div class="position-relative mb-4">
                     <label for="calle">Calle</label>
                     <input class="input-group-text form-control" type="text" id="calle" name="delivery" placeholder="EJ: Gral. Flores, Cisplatina" required>
-                    <div class="invalid-feedback">
+                    <div class="invalid-tooltip">
                       Ingresa tu calle 
                     </div>
                   </div>
-                  <div>
+                  <div class="position-relative mb-4">
                     <label for="numeroPuerta">Número de puerta</label>
                     
                     <input  class="input-group-text form-control" type="text" id="numeroPuerta" name="delivery" placeholder="EJ: 2376, M44 S8" required >
-                    <div class="invalid-feedback">
+                    <div class="invalid-tooltip">
                       Ingresa un número de puerta
                     </div>
                   </div>
-                  <div>
+                  <div class="position-relative mb-4">
                     <label for="esquina">Esquina</label>
                     
                     <input class="input-group-text form-control" type="text" id="esquina" name="delivery" placeholder="EJ: Mercedes, Gral. Acha" required>
-                    <div class="invalid-feedback">
+                    <div class="invalid-tooltip">
                       Ingresa tu esquina
                     </div>
                   </div>
               </div>
               </div>
-              <div class="row col-12">
+              <div class="row col-12 position-relative">
                 <h2>Formas de pago</h2>
                 <button class="btn-selectMethod"  type="button" data-bs-toggle="modal" data-bs-target="#paymentMethodModal">Seleccionar método de pago</button>
-                <div class="invalid-feedback" style="display: none;" id="invalid-payMethod">
+                <div class="invalid-tooltip w-auto" style="display: none;" id="invalid-payMethod">
                   Ingresa un método de pago
                 </div>
               </div>
@@ -372,13 +377,13 @@
                                 Ingresa tu Código de seguridad 
                               </div>
                           </div>
-                          <div class="col-12 row ms-4">
+                          <div class="col-12 row ms-4 mb-5">
                               <label>Fecha de vencimiento</label>
-                              <div class="expiration row col-md-6 justify-content-center" id="expirationDateCard">
+                              <div class="expiration row col-md-6 justify-content-center position-relative" id="expirationDateCard">
                                     <input type="number"required class="col-3 p-1 m-0 form-control" name="month" placeholder="MM" maxlength="2" max="12" min="1"/>
                                     <span class="col-2 px-1 text-center">/</span>
                                     <input  class="input-group-text form-control col-3 p-1 m-0" type="number"  name="year" placeholder="YY" maxlength="2" max="32" min="22" required />
-                                    <div class="invalid-feedback">
+                                    <div class="invalid-tooltip">
                                       Ingresa la fecha de vencimiento de tu tarjeta 
                                     </div>
                               </div>
@@ -416,6 +421,8 @@
   <script type="module" src="js/init.js"></script>
   <script type="module" src="js/cart.js"></script>
   <script src="js/login.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
 </body>
 
 </html>

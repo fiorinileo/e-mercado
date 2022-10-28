@@ -1,4 +1,7 @@
-import { saveCart } from "./config/firebase.js"
+import { getComments, saveCart,saveComment } from "./config/firebase.js"
+import { loadCart } from "./config/loadCart.js";
+import { loadFirebaseComments } from "./config/loadComments.js";
+import { showMessage } from "./config/showMessage.js";
 import {getJSONData, showProductInCart, windowReplace, drawCart } from "./init.js"
 
 var date = new Date();
@@ -104,7 +107,8 @@ function showProductInfo(product) {
   imagesProduct(product);
 }
 /*-----------------------------------------------------------------------------*/
-function drawComment(id, user, dateTime, description) {
+export function drawComment(id, user, dateTime, description) {
+
   document.getElementById("commentList").innerHTML +=
     `
     <li id="idComment_` +
@@ -131,23 +135,6 @@ function drawComment(id, user, dateTime, description) {
         <div>
         </div>
     </li>`;
-}
-function products_comments(productComments) {
-  for (let i = 0; i < productComments.length; i++) {
-    let commentInfo = productComments[i];
-    drawComment(
-      i,
-      commentInfo.user,
-      commentInfo.dateTime,
-      commentInfo.description
-    );
-  }
-
-  for (let i = 0; i < productComments.length; i++) {
-    let liScoreID = document.getElementById("idComment_" + i); // seleccionamos el <li>(comentario) para poder trabajar dentro de él
-    let spanScore = liScoreID.getElementsByTagName("span"); // seleccionamos el array de <span> para ubicar cada una de las estrellas
-    drawScore(spanScore, productComments[i].score); // utilizamos la función DrawScore, y le pasamos como parámetro, el array de estrellas, y la cantidad.
-  }
 }
 function averageScore() {
   let totalScore = document
@@ -195,47 +182,22 @@ function showRelatedProducts(product) {
     document.getElementById("related-products").innerHTML = htmlContentToAppend;
   }
 }
-function saveComment(id, user, dateTime, description, score) {
-  let saveComments = [];
-  if (localStorage.getItem("saveComments")) {
-    saveComments = JSON.parse(localStorage.getItem("saveComments"));
+
+export function loadComments() {
+  let comments = JSON.parse(localStorage.getItem("comments")); // obtenemos todos los comentarios realizados en el sitio  
+  for (const idComment in comments) {
+      const comment = comments[idComment];
+      drawComment(
+        idComment,
+        comment.userName,
+        comment.dateTime,
+        comment.description
+      );
+      let span = document
+        .getElementById("idComment_" + idComment)
+        .getElementsByTagName("span");
+      drawScore(span, comment.score);
   }
-
-  let lastcomment = {
-    productID: localStorage.getItem("productID"),
-    id: id,
-    user: user,
-    dateTime: dateTime,
-    description: description,
-    score: score,
-  };
-
-  saveComments.push(lastcomment);
-
-  localStorage.setItem("saveComments", JSON.stringify(saveComments));
-}
-function loadComments() {
-  let comments = JSON.parse(localStorage.getItem("saveComments")); // obtenemos todos los comentarios realizados en el sitio
-  let saveComments = []; // almacena los comentarios del localstorage que sean únicamente del producto visitado
-
-  comments.forEach((comment) => {
-    if (comment.productID == localStorage.getItem("productID")) {
-      saveComments.push(comment); // agrega el comentario a saveComments, cuando este coincida con el producto visitado
-    }
-  });
-
-  saveComments.forEach((comment) => {
-    drawComment(
-      comment.id,
-      comment.user,
-      comment.dateTime,
-      comment.description
-    );
-    let span = document
-      .getElementById("idComment_" + comment.id)
-      .getElementsByTagName("span");
-    drawScore(span, comment.score);
-  });
 }
 function printScoreselected(submitScore, index) {
   for (let i = index; i < submitScore.length; i++) {
@@ -277,10 +239,12 @@ function scorePrint(productComments) {
   }
 }
 document.getElementById("sendComment").addEventListener("click", () => {
-  var date = new Date();
+
+  if (localStorage.getItem("userName")) {
+    var date = new Date();
   let comment = document.getElementById("commentDescription").value;
   if (comment) {
-    let user = localStorage.getItem("userName");
+    let userName = localStorage.getItem("userName");
 
     let commentDate =
       date.getFullYear() +
@@ -296,23 +260,29 @@ document.getElementById("sendComment").addEventListener("click", () => {
       dualDigits(date.getSeconds());
     let arrayComments = document.getElementById("commentList");
     arrayComments = arrayComments.getElementsByTagName("li");
-    let numberScore = document.getElementsByClassName("submitScore checked").length;
-    drawComment(arrayComments.length, user, commentDate, comment);
-    saveComment(
-      arrayComments.length - 1,
-      user,
-      commentDate,
-      comment,
-      numberScore
-    );
+    let score = document.getElementsByClassName("submitScore checked").length;
+    drawComment(arrayComments.length, userName, commentDate, comment);
+    let commentId = arrayComments.length;
     let arraySpan =
       arrayComments[arrayComments.length - 1].getElementsByTagName("span");
-    drawScore(arraySpan, numberScore);
+    
+    
+    let productId = localStorage.getItem("productID");
+    drawScore(arraySpan, score);
     document.getElementById("commentDescription").value = "";
     averageScore();
+
+    saveComment(userName,score,comment,commentDate,productId,commentId);
+
   } else {
     alert("Ingrese un comentario para enviarlo.");
   }
+
+  }
+  else{
+    showMessage("Necesitas estar Logeado para hacer eso",false);
+  }
+  
 });
 document.addEventListener("DOMContentLoaded", ()=> {
   let id = localStorage.productID;
@@ -320,16 +290,19 @@ document.addEventListener("DOMContentLoaded", ()=> {
     getJSONData(
       "https://japceibal.github.io/emercado-api/products/" + id + ".json"
     )
-      .then(function (resultObj) {
+      .then(async function (resultObj) {
         if (resultObj.status === "ok") {
           var product = resultObj.data;
           var currentProduct = String(product.id);
           showProductInfo(product);
           showRelatedProducts(product);
-
+          
+          await loadFirebaseComments();
+          printSelectedScore();
+          document.getElementById("commentUser").innerHTML=localStorage.getItem("userName") || "Anonymus";
           document.getElementById("buy_btn").addEventListener("click", () => {//creamos el evento de escucha a "click" en el boton de comprar
               if (localStorage.getItem("userName")) { //comprobamos que el usuario está logeado
-            
+                loadCart();
                 if (document.getElementById("nudCant").value>0) {
 
                   let userName = localStorage.getItem("userName");//cargamos el nombre de usuario en [userName]
@@ -373,36 +346,12 @@ document.addEventListener("DOMContentLoaded", ()=> {
                   alert("Debes ingresar un valor positivo entero");
                 }
             }
+            else{
+              showMessage("Necesitas estar Logeado para hacer eso",false);
+            }
           }
             );
         }
-      })
-      .then(() => {
-        getJSONData(
-          "https://japceibal.github.io/emercado-api/products_comments/" +
-            id +
-            ".json"
-        ).then(function (resultObj) {
-          if (resultObj.status === "ok") {
-            let productComments = resultObj.data;
-
-            products_comments(productComments);
-
-            if (localStorage.getItem("saveComments")) {
-              loadComments();
-            }
-            averageScore();
-          }
-          printSelectedScore();
-          document.getElementById("commentUser").innerHTML =
-            localStorage.userName;
-          document.getElementById("commentDate").innerHTML =
-            date.getFullYear() +
-            "-" +
-            (parseInt(dualDigits(date.getMonth())) + 1) +
-            "-" +
-            dualDigits(date.getDate());
-        });
       });
   } else {
     this.location.replace("../categories.html");
