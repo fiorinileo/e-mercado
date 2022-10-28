@@ -22,5 +22,6 @@ signupForm.addEventListener("submit",async (e)=>{
     } catch (error) {
         console.log(error);
     }
+    window.location.reload();
 
 })
