@@ -13,7 +13,7 @@ logout.addEventListener("click", async()=>{
         localStorage.removeItem("userName");
         localStorage.removeItem("catID");
         drawCart();
-        location.replace("../../index.html")
+        location.replace("./index.html")
 })
 
 window.windowReplace=windowReplace;
