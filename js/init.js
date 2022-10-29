@@ -40,22 +40,22 @@ export let getJSONData =  function (url){
     });
 }
 export function chgCount(action,idProduct){ //cambia la cantidad del articulo en el carrito del usuario
-  let userName = localStorage.getItem("userName");
+  let userEmail = localStorage.getItem("userEmail");
   let cart = JSON.parse(localStorage.getItem("cart"));
   let product = cart[idProduct];
   if(action) {// en el caso de que la acción sea true se suma 1, en caso de que sea false, se resta
     product.count++;
-    saveCart(userName,idProduct,product.cost,product.count,product.name,product.currency)
+    saveCart(userEmail,idProduct,product.cost,product.count,product.name,product.currency)
 
   }
   else{
     if (product.count==1) {//preguntamos si la cantidad que tiene de ese producto es igual a 1
       delete cart[idProduct];  //en el caso de que la cantidad sea igual a 1 eliminamos el producto directamente  
-      deleteProduct(userName,idProduct)
+      deleteProduct(userEmail,idProduct)
     }
     else{
       product.count--; // en el caso que sea mayor, la reducimos en una unidad
-      saveCart(userName,idProduct,product.cost,product.count,product.name,product.currency)
+      saveCart(userEmail,idProduct,product.cost,product.count,product.name,product.currency)
     } 
   }
   localStorage.setItem("cart",JSON.stringify(cart));
@@ -67,7 +67,7 @@ export function chgCount(action,idProduct){ //cambia la cantidad del articulo en
 }
 export function showProductInCart(){ //m Muestra la cantidad total de productos que tiene en el carrito dentro del navbar en una burbuja roja
 
-  let userName = localStorage.getItem("userName");
+  let userEmail = localStorage.getItem("userEmail");
   let cart = {};
   cart = JSON.parse(localStorage.getItem("cart"));
   if (cart) {
@@ -80,10 +80,10 @@ export function showProductInCart(){ //m Muestra la cantidad total de productos 
   
 }
 export function deleteItemCart(idProduct){
-  const userName = localStorage.getItem("userName");
+  const userEmail = localStorage.getItem("userEmail");
   let cart = JSON.parse(localStorage.getItem("cart"));
   delete cart[idProduct];
-  deleteProduct(userName,idProduct)
+  deleteProduct(userEmail,idProduct)
   if (document.getElementById("productListCart")) { 
     document.getElementById("productListCart").removeChild(document.getElementById("id_"+idProduct)); //boramos el li del carrito que tenga como id ese producto
   } 
@@ -96,7 +96,7 @@ export function deleteItemCart(idProduct){
 export function drawCart(){
 
 
-  if (localStorage.getItem("userName")) {
+  if (localStorage.getItem("userEmail")) {
     let cart = JSON.parse(localStorage.getItem("cart"));
     let cartItem = "";
     let totalCostUSD = 0;
@@ -171,28 +171,30 @@ export function drawCart(){
 export function emptyCart(){
   const listDropdown = document.getElementById("listCartDropdown"); 
   let liEmpty = "";
-  if(listDropdown.getElementsByTagName("li").length<1){
-     liEmpty = `<li class="dropdown-item row d-flex" id="EmptyCart">
-    <h4 class="col-12">
-      Carrito vacío
-    </h4>
-  </li>`;
-  listDropdown.innerHTML = liEmpty;
-  if (document.getElementById("productListCart")) {
-    document.getElementById("productListCart").innerHTML=`
-    <li class="row d-flex">
-      <h4 class="col-12">
-        Carrito vacío
-      </h4>
-    </li>
-    `
-   }
-  }
-  else{
-    if(document.getElementById("EmptyCart")){
-      document.getElementById("EmptyCart").remove();
+    if(listDropdown.getElementsByTagName("li").length<1){
+      liEmpty = `<li class="dropdown-item row d-flex" id="EmptyCart">
+     <h4 class="col-12">
+       Carrito vacío
+     </h4>
+   </li>`;
+   listDropdown.innerHTML = liEmpty;
+   if (document.getElementById("productListCart")) {
+     document.getElementById("productListCart").innerHTML=`
+     <li class="row d-flex">
+       <h4 class="col-12">
+         Carrito vacío
+       </h4>
+     </li>
+     `
     }
-  }
+   }
+   else{
+     if(document.getElementById("EmptyCart")){
+       document.getElementById("EmptyCart").remove();
+     }
+   }
+  
+
 
 }
 export function windowReplace(id) {
@@ -201,10 +203,10 @@ export function windowReplace(id) {
 }
 
 document.addEventListener("DOMContentLoaded", ()=>{
-  let userName = localStorage.getItem("userName");
-  if (userName) {
+  let userEmail = localStorage.getItem("userEmail");
+  if (userEmail) {
     loadCart();
-    document.getElementById("userName").innerHTML=userName.substring(0,9)+"...";
+    document.getElementById("userEmail").innerHTML=userEmail.substring(0,9)+"...";
   }
   
 

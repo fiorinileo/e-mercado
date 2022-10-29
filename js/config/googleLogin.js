@@ -1,6 +1,6 @@
 // Archivo que permite el logeo al sitio mediante la cuenta de google 
 import { GoogleAuthProvider,signInWithPopup } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"
-import { auth } from "./firebase.js"
+import { auth, saveUserName } from "./firebase.js"
 import { loadCart } from "./loadCart.js";
 
 
@@ -10,9 +10,9 @@ googlebtn.addEventListener("click",async ()=>{
         try {
             const credentials =  await signInWithPopup(auth,provider);
             bootstrap.Modal.getInstance(document.querySelector("#signinModal")).hide()
-            document.getElementById("userName").innerHTML= `<img class="img-thumbnail" src=${credentials.user.photoURL} width="24px"> <span>${credentials.user.displayName}</span>`;
-            
-            localStorage.setItem('userName',credentials.user.email);
+            document.getElementById("userEmail").innerHTML= `<img class="img-thumbnail" src=${credentials.user.photoURL} width="24px"> <span>${credentials.user.displayName}</span>`;
+            splitName(credentials.user.displayName,credentials.user.email)
+            localStorage.setItem('userEmail',credentials.user.email);
             loadCart();
         } catch (error) {
             console.log(error);
@@ -20,3 +20,24 @@ googlebtn.addEventListener("click",async ()=>{
 
     
 })
+
+
+function splitName(nameGroup,email){
+    let flag = true
+    let name = ""
+    let lastname = ""
+    for (let i = 0; i < nameGroup.length; i++) {
+        const letra = nameGroup[i];
+        if (letra == " ") {
+            flag = false
+        }
+        if (flag) {
+            name+=letra;
+        }
+        else{
+            lastname+=letra;
+        }
+    }
+    
+    saveUserName(name,lastname,email)
+}

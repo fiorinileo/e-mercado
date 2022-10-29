@@ -65,7 +65,7 @@
                 </li>
                 <!-- Dropdown -->
                 <li class="nav-item dropdown btn-group open logged-in">
-                  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="userName" href="#"><i class="fa fa-user fa-fw"></i> <span >User</span></a>
+                  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="userEmail" href="#"><i class="fa fa-user fa-fw"></i> <span >User</span></a>
 
                   <!-- Dropdown menu -->
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -184,7 +184,7 @@
             </div>
           </div>
         </div>
-  <div class="container">
+  <div class="container bg-dark text-white">
     <div class="text-center p-4">
       <h2>Vender</h2>
       <p class="lead">Ingresa los datos del artículo a vender.</p>
@@ -381,9 +381,10 @@
         </div>
         <div class="modal-body">
           
-          <button id="googleLogin" class="btn btn-info  w-100 mb-4" type="submit">
-            Google
-          </button>
+          <button id="googleLogin" class="customGPlusSignIn" type="submit">
+            <span class="icon"></span>
+            <span class="buttonText">Google</span>
+           </button>
           <form action="" id="signin-Form">
             <label for="email">email:</label>
             <input type="email" id="signin-email" required placeholder="Email" class="form-control mb-3">
@@ -435,7 +436,7 @@
   <script src="js/dropzone.js"></script>
   <script type="module" src="js/init.js"></script>
   <script src="js/sell.js"></script>
-  <script src="js/login.js"></script>
+
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
 

@@ -2,6 +2,7 @@ import { getComments, saveCart,saveComment } from "./config/firebase.js"
 import { loadCart } from "./config/loadCart.js";
 import { loadFirebaseComments } from "./config/loadComments.js";
 import { showMessage } from "./config/showMessage.js";
+import { loadFirebaseProductInfo, printProductSoldCount } from "./config/soldScript.js";
 import {getJSONData, showProductInCart, windowReplace, drawCart } from "./init.js"
 
 var date = new Date();
@@ -41,7 +42,7 @@ function imagesProduct(product) {
       document.getElementById("product-list-images").innerHTML=htmlContentToAppend;
   }
 }
-function showProductInfo(product) {
+async function showProductInfo(product) {
   // Reutilización del código ya creado en "Products", esto se debe a que la visualización que se solicita es idéntica, sustituyendo en este caso las distintas categorias, por los distintos productos pertenecientes a la categoría solicitada.
   let htmlContentToAppend = "";
   htmlContentToAppend += `
@@ -70,7 +71,7 @@ function showProductInfo(product) {
                     
                     <div class="col-lg-12 p-5 product_info">
                         <div class="col mt-3">
-                        <small class="text-muted">Nuevo | ${
+                        <small class="text-muted" id="soldCountSpan">Nuevo | ${
                           product.soldCount
                         } vendidos </small>
                             <div class="d-flex w-100 justify-content-between">
@@ -182,7 +183,6 @@ function showRelatedProducts(product) {
     document.getElementById("related-products").innerHTML = htmlContentToAppend;
   }
 }
-
 export function loadComments() {
   let comments = JSON.parse(localStorage.getItem("comments")); // obtenemos todos los comentarios realizados en el sitio  
   for (const idComment in comments) {
@@ -240,11 +240,11 @@ function scorePrint(productComments) {
 }
 document.getElementById("sendComment").addEventListener("click", () => {
 
-  if (localStorage.getItem("userName")) {
+  if (localStorage.getItem("userEmail")) {
     var date = new Date();
   let comment = document.getElementById("commentDescription").value;
   if (comment) {
-    let userName = localStorage.getItem("userName");
+    let userEmail = localStorage.getItem("userEmail");
 
     let commentDate =
       date.getFullYear() +
@@ -261,7 +261,7 @@ document.getElementById("sendComment").addEventListener("click", () => {
     let arrayComments = document.getElementById("commentList");
     arrayComments = arrayComments.getElementsByTagName("li");
     let score = document.getElementsByClassName("submitScore checked").length;
-    drawComment(arrayComments.length, userName, commentDate, comment);
+    drawComment(arrayComments.length, userEmail, commentDate, comment);
     let commentId = arrayComments.length;
     let arraySpan =
       arrayComments[arrayComments.length - 1].getElementsByTagName("span");
@@ -272,7 +272,7 @@ document.getElementById("sendComment").addEventListener("click", () => {
     document.getElementById("commentDescription").value = "";
     averageScore();
 
-    saveComment(userName,score,comment,commentDate,productId,commentId);
+    saveComment(userEmail,score,comment,commentDate,productId,commentId);
 
   } else {
     alert("Ingrese un comentario para enviarlo.");
@@ -280,7 +280,7 @@ document.getElementById("sendComment").addEventListener("click", () => {
 
   }
   else{
-    showMessage("Necesitas estar Logeado para hacer eso",false);
+    showMessage("Necesitas estar Logeado para hacer eso",false,"top","center");
   }
   
 });
@@ -292,20 +292,24 @@ document.addEventListener("DOMContentLoaded", ()=> {
     )
       .then(async function (resultObj) {
         if (resultObj.status === "ok") {
+          
           var product = resultObj.data;
           var currentProduct = String(product.id);
           showProductInfo(product);
           showRelatedProducts(product);
           
+          // Cargamos información del producto desde Firebase (más actualizada)
+          let FirebaseProductInfo = await loadFirebaseProductInfo()
+          printProductSoldCount(FirebaseProductInfo)
           await loadFirebaseComments();
           printSelectedScore();
-          document.getElementById("commentUser").innerHTML=localStorage.getItem("userName") || "Anonymus";
+          document.getElementById("commentUser").innerHTML=localStorage.getItem("userEmail") || "Anonymus";
           document.getElementById("buy_btn").addEventListener("click", () => {//creamos el evento de escucha a "click" en el boton de comprar
-              if (localStorage.getItem("userName")) { //comprobamos que el usuario está logeado
+              if (localStorage.getItem("userEmail")) { //comprobamos que el usuario está logeado
                 loadCart();
                 if (document.getElementById("nudCant").value>0) {
 
-                  let userName = localStorage.getItem("userName");//cargamos el nombre de usuario en [userName]
+                  let userEmail = localStorage.getItem("userEmail");//cargamos el nombre de usuario en [userEmail]
                   let cart = JSON.parse(localStorage.getItem("cart"));//declaramos el objeto cartUser
                   let count = parseInt(document.getElementById("nudCant").value);//sumamos la cantidad previa de dicho producto con la seleccionada previamente en el nud(numeric Up Down)
                   if (cart) { // si existe en el carrito, le sumamos a count, la cantidad previa
@@ -337,7 +341,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
                       currency: product.currency
                     }
                   }
-                  saveCart(userName,currentProduct,product.cost,count,product.name,product.currency)
+                  saveCart(userEmail,currentProduct,product.cost,count,product.name,product.currency)
                   localStorage.setItem("cart", JSON.stringify(cart));//guardamos el carrito general(con todos los usuarios) en localStorage
                   showProductInCart();
                   drawCart();
@@ -347,7 +351,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
                 }
             }
             else{
-              showMessage("Necesitas estar Logeado para hacer eso",false);
+              showMessage("Necesitas estar Logeado para hacer eso",false,"top","center");
             }
           }
             );

@@ -1,4 +1,4 @@
-export function showMessage(message,caso){
+export function showMessage(message,caso,gravity,position){
     let color;
     if (caso){
         color="var(--primary-color)";
@@ -12,10 +12,11 @@ export function showMessage(message,caso){
         destination: "../categories.html",
         newWindow: true,
         close: true,
-        gravity: "bottom", // `top` or `bottom`
-        position: "left", // `left`, `center` or `right`
+        gravity: gravity, // `top` or `bottom`
+        position: position, // `left`, `center` or `right`
         stopOnFocus: true, // Prevents dismissing of toast on hover
         style: {
+          "margin-top":"80px",
           background: color,
         },
         onClick: function(){} // Callback after click

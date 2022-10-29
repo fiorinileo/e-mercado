@@ -2,6 +2,7 @@ import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9
 import { drawCart } from "../init.js";
 import { auth } from "./firebase.js"
 import { loadCart } from "./loadCart.js";
+import { showMessage } from "./showMessage.js";
 
 const signinForm = document.querySelector("#signin-Form");
 
@@ -13,16 +14,16 @@ signinForm.addEventListener("submit", async (e)=>{
     
     try {
         await signInWithEmailAndPassword(auth,email,password);
-        document.getElementById("userName").innerHTML=email.substring(0,9)+"...";
-        localStorage.setItem('userName',email);
+        document.getElementById("userEmail").innerHTML=email.substring(0,9)+"...";
+        localStorage.setItem('userEmail',email);
         bootstrap.Modal.getInstance(document.querySelector("#signinModal")).hide()
         loadCart()
     } catch (error) {
         if (error.code=="auth/wrong-password") {
-            alert("contraseña erronea")
+            showMessage("Contraseña erronea.",false,"top")
         }
         else if (error.code=="auth/user-not-found") {
-            alert("usuario erroneo")
+            showMessage("Usuario erróneo.",false,"top")
 
         }
         console.log(error);

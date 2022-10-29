@@ -83,7 +83,7 @@
                   </li>
                   <!-- Dropdown -->
                   <li class="nav-item dropdown btn-group open logged-in" style="display: none;">
-                    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="userName" href="#"><i class="fa fa-user fa-fw"></i> <span >User</span></a>
+                    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="userEmail" href="#"><i class="fa fa-user fa-fw"></i> <span >User</span></a>
 
                     <!-- Dropdown menu -->
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -153,7 +153,7 @@
         </div>
       </nav>
     </header>
-    <main class="pb-5">
+    <main class="pb-5 bg-dark text-white">
       <div id="buttonDiv"></div>
       <section
         class="alert alert-success"
@@ -178,7 +178,7 @@
       </div>
       <div class="album py-5 bg-light">
         <div class="container">
-          <div class="row">
+          <div class="row text-dark">
             <div class="col-md-4">
               <div
                 class="card mb-4 shadow-sm custom-card cursor-active"
@@ -280,9 +280,10 @@
           </div>
           <div class="modal-body">
             
-            <button id="googleLogin" class="btn btn-info  w-100 mb-4" type="submit">
-              Google
-            </button>
+            <button id="googleLogin" class="customGPlusSignIn" type="submit">
+              <span class="icon"></span>
+              <span class="buttonText">Google</span>
+             </button>
             <form action="" id="signin-Form">
               <label for="email">email:</label>
               <input type="email" id="signin-email" required placeholder="Email" class="form-control mb-3">
@@ -308,13 +309,25 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-              <form action="" id="signup-form">
-                  <label for="email" >email:</label>
+              <form action="#" id="signup-form" class="needs-validation" novalidate>
+                <div class="row">
+                  <div class="col-md-6 col-12">
+                    <label for="signup-name" >Nombre</label>
+                    <input type="text" id="signup-name" required placeholder="Nombre" class="form-control mb-3">
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <label for="lastname" >Apellido</label>
+                    <input type="text" id="signup-lastname" required placeholder="Apellido" class="form-control mb-3">
+                  </div>
+                </div>
+                <div>
+                  <label for="signup-email" >email:</label>
                   <input type="email" id="signup-email" required placeholder="Email" class="form-control mb-3">
-
-                  <label for="email">password:</label>
+                </div>
+                <div>
+                  <label for="signup-password">password:</label>
                   <input type="password" id="signup-password" required placeholder="********" class="form-control mb-3">
-
+                </div>
                   <button type="submit" class="btn btn-primary">
                       Login
                   </button>
@@ -345,7 +358,7 @@
     <script src="js/bootstrap.bundle.min.js"></script>
     <script type="module" src="js/init.js"></script>
     <script src="js/index.js"></script>
-    <script src="js/login.js"></script>
+  
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   </body>
 </html>

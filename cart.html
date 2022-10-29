@@ -68,7 +68,7 @@
                 </li>
                 <!-- Dropdown -->
                 <li class="nav-item dropdown btn-group open logged-in" style="display: none;">
-                  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="userName" href="#"><i class="fa fa-user fa-fw"></i> <span >User</span></a>
+                  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="userEmail" href="#"><i class="fa fa-user fa-fw"></i> <span >User</span></a>
                   <!-- Dropdown menu -->
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a
@@ -138,7 +138,7 @@
       </div>
     </nav>
   </header>
-   <main class="pb-5">
+   <main class="pb-5 bg-dark text-white">
       <div id="buttonDiv"></div> 
       <section class="alert alert-success" style="display: none;" id="alerta-aviso-exito">
         <strong>Exito!</strong> has iniciado sesion.
@@ -302,9 +302,16 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
          </div>
          <div class="modal-body">
-           
-           <button id="googleLogin" class="btn btn-info  w-100 mb-4" type="submit">
-             Google
+          <div id="gSignInWrapper">
+            <span class="label">Sign in with:</span>
+            <button id="googleLogin" class="customGPlusSignIn" type="submit">
+              <span class="icon"></span>
+              <span class="buttonText">Google</span>
+             </button>
+          </div>
+           <button id="googleLogin customBtn" class="customGPlusSignIn" type="submit">
+            <span class="icon"></span>
+            <span class="buttonText">Google</span>
            </button>
            <form action="" id="signin-Form">
              <label for="email">email:</label>
@@ -322,31 +329,43 @@
    </div>
    </div>
  <!-- Fin Signin Modal --> 
- <!-- SignUp Modal -->
- <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-   <div class="modal-content">
-       <div class="modal-header">
-         <h1 class="modal-title fs-5" id="exampleModalLabel">Sign Up</h1>
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-         </div>
-         <div class="modal-body">
-             <form action="" id="signup-form">
-                 <label for="email" >email:</label>
-                 <input type="email" id="signup-email" required placeholder="Email" class="form-control mb-3">
-
-                 <label for="email">password:</label>
-                 <input type="password" id="signup-password" required placeholder="********" class="form-control mb-3">
-
-                 <button type="submit" class="btn btn-primary">
-                     Login
-                 </button>
-             </form>
-         </div>
-     </div>
-   </div>
- </div>
- <!-- Fin SignUp Modal --> 
+  <!-- SignUp Modal -->
+  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Sign Up</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form action="#" id="signup-form" class="needs-validation" novalidate>
+                <div class="row">
+                  <div class="col-md-6 col-12">
+                    <label for="signup-name" >Nombre</label>
+                    <input type="text" id="signup-name" required placeholder="Nombre" class="form-control mb-3">
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <label for="lastname" >Apellido</label>
+                    <input type="text" id="signup-lastname" required placeholder="Apellido" class="form-control mb-3">
+                  </div>
+                </div>
+                <div>
+                  <label for="signup-email" >email:</label>
+                  <input type="email" id="signup-email" required placeholder="Email" class="form-control mb-3">
+                </div>
+                <div>
+                  <label for="signup-password">password:</label>
+                  <input type="password" id="signup-password" required placeholder="********" class="form-control mb-3">
+                </div>
+                  <button type="submit" class="btn btn-primary">
+                      Login
+                  </button>
+              </form>
+          </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fin SignUp Modal --> 
                <!-- Modal Metodo de pago  -->
                <div class="modal fade" id="paymentMethodModal" tabindex="-1">
                 <div class="modal-dialog">
@@ -420,7 +439,7 @@
   <script src="js/bootstrap.bundle.min.js"></script>
   <script type="module" src="js/init.js"></script>
   <script type="module" src="js/cart.js"></script>
-  <script src="js/login.js"></script>
+
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 </body>

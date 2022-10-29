@@ -79,7 +79,7 @@
                 </li>
                 <!-- Dropdown -->
                 <li class="nav-item dropdown btn-group open logged-in">
-                  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="userName" href="#"><i class="fa fa-user fa-fw"></i> <span >User</span></a>
+                  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="userEmail" href="#"><i class="fa fa-user fa-fw"></i> <span >User</span></a>
 
                   <!-- Dropdown menu -->
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -150,7 +150,7 @@
       </div>
     </nav>
   </header>
-   <main class="pb-5">
+   <main class="pb-5 bg-dark text-white">
     <div class="container">
       <div class="alert alert-danger text-center" role="alert">
         <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
@@ -187,9 +187,10 @@
                <label for="email">password:</label>
                <input type="password" id="signin-password" required placeholder="********" class="form-control mb-3">
        
-                 <button type="submit" class="btn btn-primary">
-                     Login
-                 </button>
+               <button id="googleLogin" class="customGPlusSignIn" type="submit">
+                <span class="icon"></span>
+                <span class="buttonText">Google</span>
+               </button>
                </form>
            </div>   
        </div>

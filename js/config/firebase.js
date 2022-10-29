@@ -3,7 +3,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
 import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"
-import { getFirestore, addDoc,collection, setDoc, doc, getDocs,getDoc, updateDoc, deleteField } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js"
+import { getFirestore, addDoc,collection, setDoc, doc, getDocs,getDoc, updateDoc, deleteField, deleteDoc } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js"
+import { deleteCart } from "../cart.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
       
@@ -22,35 +23,35 @@ export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db= getFirestore(app);
 
+export const saveCart =  async (userEmail,productId,cost,count,productName,currency) =>{
+  let docData={
+      cost:cost,
+      count:count,
+      currency:currency,
+      name:productName
+};
+  let ruta= doc(db,"usersInfo/"+userEmail+"/cartUser/"+productId);
+  await setDoc(ruta,docData);
 
-export const saveCart = (userName,productId,cost,count,productName,currency) =>{
-   setDoc(doc(db,"cartUsers",userName),
-  {
-      [productId]:{
-        cost:cost,
-        count:count,
-        currency:currency,
-        name:productName
-      } 
-    
-  },{ merge: true })
+} 
+export const deleteProduct = async (userEmail,productId)=>{
+  let ruta= doc(db,"usersInfo/"+userEmail+"/cartUser/"+productId);
+  await deleteDoc(ruta);
 }
-export const deleteProduct = async (userName,productId)=>{
-  const cart = doc(db,"cartUsers",userName);
-  await updateDoc(cart, {
-    [productId]: deleteField()
-});
-}
-export const getCart = async (userName)=>{
-  const docSnap= await getDoc(doc(db,"cartUsers",userName));
-  if (docSnap.exists()){
-    return docSnap.data();
+export const getCart = async (userEmail)=>{
+  let cart = {}
+  const querySnapshot = await getDocs(collection(db, "usersInfo",userEmail,"cartUser"));
+  if (querySnapshot) {
+    querySnapshot.forEach((product) => {
+      cart[product.id]=product.data()
+    });
   }
+  return cart
 }
 
 /* Función para guardar comentarios en Firebase */
-export const saveComment = (userName,score,description,dateTime,productId,commentId) =>{
-  setDoc(doc(db,"comments","comments_"+productId),
+export const saveComment = async (userName,score,description,dateTime,productId,commentId) =>{
+  await setDoc(doc(db,"comments","comments_"+productId),
  {
      [commentId]:{userName,score,description,dateTime} 
    
@@ -63,4 +64,52 @@ export const getComments = async (productId)=>{
   if (docSnap.exists()){
     return docSnap.data();
   }
+}
+
+export const getProductInfo = async(productId)=>{
+  const docSnap= await getDoc(doc(db,"productsInfo","productId_"+productId));
+  if (docSnap.exists()){
+    return docSnap.data();
+  }
+}
+
+export const saveProductInfo = async (productId,soldCount) =>{
+  await setDoc(doc(db,"productsInfo","productId_"+productId),
+ {
+     "soldCount":soldCount 
+   
+ },{ merge: true })
+}
+
+// almacena el carrito del usuario, en su historial de compras una vez la confirma
+export const saveUserPurchase = async () =>{
+
+  let paymentMethod ="Credit Card" // El método de pago comienza teniendo el valor de tarjeta de credito
+  document.getElementById("radio-bankTransfer").checked ? paymentMethod = "Bank Transfer":{}; // si está checkeado el campo de banco, se cambia a transferencia bancaria
+
+  let cart = JSON.parse(localStorage.getItem("cart")) // traemos el carrito del usuario
+  let address = {
+    street: document.getElementById("calle").value,
+    doorNum: document.getElementById("numeroPuerta").value,
+    corner: document.getElementById("esquina").value,
+    payMethod:paymentMethod
+  } 
+  let ticket = {}
+  ticket["address"]= address;
+  ticket["cart"]= cart;
+  let userEmail = localStorage.getItem("userEmail") 
+  let totalPurchases = await getDocs(collection(db,"usersInfo/"+userEmail+"/purchases"))
+  let ruta=doc(collection(db,"usersInfo",userEmail,"purchases"),"ticket_"+totalPurchases.docs.length);
+  await setDoc(ruta,ticket,{merge:true});
+  deleteCart();
+  
+}
+
+export const saveUserName = async (name,lastname,email)=>{
+  let credentials = {
+    userName:name,
+    userLastname:lastname
+  }
+  let ruta= doc(db,"usersInfo/"+email); 
+  setDoc(ruta,credentials)
 }

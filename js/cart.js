@@ -1,6 +1,7 @@
+import { deleteProduct, saveProductInfo, saveUserPurchase } from "./config/firebase.js";
 import { loadCart } from "./config/loadCart.js";
 import { showMessage } from "./config/showMessage.js";
-import { windowReplace } from "./init.js";
+import { drawCart, windowReplace } from "./init.js";
 
 var totalCostUSD = 0;
 function printShipCost(){
@@ -133,7 +134,7 @@ function billingValidate(){ // Función que valida todos los campos de la factur
       let formShipMethod = document.getElementsByTagName("form")[0];  // Traemos el formulario de metodo de envío
       if (!formShipMethod.checkValidity() || !formPayMethod.checkValidity()) { // si los formularios no cumplen con los campos solicitados:
         // Se ejecuta =>
-        showMessage("Por favor, complete todos los campos.",false);
+        showMessage("Por favor, complete todos los campos.",false,"bottom","right");
         if (!formPayMethod.checkValidity()) { // si el formulario del modal no cumple con los requerimientos
           // se muestra un mensaje de campos invalidos
           document.getElementById("invalid-payMethod").style.display="block"
@@ -141,12 +142,14 @@ function billingValidate(){ // Función que valida todos los campos de la factur
         else{ // si el formulario del modal cumple con los requerimientos
            // se deja de mostrar el mensaje de campos invalidos
           document.getElementById("invalid-payMethod").style.display="none"
+          
         }
       }
       else{ //si los dos formularios cumplen con los campos solicitados:
         // Se ejecuta =>
         document.getElementById("invalid-payMethod").style.display="none" // se deja de mostrar los mensajes inválidos
-        showMessage("Se ha completado su pedido con EXITO!",true) // se visualiza un toast con mensaje de Exito
+        showMessage("Se ha completado su pedido con EXITO!",true,"bottom","right") // se visualiza un toast con mensaje de Exito
+        saveUserPurchase()
       } 
       // Se agregan a los dos formularios las clases de "was-validated" para darle feedback al usuario
       formPayMethod.classList.add('was-validated')
@@ -154,7 +157,7 @@ function billingValidate(){ // Función que valida todos los campos de la factur
     }
     else{ // Si el carrito NO contiene artículos:
 
-      showMessage("Debes seleccionar un artículo primero",false) // se visualiza un toast con mensaje de agregar un artículo, con link a "categories.html"
+      showMessage("Debes seleccionar un artículo primero",false,"top","center") // se visualiza un toast con mensaje de agregar un artículo, con link a "categories.html"
     }
     
     
@@ -180,7 +183,7 @@ if (document.getElementById("paymentMethodModal")) {
 document.addEventListener("DOMContentLoaded",async ()=>{
   // Example starter JavaScript for disabling form submissions if there are invalid fields
 
-    if (localStorage.getItem("userName")) {
+    if (localStorage.getItem("userEmail")) {
       await loadCart();
        drawCartList();
       paymentMethodSelected();
@@ -203,5 +206,14 @@ document.addEventListener("DOMContentLoaded",async ()=>{
     
     
 });
-
+export async function deleteCart(){
+  let cart = JSON.parse(localStorage.getItem("cart"))
+  let userEmail = localStorage.getItem("userEmail")
+  for (const productId in cart) {
+      await deleteProduct(userEmail,productId)
+  }
+  localStorage.setItem("cart",JSON.stringify({}))
+  drawCart()
+  drawCartList()
+}
 window.windowReplace = windowReplace;

@@ -7,7 +7,7 @@ import { drawCartList } from "../cart.js";
 export const loadCart = async()=>{
 
     showSpinner();
-    let cart = await getCart(localStorage.getItem("userName"));
+    let cart = await getCart(localStorage.getItem("userEmail"));
     if (cart) {   
         localStorage.setItem("cart",JSON.stringify(cart));
     }
