@@ -2,7 +2,7 @@ import { firebaseGetImage, getCategorieInfo, getCategoriesInfo, getComments, get
 import { loadCart } from "./config/loadCart.js";
 import { loadFirebaseComments } from "./config/loadComments.js";
 import { showMessage } from "./config/showMessage.js";
-import {getJSONData, showProductInCart, windowReplace, drawCart } from "./init.js"
+import {getJSONData, showProductInCart, windowReplace, drawCart, showSpinner, hideSpinner } from "./init.js"
 
 var date = new Date();
 
@@ -297,7 +297,6 @@ document.addEventListener("DOMContentLoaded", async ()=> {
           var currentProduct = String(productId);
           showProductInfo(product);
           showRelatedProducts(product);
-          
           // Cargamos información del producto desde Firebase (más actualizada)
           
           await loadFirebaseComments();

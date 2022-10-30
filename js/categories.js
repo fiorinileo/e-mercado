@@ -1,5 +1,5 @@
 import { firebaseGetImage, getCategorieInfo, getCategoriesInfo, saveCategorie, saveCategorieInfo } from "./config/firebase.js";
-import { CATEGORIES_URL, getJSONData } from "./init.js";
+import { CATEGORIES_URL, getJSONData, hideSpinner, showSpinner } from "./init.js";
 
 const ORDER_ASC_BY_NAME = "AZ";
 const ORDER_DESC_BY_NAME = "ZA";
@@ -44,6 +44,7 @@ function setCatID(id) {
 }
 
 async function showCategoriesList(){
+    showSpinner()
     let htmlContentToAppend = "";
     if(currentCategoriesArray.length >= 0){
         for(let i = 0; i < currentCategoriesArray.length; i++){
@@ -90,7 +91,7 @@ async function showCategoriesList(){
         </div>`
     }
     document.getElementById("cat-list-container").innerHTML = htmlContentToAppend;
-    
+    hideSpinner()
 }
 
 function sortAndShowCategories(sortCriteria, categoriesArray){

@@ -1,4 +1,5 @@
 import { firebaseGetImage, getCategorieInfo, saveCategorieInfo } from "./config/firebase.js";
+import { hideSpinner, showSpinner } from "./init.js";
 
 //  Los comentarios de todos los documentos están realizados con el
 // AJUSTE DE PÁRRAFO QUE OFRECE VISUAL STUDIO CODE,
@@ -171,6 +172,7 @@ export function windowReplace(id){
 }
   //Función que se ejecuta una vez que se haya lanzado el evento de que el documento se encuentra cargado, es decir, se encuentran todos los elementos HTML presentes.
 document.addEventListener("DOMContentLoaded",async function(e){
+    showSpinner()
     let catId = localStorage.getItem("catId");
     if(catId){
             currentProductsArray= await getCategorieInfo(catId)
@@ -178,8 +180,9 @@ document.addEventListener("DOMContentLoaded",async function(e){
            
             categoryName = currentProductsArray.catName;
             currentProductsArray = currentProductsArray.products;
+
             showProductsList()
-            
+            hideSpinner()
         
     
     }
