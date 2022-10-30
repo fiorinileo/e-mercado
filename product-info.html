@@ -108,11 +108,11 @@
           <!-- Logged in -->
           <!-- Logged out-->
           <li class="nav-item logged-out" style="display: none;">
-            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#signinModal">Signin</a>
+            <a  data-bs-toggle="modal" data-bs-target="#signinModal">Signin</a>
           </li>
          
           <li class="nav-item logged-out" style="display: none;">
-            <a class="nav-link"  data-bs-toggle="modal" data-bs-target="#signupModal">Signup</a>
+            <a   data-bs-toggle="modal" data-bs-target="#signupModal">Signup</a>
           </li>
           <!-- Loged out-->
           
@@ -188,16 +188,18 @@
     </div>
     <!-- HTML DESTINADO A LOGIN | Fin-->
     
-    
-    <div class="container pt-3" >
-      <!-- PRODUCTO | Inicio -->
-      <section class="row m-0 pt-3 text-dark" id="product-container">
+    <div class="container p-0 p-md-4">
 
+      <!-- PRODUCTO | Inicio -->
+      <section class="row m-0 pt-md-3 pt-0 pb-lg-5 text-dark p-0 px-lg-4 " id="product-container">
+        
       </section>
       <!-- PRODUCTO | Fin -->
+    </div>
+    <div class="container pt-3" >
 
       <!-- COMENTARIOS | Inicio -->
-      <section class="my-5 ps-4 text-dark">
+      <section class="my-5 ps-md-4 ps-0 text-dark">
         <div>
           <h3>
             COMENTARIOS
@@ -206,11 +208,11 @@
         <ul id="commentList" class="row ">
           
         </ul>
-        <div class="row">
+        <div class="row container m-0 p-1">
           <div>
             <h3>Agrega un comentario</h3>
           </div>
-          <li class="row col-12 col-md-6 comment-content ">
+          <li class="row col-12 col-md-10 m-0 px-1 comment-content ">
             <div>
             <h4 id="commentUser"></h4>
             <p id="commentDate"></p>
@@ -226,8 +228,8 @@
             <div>
             </div>
         </li>
-          <div class="col-12">
-            <button class="btn-productRelated hoverAnim mx-5" id="sendComment">Enviar</button>
+          <div class="col-12 my-3">
+            <button class="btn-productRelated hoverAnim mx-1" id="sendComment">Enviar</button>
           </div>
         </div>
       </section>

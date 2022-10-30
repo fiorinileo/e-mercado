@@ -54,7 +54,7 @@ function showProductInfo(product) {
   let htmlContentToAppend = "";
   htmlContentToAppend += `
   
-                      <div id="carouselExampleIndicators" class="carousel slide row col-7" data-bs-ride="carousel" >
+                      <div id="carouselExampleIndicators" class="carousel slide row col-12 col-lg-7" data-bs-ride="carousel" >
                         <div class="carousel-indicators" >
                           
                         </div>
@@ -71,11 +71,11 @@ function showProductInfo(product) {
                         </button>
                     </div>
 
-                <div class="row justify-content-center col-5">
+                <div class="row justify-content-center col-lg-5  p-lg-4 col-12">
                     
-                    <div class="col-lg-12 p-5 product_info">
+                    <div class="col-lg-12 p-1 p-md-5 product_info p-4">
                         <div class="col mt-3">
-                        <small class="text-muted" id="soldCountSpan">Nuevo | ${
+                        <small id="soldCountSpan">Nuevo | ${
                           product.soldCount
                         } vendidos </small>
                             <div class="d-flex w-100 justify-content-between">
@@ -118,7 +118,7 @@ export function drawComment(id, user, dateTime, description) {
     `
     <li id="idComment_` +
     id +
-    `" class="row col-lg-5 hoverAnim-2 comment-content">
+    `" class="row col-lg-5 hoverAnim-2 mx-0 comment-content">
         <div>
         <h4>` +
     user +

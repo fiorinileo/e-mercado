@@ -46,11 +46,11 @@ export function drawCartList() {
                    
                    cartItem += `
                    <li class="row" id="id_${productId}" >
-                     <div class="col-6" onclick="windowReplace(${productId},${product.catId})">
+                     <div class="col-md-6 col-12" onclick="windowReplace(${productId},${product.catId})">
                            <img src=${product.image} class="img-thumbnail ">
                      </div>
                      
-                     <div class="col-6 row">
+                     <div class="col-md-6 col-12 row">
                        <h4 class="col-11">
                          ${product.name}
                        </h4>
@@ -78,13 +78,13 @@ export function drawCartList() {
 
         }
         document.getElementById("Prices").innerHTML = `
-             <p class="col-4">
+             <p class="col-md-4 col-12">
               <b>Subtotal en USD:</b> $ ${totalCostUSD}
              </p>
-             <p class="col-4">
+             <p class="col-md-4 col-12">
                 <b>Costo de envío:</b> $ <span id="shipCost"></span>
              </p>
-             <p class="col-4">
+             <p class="col-md-4 col-12">
               <b>Total: </b>$ <span id="totalCost"></span>
              </p>
        `
