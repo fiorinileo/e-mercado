@@ -1,3 +1,5 @@
+import { uploadFile } from "./config/firebase.js";
+
 let productCost = 0;
 let productCount = 0;
 let comissionPercentage = 0.13;
@@ -30,6 +32,7 @@ function updateTotalCosts(){
 document.addEventListener("DOMContentLoaded", function(e){
     document.getElementById("productCountInput").addEventListener("change", function(){
         productCount = this.value;
+        console.log(myDropzone);
         updateTotalCosts();
     });
 
@@ -76,11 +79,17 @@ document.addEventListener("DOMContentLoaded", function(e){
 
 
     //Se obtiene el formulario de publicación de producto
-    let sellForm = document.getElementById("sell-info");
-
+    let sellForm1 = document.getElementById("sell-form");
+    sellForm1.addEventListener("submit",(e)=>{
+        e.preventDefault()
+        console.log(myDropzone.files[0]);
+        if (myDropzone.files[0]) {
+            uploadFile(myDropzone.files[0])
+        }
+    })
     //Se agrega una escucha en el evento 'submit' que será
     //lanzado por el formulario cuando se seleccione 'Vender'.
-    sellForm.addEventListener("submit", function(e){
+   /*  sellForm.addEventListener("submit", function(e){
 
         e.preventDefault(); 
         e.preventDefault();
@@ -145,5 +154,5 @@ document.addEventListener("DOMContentLoaded", function(e){
                 document.getElementById("alertResult").classList.add("show");
             });
         }
-    });
+    }); */
 });

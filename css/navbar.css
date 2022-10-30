@@ -98,7 +98,19 @@ input[type=number] {
   background-color: var(--primary-color);
   border-color: rgba(255, 255, 255, 0);
 }
+.btn-primary:hover{
+  background-color: var(--soft-primary-color);
+  border-color: rgba(255, 255, 255, 0);
+}
+.btn-primary:focus {
+  background:var(--soft-primary-color);
+  box-shadow: var(--soft-primary-color)
+}
 
+.btn-primary:active {
+  background:var(--soft-primary-color);
+  box-shadow: var(--primary-color)
+}
 #navbarSupportedContent ul{
   min-width: 180px;
   justify-content: space-around;

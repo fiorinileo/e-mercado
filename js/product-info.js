@@ -2,7 +2,6 @@ import { firebaseGetImage, getCategorieInfo, getCategoriesInfo, getComments, get
 import { loadCart } from "./config/loadCart.js";
 import { loadFirebaseComments } from "./config/loadComments.js";
 import { showMessage } from "./config/showMessage.js";
-import { loadFirebaseProductInfo, printProductSoldCount } from "./config/soldScript.js";
 import {getJSONData, showProductInCart, windowReplace, drawCart } from "./init.js"
 
 var date = new Date();
@@ -23,20 +22,27 @@ function drawScore(place, value) {
     }
   }
 }
-function imagesProduct(product) {
+async function imagesProduct(product) {
   let htmlContentToAppend = "";
+  let carouselContainer = document.getElementsByClassName("carousel-indicators")[0];
   for (let i = 0; i < product.images.length; i++) {
-    let image = product.images[i];
+    let imageURL = await firebaseGetImage("prod"+product.id+"_"+(i+1)+".jpg")
+    carouselContainer.innerHTML+=`
+                      <img src=${imageURL}
+                        type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide-to="${i}" class="active" aria-current="true"
+                        aria-label="Slide ${i+1}">
+                      </img>`
                 if (i==0) {
                   htmlContentToAppend += `
                 <li class="carousel-item active" data-bs-interval="2500">
-                                <img src="${image}" class="img-thumbnail " onclick="setImage(${i})" id="img${i}">
+                                <img src=${imageURL} class="img-thumbnail " onclick="setImage(${i})" id="img${i}">
                 </li>
                 `;
                 } else {
                   htmlContentToAppend += `
                 <li class="carousel-item" data-bs-interval="2500">
-                                <img src="${image}" class="img-thumbnail " onclick="setImage(${i})" id="img${i}">
+                                <img src=${imageURL} class="img-thumbnail " onclick="setImage(${i})" id="img${i}">
                 </li>
                 `;
                 }
@@ -50,10 +56,7 @@ function showProductInfo(product) {
   
                       <div id="carouselExampleIndicators" class="carousel slide row col-7" data-bs-ride="carousel" >
                         <div class="carousel-indicators" >
-                          <img src="${product.images[0]}" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></img>
-                          <img src="${product.images[1]}" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></img>
-                          <img src="${product.images[2]}" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></img>
-                          <img src="${product.images[3]}" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></img>
+                          
                         </div>
                         <ul class="carousel-inner" id="product-list-images">
                          
@@ -153,12 +156,12 @@ function averageScore() {
 function dualDigits(num) {
   return parseInt(num) < 10 ? (num = "0" + num) : num;
 }
-function showRelatedProducts(product) {
+async function showRelatedProducts(product) {
   const relatedProductList = document.getElementById("related-products");
   let htmlContentToAppend = "";
   for (let i = 0; i < product.relatedProducts.length; i++) {
     let relatedProduct = product.relatedProducts[i];
-
+    let imageURL = await firebaseGetImage("prod"+relatedProduct.id+"_1.jpg")
     htmlContentToAppend += `
                 <li class="cursor-active col-12 col-md-6 col-lg-4 p-4">
                 <div class="row pb-4 pt-2 px-1 product-card" onclick="windowReplace(${
@@ -166,9 +169,7 @@ function showRelatedProducts(product) {
                 },${relatedProduct.catId})">
                     <div class="col-">
                         <div>
-                            <img id="main-image-product" src="${
-                              relatedProduct.image
-                            }" class="img-thumbnail">
+                            <img id="main-image-product" src=${imageURL} class="img-thumbnail">
                         </div>
                     </div>
                     <div class="col mt-3">
@@ -298,8 +299,7 @@ document.addEventListener("DOMContentLoaded", async ()=> {
           showRelatedProducts(product);
           
           // Cargamos información del producto desde Firebase (más actualizada)
-          let FirebaseProductInfo = await loadFirebaseProductInfo()
-           printProductSoldCount(FirebaseProductInfo)
+          
           await loadFirebaseComments();
           printSelectedScore();
           document.getElementById("commentUser").innerHTML=localStorage.getItem("userEmail") || "Anonymus";

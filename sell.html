@@ -10,8 +10,8 @@
     
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/dropzone.css" rel="stylesheet">
-  <link href="css/styles.css" rel="stylesheet">
   <link href="css/navbar.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
 </head>
 
 <body>
@@ -136,7 +136,8 @@
       </div>
     </nav>
   </header>
-  <div id="buttonDiv"></div> 
+  <main class="pb-5 bg-dark text-white">
+    <div id="buttonDiv"></div> 
       <section class="alert alert-success" style="display: none;" id="alerta-aviso-exito">
         <strong>Exito!</strong> has iniciado sesion.
       </section>
@@ -147,7 +148,7 @@
           </section>
           <div class="container center d-flex">
             <div>
-              <img src="./img/login.png" alt="logo de JaP e-mercado" />
+              <img src="https://firebasestorage.googleapis.com/v0/b/emercado-359900.appspot.com/o/login.png?alt=media&token=73ef865e-f927-47ff-a9d3-8aece774f212f927-47ff-a9d3-8aece774f212" alt="logo de JaP e-mercado" />
             </div>
             <div class="col-md-4 form-login--container">
               <div>
@@ -192,7 +193,7 @@
     <div class="row justify-content-md-center">
       <div class="col-md-8 order-md-1">
         <h4 class="mb-3">Información del producto</h4>
-        <form class="needs-validation" id="sell-info">
+        <form class="needs-validation" id="sell-form">
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="productName">Nombre</label>
@@ -316,6 +317,8 @@
       </div>
     </div>
   </div>
+  </main>
+  
   <footer class="text-muted">
     <div class="container">
       <p class="float-end">
@@ -435,9 +438,9 @@
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/dropzone.js"></script>
   <script type="module" src="js/init.js"></script>
-  <script src="js/sell.js"></script>
+  <script type="module"src="js/sell.js"></script>
 
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
 
 </html>

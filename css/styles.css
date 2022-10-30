@@ -9,7 +9,7 @@
   width: 32px;
 }
 .jumbotron{
-  background-image: url("../img/cover_back-img.png");
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/emercado-359900.appspot.com/o/cover_back-img.png?alt=media&token=22c44f28-4e40-4d35-8e3f-66df9f4aebd4");
   min-height: 250px;
 }
 h1{
@@ -307,10 +307,10 @@ a.custom-card:hover {
   font-weight: 600;
 
 }
-.product-cta-btn, .category-cta-btn{
+.product-cta-btn, .category-cta-btn, .cta-btn{
   text-align: end;
 }
-.product-cta-btn button{
+.product-cta-btn button, .cta-btn{
   min-width: 140px;
   width: 100%;
   justify-content: center;

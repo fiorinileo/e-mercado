@@ -1,6 +1,6 @@
 //Archivo base que posee las credenciales para poder acceder a la base de datos de Firebase
 
-import { getStorage,  ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-storage.js";
+import { getStorage,  ref, getDownloadURL, uploadBytes } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-storage.js";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
 import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"
@@ -27,22 +27,21 @@ export const db= getFirestore(app);
 
 // Initialize Cloud Storage and get a reference to the service
 
-const storage = getStorage(app);
-export const firebaseGetImage= async (imageName)=>{
+export const storage = getStorage(app);
+export async function uploadFile(file){
+  const storageRef = ref(storage, 'icons')
+  let snapshot = await uploadBytes(storageRef,file)
+  console.log(snapshot);
+}
+export const firebaseGetImage= async (imageName)=>{ // Función para obtener la URL de una imagen pasandole el nombre como parametro
   const pathReference = ref(storage,imageName);
-  console.log(pathReference);
-  await getDownloadURL(pathReference)
-  .then((url) => {
-    console.log(url);
-    return url;
-  })
-  .catch((error) => {
-    // Handle any errors
-  });
+  let urlObj = await getDownloadURL(pathReference)
+  let url =JSON.stringify(urlObj);
+  return url;
+  
+  
 
 }
-
-
 export const saveCart =  async (userEmail,productId,cost,count,productName,currency,image) =>{
   let docData={
       cost:cost,
@@ -145,6 +144,7 @@ export const getUserName = async ()=>{
 export const saveCategorieInfo = async (catGroup) =>{
   let catInfo ={}
   let catProducts = {};
+  console.log("si");
   if (catGroup.products) { // Si la categoria tiene productos =>
     for  (const productId in catGroup.products) { // Recorremos la categoria 
       const product = catGroup.products[productId]; // Guardamos el producto de este ciclo
@@ -156,13 +156,20 @@ export const saveCategorieInfo = async (catGroup) =>{
       for (let i = 0; i < relatedProducts.length; i++) { // Recorremos el array de productos relacionados
         let relatedProduct = relatedProducts[i];
         let categoryOfRelatedProduct = await categoryOf(relatedProduct.id)  // Averiguamos la categoria del producto relacionado
-
+        let imageURL = await firebaseGetImage("prod"+relatedProduct.id+"_1.jpg")
           console.log(categoryOfRelatedProduct +" != "+ catGroup.id);
-          relatedProducts[i]["catId"] = categoryOfRelatedProduct; // le agregamos un atributo al producto relacionado, que es la categoría a la que pertenece
-        
-        console.log(relatedProducts[i]);
+          console.log(relatedProduct);
+          relatedProduct["catId"] = categoryOfRelatedProduct; // le agregamos un atributo al producto relacionado, que es la categoría a la que pertenece
+          relatedProduct["image"] = imageURL;
+        console.log(relatedProducts["catId"]);
 
       }// Fin de recorrer el array de productos relacionados
+
+      let imagesProduct = [];
+      for (let i = 0; i < product.images.length; i++) {
+        let imageURL = await firebaseGetImage("prod"+product.id+"_"+(i+1)+".jpg")
+        imagesProduct.push(imageURL)
+      }
       catProducts[product.id]= {
         catId:catGroup.id,
         id:product.id,
@@ -171,7 +178,7 @@ export const saveCategorieInfo = async (catGroup) =>{
         cost:product.cost,
         currency:product.currency,
         soldCount:product.soldCount,
-        images:[product.images[0],product.images[1],product.images[2],product.images[3]],
+        images:imagesProduct,
         relatedProducts:relatedProducts
       }
     

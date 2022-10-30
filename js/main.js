@@ -10,7 +10,6 @@ import "./config/logout.js"
 import "./init.js"
 
 import { auth, db } from "./config/firebase.js"
-import { loadFirebaseProductInfo } from "./config/soldScript.js"
 
 onAuthStateChanged(auth, async (user)=>{
     if (user) {

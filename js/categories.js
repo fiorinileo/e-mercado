@@ -1,4 +1,4 @@
-import { getCategorieInfo, getCategoriesInfo, saveCategorie, saveCategorieInfo } from "./config/firebase.js";
+import { firebaseGetImage, getCategorieInfo, getCategoriesInfo, saveCategorie, saveCategorieInfo } from "./config/firebase.js";
 import { CATEGORIES_URL, getJSONData } from "./init.js";
 
 const ORDER_ASC_BY_NAME = "AZ";
@@ -43,11 +43,12 @@ function setCatID(id) {
     window.location = "products.html"
 }
 
-function showCategoriesList(){
+async function showCategoriesList(){
     let htmlContentToAppend = "";
     if(currentCategoriesArray.length >= 0){
         for(let i = 0; i < currentCategoriesArray.length; i++){
             let category = currentCategoriesArray[i].data();
+            let imageURL = await firebaseGetImage("cat"+category.id+"_1.jpg")
             let productCount=0;
             category.products? productCount = (Object.keys(category.products)).length: {}; // si tiene productos, le seteamos su cantidad
             if (((minCount == undefined) || (minCount != undefined && parseInt(category.productCount) >= minCount)) &&
@@ -58,7 +59,7 @@ function showCategoriesList(){
                         <div class="row px-1 pb-4 pt-2 product-card">
                             <div class="col-">
                                 <div>
-                                    <img src="${category.imgSrc}" class="img-thumbnail" alt="${category.description}">
+                                    <img src=${imageURL} class="img-thumbnail" alt="${category.description}">
                                 </div>
                                 
                             </div>
@@ -133,10 +134,6 @@ document.addEventListener("DOMContentLoaded",async  function(e){
 
         currentCategoriesArray= await getCategoriesInfo()
         showCategoriesList()
-    
-    
-        
-    
 
     document.getElementById("sortAsc").addEventListener("click", function(){
         sortAndShowCategories(ORDER_ASC_BY_NAME);

@@ -1,4 +1,4 @@
-import { getCategorieInfo, saveCategorieInfo } from "./config/firebase.js";
+import { firebaseGetImage, getCategorieInfo, saveCategorieInfo } from "./config/firebase.js";
 
 //  Los comentarios de todos los documentos están realizados con el
 // AJUSTE DE PÁRRAFO QUE OFRECE VISUAL STUDIO CODE,
@@ -29,7 +29,7 @@ document.getElementById("clearRangeFilter").addEventListener("click", function()
 let currentProductsArray = [];
 let categoryName = null;
 
-function showProductsList(){
+async function showProductsList(){
     // Se extrae el nombre de la categoria almacenado dentro del objeto del JSON dependiendo del ID que esta almacene, siendo variable para todas las categorias existentes.    Se emplea el mismo formato de "Products" para presentar su nombre.
     document.getElementById("title-product").innerHTML = `
         <h2>Productos</h2>
@@ -38,6 +38,7 @@ function showProductsList(){
     // Reutilización del código ya creado en "Products", esto se debe a que la visualización que se solicita es idéntica, sustituyendo en este caso las distintas categorias, por los distintos productos pertenecientes a la categoría solicitada.
     let htmlContentToAppend = "";
     for(const productId in currentProductsArray){
+        let imageURL = await firebaseGetImage("prod"+productId+"_1.jpg")
         const product = currentProductsArray[productId];
         if (((minPrice == undefined) || (minPrice != undefined && parseInt(product.cost) >= minPrice)) &&
             ((maxPrice == undefined) || (maxPrice != undefined && parseInt(product.cost) <= maxPrice))){
@@ -46,7 +47,7 @@ function showProductsList(){
                     <div class="row pb-4 pt-2 px-1 product-card" onclick="windowReplace(${product.id})">
                         <div class="col-">
                             <div>
-                                <img src="${product.images[0]}" class="img-thumbnail">
+                                <img src=${imageURL} class="img-thumbnail">
                             </div>
                             
                         </div>
@@ -174,7 +175,7 @@ document.addEventListener("DOMContentLoaded",async function(e){
     if(catId){
             currentProductsArray= await getCategorieInfo(catId)
             /* await saveCategorieInfo(currentProductsArray)  //Agregar atributos nuevos en todos los objetos */
-            console.log(currentProductsArray);
+           
             categoryName = currentProductsArray.catName;
             currentProductsArray = currentProductsArray.products;
             showProductsList()

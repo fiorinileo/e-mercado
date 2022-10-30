@@ -10,6 +10,8 @@
     
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
+  <link rel="stylesheet" href="./css/navbar.css">
+  <link rel="stylesheet" href="./css/myprofile.css">
   <style>
     .bd-placeholder-img {
       font-size: 1.125rem;
@@ -37,7 +39,7 @@
         <a class="navbar-brand" href="#"></a>
         <ul class="navbar-nav d-flex flex-row me-1" id="navbar-actions--logged">
           <!-- Logged in -->
-                <li class="nav-item me-3 me-lg-0 logged-in">
+                <li class="nav-item me-3 me-lg-0 logged-in" style="display: none;">
                   <div class="dropdown">
                     <a
                       type="button"
@@ -78,7 +80,7 @@
                   </div>
                 </li>
                 <!-- Dropdown -->
-                <li class="nav-item dropdown btn-group open logged-in">
+                <li class="nav-item dropdown btn-group open logged-in" style="display: none;">
                   <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="userEmail" href="#"><i class="fa fa-user fa-fw"></i> <span >User</span></a>
 
                   <!-- Dropdown menu -->
@@ -98,8 +100,7 @@
                       Mi perfil</a
                     >
                     <button
-                      class="text-center dropdown-item btn btn-secondary"
-                      
+                      class="dropdown-item text-center btn btn-secondary"
                       id="logout"
                       style="display: block"
                     >
@@ -109,11 +110,11 @@
                 </li>
           <!-- Logged in -->
           <!-- Logged out-->
-          <li class="nav-item logged-out">
+          <li class="nav-item logged-out" style="display: none;">
             <a class="nav-link" data-bs-toggle="modal" data-bs-target="#signinModal">Signin</a>
           </li>
          
-          <li class="nav-item logged-out">
+          <li class="nav-item logged-out" style="display: none;">
             <a class="nav-link"  data-bs-toggle="modal" data-bs-target="#signupModal">Signup</a>
           </li>
           <!-- Loged out-->
@@ -151,11 +152,34 @@
     </nav>
   </header>
    <main class="pb-5 bg-dark text-white">
-    <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+    <div class="container rounded bg-white mt-5 mb-5">
+      <div class="row">
+          <div class="col-md-3 border-right">
+              <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">Edogaru</span><span class="text-black-50">edogaru@mail.com.my</span><span> </span></div>
+          </div>
+          <div class="col-md-5 border-right">
+              <div class="p-3 py-5">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                      <h4 class="text-right">Ajustes de perfil</h4>
+                  </div>
+                  <div class="row mt-2">
+                      <div class="col-md-6"><label class="labels">Nombre</label><input type="text" class="form-control" placeholder="first name" value=""></div>
+                      <div class="col-md-6"><label class="labels">Apellido</label><input type="text" class="form-control" value="" placeholder="surname"></div>
+                  </div>
+                  <div class="row mt-3">
+                      <div class="col-md-12"><label class="labels">Calle</label><input type="text" class="form-control" placeholder="Ingrese su calle" value=""></div>
+                      <div class="col-md-12"><label class="labels">Número de puerta</label><input type="text" class="form-control" placeholder="Ingrese su número de puerta" value=""></div>
+                      <div class="col-md-12"><label class="labels">Esquina</label><input type="text" class="form-control" placeholder="Ingrese su esquina" value=""></div>
+                      <div class="col-md-12"><label class="labels">Departamento</label><input type="text" class="form-control" placeholder="Ingrese su departamento" value=""></div>
+                  </div>
+                  <div class="mt-5 text-center"><button class="btn btn-primary cta-button" type="button">Guardar cambios</button></div>
+              </div>
+          </div>
       </div>
-    </div>
+  </div>
+  </div>
+  </div>
+
   </main>
   <footer class="text-muted">
     <div class="container">
@@ -167,6 +191,14 @@
       <p>Clickea <a target="_blank" href="Letra.pdf">aquí</a> para descargar la letra del obligatorio.</p>
     </div>
   </footer>
+  <div id="spinner-wrapper">
+    <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
      <!--  Signin Modal -->
      <div class="modal fade" id="signinModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -223,8 +255,7 @@
    </div>
    <!-- Fin SignUp Modal --> 
    <!--  -->
-     <script type="module" src="./js/main.js"></script>
- 
+  <script type="module" src="./js/main.js"></script>
   <script type="module" src="./js/config/firebase.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
   <script type="module" src="js/init.js"></script>
