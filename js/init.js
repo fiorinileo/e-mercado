@@ -29,7 +29,7 @@ export let getJSONData =  function (url){
     .then(function(response) {
           result.status = 'ok';
           result.data = response;
-          hideSpinner();
+     //     hideSpinner();
           return result;
     })
     .catch(function(error) {
@@ -45,7 +45,7 @@ export function chgCount(action,idProduct){ //cambia la cantidad del articulo en
   let product = cart[idProduct];
   if(action) {// en el caso de que la acción sea true se suma 1, en caso de que sea false, se resta
     product.count++;
-    saveCart(userEmail,idProduct,product.cost,product.count,product.name,product.currency)
+    saveCart(userEmail,idProduct,product.cost,product.count,product.name,product.currency,product.image)
 
   }
   else{
@@ -55,7 +55,7 @@ export function chgCount(action,idProduct){ //cambia la cantidad del articulo en
     }
     else{
       product.count--; // en el caso que sea mayor, la reducimos en una unidad
-      saveCart(userEmail,idProduct,product.cost,product.count,product.name,product.currency)
+      saveCart(userEmail,idProduct,product.cost,product.count,product.name,product.currency,product.image)
     } 
   }
   localStorage.setItem("cart",JSON.stringify(cart));
@@ -100,8 +100,8 @@ export function drawCart(){
     let cart = JSON.parse(localStorage.getItem("cart"));
     let cartItem = "";
     let totalCostUSD = 0;
-    for (const article in cart) {
-                let product = cart[article]
+    for (const productId in cart) {
+                let product = cart[productId]
                 let totalCost = product.cost*product.count
                 let name = product.name;
                 name.length>19?
@@ -114,16 +114,16 @@ export function drawCart(){
                         <h4 class="col-12" style="width:300px">
                             ${name}
                           </h4>
-                        <div class="col-6 p-0"  onclick="windowReplace(${article})" title="Ir a ver producto: ${name}">
-                              <img src="./img/prod${article}_1.jpg" class="img-thumbnail ">
+                        <div class="col-6 p-0"  onclick="windowReplace(${productId})" title="Ir a ver producto: ${name}">
+                              <img src="${product.image}" class="img-thumbnail ">
                         </div>
                         <div class="col-6 row">
                           <p class="col-10 articleCant " >
-                          <span class="minorCant" onclick="chgCount(false,${article})">-</span>
+                          <span class="minorCant" onclick="chgCount(false,${productId})">-</span>
                             x${product.count}
-                          <span class="moreCant" onclick="chgCount(true,${article})">+</span>
+                          <span class="moreCant" onclick="chgCount(true,${productId})">+</span>
                           </p>
-                          <span onclick="deleteItemCart(${article})"class="col-2 justify-content-end d-flex p-0 pt-1"><i class="fa fa-trash" aria-hidden="true"></i></span>
+                          <span onclick="deleteItemCart(${productId})"class="col-2 justify-content-end d-flex p-0 pt-1"><i class="fa fa-trash" aria-hidden="true"></i></span>
                           <p class="col" >
                             ${product.currency} ${totalCost}</div>
                       </li>
@@ -197,16 +197,21 @@ export function emptyCart(){
 
 
 }
-export function windowReplace(id) {
-  localStorage.setItem("productID", id);
+export function windowReplace(productId,catId) {
+  localStorage.setItem("productId", productId);
+  localStorage.setItem("catId",catId)
   window.location = "product-info.html";
 }
 
-document.addEventListener("DOMContentLoaded", ()=>{
+document.addEventListener("DOMContentLoaded", async ()=>{
   let userEmail = localStorage.getItem("userEmail");
   if (userEmail) {
-    loadCart();
-    document.getElementById("userEmail").innerHTML=userEmail.substring(0,9)+"...";
+    await loadCart();
+    if (!document.getElementById("product-container")) {
+      
+    }
+    let credentials = JSON.parse(localStorage.getItem("credentials"))
+    document.getElementById("userEmail").innerHTML=(credentials.userName+" "+credentials.userLastname).substring(0,9)+"...";
   }
   
 

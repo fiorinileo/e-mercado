@@ -1,5 +1,5 @@
-import {getJSONData} from "./init.js";
-import {CATEGORIES_URL} from "./init.js";
+import { getCategorieInfo, getCategoriesInfo, saveCategorie, saveCategorieInfo } from "./config/firebase.js";
+import { CATEGORIES_URL, getJSONData } from "./init.js";
 
 const ORDER_ASC_BY_NAME = "AZ";
 const ORDER_DESC_BY_NAME = "ZA";
@@ -39,17 +39,17 @@ function sortCategories(criteria, array){
 }
 
 function setCatID(id) {
-    localStorage.setItem("catID", id);
+    localStorage.setItem("catId", id);
     window.location = "products.html"
 }
 
 function showCategoriesList(){
-
     let htmlContentToAppend = "";
     if(currentCategoriesArray.length >= 0){
         for(let i = 0; i < currentCategoriesArray.length; i++){
-            let category = currentCategoriesArray[i];
-    
+            let category = currentCategoriesArray[i].data();
+            let productCount=0;
+            category.products? productCount = (Object.keys(category.products)).length: {}; // si tiene productos, le seteamos su cantidad
             if (((minCount == undefined) || (minCount != undefined && parseInt(category.productCount) >= minCount)) &&
                 ((maxCount == undefined) || (maxCount != undefined && parseInt(category.productCount) <= maxCount))){
     
@@ -69,7 +69,7 @@ function showCategoriesList(){
                                 <p class="mb-1">${category.description}</p>
                             </div>
                             <div class="row pe-0">
-                             <p class="product-price col">${category.productCount} Artículos</p>
+                             <p class="product-price col">${productCount} Artículos</p>
                              <div class="col category-cta-btn">
                                 <button>
                                     Ver más
@@ -129,14 +129,14 @@ function sortFunction(){
 //Función que se ejecuta una vez que se haya lanzado el evento de
 //que el documento se encuentra cargado, es decir, se encuentran todos los
 //elementos HTML presentes.
-document.addEventListener("DOMContentLoaded", function(e){
-    getJSONData(CATEGORIES_URL).then(function(resultObj){
-        if (resultObj.status === "ok"){
-            currentCategoriesArray = resultObj.data
-            showCategoriesList()
-            //sortAndShowCategories(ORDER_ASC_BY_NAME, resultObj.data);
-        }
-    });
+document.addEventListener("DOMContentLoaded",async  function(e){
+
+        currentCategoriesArray= await getCategoriesInfo()
+        showCategoriesList()
+    
+    
+        
+    
 
     document.getElementById("sortAsc").addEventListener("click", function(){
         sortAndShowCategories(ORDER_ASC_BY_NAME);

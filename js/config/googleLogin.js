@@ -1,6 +1,6 @@
 // Archivo que permite el logeo al sitio mediante la cuenta de google 
 import { GoogleAuthProvider,signInWithPopup } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"
-import { auth, saveUserName } from "./firebase.js"
+import { auth, getUserName, saveUserName } from "./firebase.js"
 import { loadCart } from "./loadCart.js";
 
 
@@ -9,10 +9,12 @@ googlebtn.addEventListener("click",async ()=>{
     const provider = new GoogleAuthProvider()
         try {
             const credentials =  await signInWithPopup(auth,provider);
+            localStorage.setItem('userEmail',credentials.user.email);
+            await getUserName()
             bootstrap.Modal.getInstance(document.querySelector("#signinModal")).hide()
             document.getElementById("userEmail").innerHTML= `<img class="img-thumbnail" src=${credentials.user.photoURL} width="24px"> <span>${credentials.user.displayName}</span>`;
             splitName(credentials.user.displayName,credentials.user.email)
-            localStorage.setItem('userEmail',credentials.user.email);
+            
             loadCart();
         } catch (error) {
             console.log(error);

@@ -118,6 +118,7 @@ input[type=number] {
 #CartDropdown{
   background: #fff;
   width: 300px;
+  border: none;
 }
 .fa-trash:before {
   color: #fff;
@@ -186,7 +187,7 @@ p.articleCant span{
 .priceContainer>div:first-child+div{
   width: 300px;
   position: fixed;
-  padding: 5px 20px 0;
+  padding:0 20px ;
   color: #fff;
   font-size: 1.2rem;
   background-color: #1f5b64;

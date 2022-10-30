@@ -1,4 +1,4 @@
-import { getComments, saveCart,saveComment } from "./config/firebase.js"
+import { firebaseGetImage, getCategorieInfo, getCategoriesInfo, getComments, getProductInfo, saveCart,saveComment, saveProductInfo } from "./config/firebase.js"
 import { loadCart } from "./config/loadCart.js";
 import { loadFirebaseComments } from "./config/loadComments.js";
 import { showMessage } from "./config/showMessage.js";
@@ -6,6 +6,7 @@ import { loadFirebaseProductInfo, printProductSoldCount } from "./config/soldScr
 import {getJSONData, showProductInCart, windowReplace, drawCart } from "./init.js"
 
 var date = new Date();
+
 function drawScore(place, value) {
   document.getElementById("generalScore").innerHTML = `
                             Calificación: 
@@ -42,7 +43,7 @@ function imagesProduct(product) {
       document.getElementById("product-list-images").innerHTML=htmlContentToAppend;
   }
 }
-async function showProductInfo(product) {
+function showProductInfo(product) {
   // Reutilización del código ya creado en "Products", esto se debe a que la visualización que se solicita es idéntica, sustituyendo en este caso las distintas categorias, por los distintos productos pertenecientes a la categoría solicitada.
   let htmlContentToAppend = "";
   htmlContentToAppend += `
@@ -157,11 +158,12 @@ function showRelatedProducts(product) {
   let htmlContentToAppend = "";
   for (let i = 0; i < product.relatedProducts.length; i++) {
     let relatedProduct = product.relatedProducts[i];
+
     htmlContentToAppend += `
                 <li class="cursor-active col-12 col-md-6 col-lg-4 p-4">
                 <div class="row pb-4 pt-2 px-1 product-card" onclick="windowReplace(${
                   relatedProduct.id
-                })">
+                },${relatedProduct.catId})">
                     <div class="col-">
                         <div>
                             <img id="main-image-product" src="${
@@ -284,29 +286,26 @@ document.getElementById("sendComment").addEventListener("click", () => {
   }
   
 });
-document.addEventListener("DOMContentLoaded", ()=> {
-  let id = localStorage.productID;
-  if (id) {
-    getJSONData(
-      "https://japceibal.github.io/emercado-api/products/" + id + ".json"
-    )
-      .then(async function (resultObj) {
-        if (resultObj.status === "ok") {
-          
-          var product = resultObj.data;
-          var currentProduct = String(product.id);
+document.addEventListener("DOMContentLoaded", async ()=> {
+  let catId = localStorage.getItem("catId");
+  let productId = localStorage.getItem("productId");
+  if (productId) {
+
+          let category = await getCategorieInfo(catId);
+          var product = (category.products[productId]);
+          var currentProduct = String(productId);
           showProductInfo(product);
           showRelatedProducts(product);
           
           // Cargamos información del producto desde Firebase (más actualizada)
           let FirebaseProductInfo = await loadFirebaseProductInfo()
-          printProductSoldCount(FirebaseProductInfo)
+           printProductSoldCount(FirebaseProductInfo)
           await loadFirebaseComments();
           printSelectedScore();
           document.getElementById("commentUser").innerHTML=localStorage.getItem("userEmail") || "Anonymus";
-          document.getElementById("buy_btn").addEventListener("click", () => {//creamos el evento de escucha a "click" en el boton de comprar
+          document.getElementById("buy_btn").addEventListener("click", async () => {//creamos el evento de escucha a "click" en el boton de comprar
               if (localStorage.getItem("userEmail")) { //comprobamos que el usuario está logeado
-                loadCart();
+                
                 if (document.getElementById("nudCant").value>0) {
 
                   let userEmail = localStorage.getItem("userEmail");//cargamos el nombre de usuario en [userEmail]
@@ -319,7 +318,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
                         cost:product.cost,
                         count:count,
                         name:product.name,
-                        currency: product.currency
+                        currency: product.currency,
+                        image:product.images[0]
                       }
                     }
                     else{
@@ -327,7 +327,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
                       cost:product.cost,
                       count:count,
                       name:product.name,
-                      currency: product.currency
+                      currency: product.currency,
+                      image:product.images[0]
                     }
                     }
                     
@@ -338,10 +339,11 @@ document.addEventListener("DOMContentLoaded", ()=> {
                       cost:product.cost,
                       count:count,
                       name:product.name,
-                      currency: product.currency
+                      currency: product.currency,
+                      image:product.images[0]
                     }
                   }
-                  saveCart(userEmail,currentProduct,product.cost,count,product.name,product.currency)
+                  saveCart(userEmail,currentProduct,product.cost,count,product.name,product.currency,product.images[0])
                   localStorage.setItem("cart", JSON.stringify(cart));//guardamos el carrito general(con todos los usuarios) en localStorage
                   showProductInCart();
                   drawCart();
@@ -355,11 +357,11 @@ document.addEventListener("DOMContentLoaded", ()=> {
             }
           }
             );
-        }
-      });
-  } else {
-    this.location.replace("../categories.html");
+        
+      
+      }
+      else {
+    window.location.replace("./categories.html");
   }
 });
-
 window.windowReplace=windowReplace;

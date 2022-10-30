@@ -1,5 +1,6 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"
-import { auth, saveUserName } from "./firebase.js"
+import { auth, getUserName, saveUserName } from "./firebase.js"
+import { loadCart } from "./loadCart.js";
 
 const signupForm = document.querySelector("#signup-form")
 signupForm.addEventListener("submit",async (e)=>{
@@ -17,11 +18,13 @@ signupForm.addEventListener("submit",async (e)=>{
         await signInWithEmailAndPassword(auth,email,password);
         document.getElementById("userEmail").innerHTML=email.substring(0,9)+"...";
         localStorage.setItem('userEmail',email);
-        bootstrap.Modal.getInstance(document.querySelector("#signinModal")).hide()
+        await getUserName()
+        if ( bootstrap.Modal.getInstance(document.querySelector("#signinModal"))) {
+            bootstrap.Modal.getInstance(document.querySelector("#signinModal")).hide()
+        }
         loadCart()
     } catch (error) {
         console.log(error);
     }
-    window.location.reload();
 
 })

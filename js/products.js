@@ -1,5 +1,5 @@
-import {getJSONData} from "./init.js"
-import {CATEGORIES_URL} from "./init.js"
+import { getCategorieInfo, saveCategorieInfo } from "./config/firebase.js";
+
 //  Los comentarios de todos los documentos están realizados con el
 // AJUSTE DE PÁRRAFO QUE OFRECE VISUAL STUDIO CODE,
 // se recomienda encarecidamente activar esta opción  
@@ -37,8 +37,8 @@ function showProductsList(){
         `;
     // Reutilización del código ya creado en "Products", esto se debe a que la visualización que se solicita es idéntica, sustituyendo en este caso las distintas categorias, por los distintos productos pertenecientes a la categoría solicitada.
     let htmlContentToAppend = "";
-    for(let i = 0; i < currentProductsArray.length; i++){
-        let product = currentProductsArray[i];
+    for(const productId in currentProductsArray){
+        const product = currentProductsArray[productId];
         if (((minPrice == undefined) || (minPrice != undefined && parseInt(product.cost) >= minPrice)) &&
             ((maxPrice == undefined) || (maxPrice != undefined && parseInt(product.cost) <= maxPrice))){
                 htmlContentToAppend += `
@@ -46,7 +46,7 @@ function showProductsList(){
                     <div class="row pb-4 pt-2 px-1 product-card" onclick="windowReplace(${product.id})">
                         <div class="col-">
                             <div>
-                                <img src="${product.image}" class="img-thumbnail">
+                                <img src="${product.images[0]}" class="img-thumbnail">
                             </div>
                             
                         </div>
@@ -165,25 +165,25 @@ export function searchFunction() {
     });
 }
 export function windowReplace(id){
-        localStorage.setItem("productID", id);
+        localStorage.setItem("productId", id);
         window.location = "product-info.html"
 }
   //Función que se ejecuta una vez que se haya lanzado el evento de que el documento se encuentra cargado, es decir, se encuentran todos los elementos HTML presentes.
-document.addEventListener("DOMContentLoaded", function(e){
-    let id = localStorage.catID;
-    if(id){
-        getJSONData("https://japceibal.github.io/emercado-api/cats_products/"+id+".json").then(function(resultObj){
-        if (resultObj.status === "ok"){
-            currentProductsArray = resultObj.data;
+document.addEventListener("DOMContentLoaded",async function(e){
+    let catId = localStorage.getItem("catId");
+    if(catId){
+            currentProductsArray= await getCategorieInfo(catId)
+            /* await saveCategorieInfo(currentProductsArray)  //Agregar atributos nuevos en todos los objetos */
+            console.log(currentProductsArray);
             categoryName = currentProductsArray.catName;
             currentProductsArray = currentProductsArray.products;
             showProductsList()
             
-        }
-    });
+        
+    
     }
     else{
-        this.location.replace("../categories.html");
+        window.location.replace("../categories.html");
     }
 
 });

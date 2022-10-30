@@ -31,8 +31,8 @@ export function drawCartList() {
     const cart = JSON.parse(localStorage.getItem("cart"));
     if (cart) {
       let cartItem= "";
-      for (const article in cart) {
-                  let product = cart[article]
+      for (const productId in cart) {
+                  let product = cart[productId]
                   let totalCost = product.cost*product.count
                   if (product.currency == "UYU") {
                     totalCost = totalCost/42;
@@ -45,22 +45,22 @@ export function drawCartList() {
                   
                    
                    cartItem += `
-                   <li class="row" id="id_${article}" >
-                     <div class="col-6" onclick="windowReplace(${article})">
-                           <img src="./img/prod${article}_1.jpg" class="img-thumbnail ">
+                   <li class="row" id="id_${productId}" >
+                     <div class="col-6" onclick="windowReplace(${productId})">
+                           <img src="${product.image}" class="img-thumbnail ">
                      </div>
                      
                      <div class="col-6 row">
                        <h4 class="col-11">
                          ${product.name}
                        </h4>
-                       <span onclick="deleteItemCart(${article})"class="col-1 justify-content-end d-flex pt-2 pe-0"><i class="fa fa-trash" aria-hidden="true"></i></span>
+                       <span onclick="deleteItemCart(${productId})"class="col-1 justify-content-end d-flex pt-2 pe-0"><i class="fa fa-trash" aria-hidden="true"></i></span>
 
                        <p class="col-7">${product.currency}  ${product.cost}</p>
                        <p class="col-4" >
-                         <span class="minorCant" onclick="chgCount(false,${article})">-</span>
+                         <span class="minorCant" onclick="chgCount(false,${productId})">-</span>
                          <span>x${product.count}</span>
-                         <span class="moreCant" onclick="chgCount(true,${article})">+</span>
+                         <span class="moreCant" onclick="chgCount(true,${productId})">+</span>
                        </p>
                        <p class="col">
                          Total:
@@ -132,6 +132,8 @@ function billingValidate(){ // Función que valida todos los campos de la factur
       // Se ejecuta =>
       let formPayMethod = document.getElementById("form-payMethod"); // traemos el formulario del modal que contiene el método de pago
       let formShipMethod = document.getElementsByTagName("form")[0];  // Traemos el formulario de metodo de envío
+      formPayMethod.classList.add('was-validated')
+      formShipMethod.classList.add('was-validated')
       if (!formShipMethod.checkValidity() || !formPayMethod.checkValidity()) { // si los formularios no cumplen con los campos solicitados:
         // Se ejecuta =>
         showMessage("Por favor, complete todos los campos.",false,"bottom","right");
@@ -150,10 +152,12 @@ function billingValidate(){ // Función que valida todos los campos de la factur
         document.getElementById("invalid-payMethod").style.display="none" // se deja de mostrar los mensajes inválidos
         showMessage("Se ha completado su pedido con EXITO!",true,"bottom","right") // se visualiza un toast con mensaje de Exito
         saveUserPurchase()
+        setTimeout(() => {
+          window.location.reload()  
+        }, 2000);
       } 
       // Se agregan a los dos formularios las clases de "was-validated" para darle feedback al usuario
-      formPayMethod.classList.add('was-validated')
-      formShipMethod.classList.add('was-validated')
+
     }
     else{ // Si el carrito NO contiene artículos:
 
@@ -178,13 +182,10 @@ if (document.getElementById("paymentMethodModal")) {
     payMethodValidate();
   })
 }
-
-
 document.addEventListener("DOMContentLoaded",async ()=>{
-  // Example starter JavaScript for disabling form submissions if there are invalid fields
+
 
     if (localStorage.getItem("userEmail")) {
-      await loadCart();
        drawCartList();
       paymentMethodSelected();
       
@@ -213,7 +214,5 @@ export async function deleteCart(){
       await deleteProduct(userEmail,productId)
   }
   localStorage.setItem("cart",JSON.stringify({}))
-  drawCart()
-  drawCartList()
 }
 window.windowReplace = windowReplace;
