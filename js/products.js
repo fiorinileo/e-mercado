@@ -44,7 +44,7 @@ async function showProductsList(){
             ((maxPrice == undefined) || (maxPrice != undefined && parseInt(product.cost) <= maxPrice))){
                 htmlContentToAppend += `
                 <li class="cursor-active col-md-6 col-lg-4 p-4">
-                    <div class="row pb-4 pt-2 px-1 product-card" onclick="windowReplace(${product.id})">
+                    <div class="row pb-0 pt-2 product-card" onclick="windowReplace(${product.id})">
                         <div class="col-">
                             <div>
                                 <img src=${imageURL} class="img-thumbnail">
@@ -53,14 +53,14 @@ async function showProductsList(){
                         </div>
                         <div class="col mt-3">
                             <div class="d-flex w-100 justify-content-between">
-                                <h4 class="mb-1 product-header">${product.name.toUpperCase()}</h4>
+                                <h4 class="mb-1 product-header px-2">${product.name.toUpperCase()}</h4>
                                 <small class="text-muted">${product.soldCount} vendidos</small>
                             </div>
                             <p class="mb-1">${product.description}</p>
                         </div>
-                        <div class="row pe-0">
-                         <p class="product-price col">${product.currency} ${product.cost}</p>
-                         <div class="col product-cta-btn pe-0">
+                        <div class="row pe-0 m-0 mt-1 bg-light py-2">
+                         <p class="product-price col m-0 align-self-center">${product.currency} ${product.cost}</p>
+                         <div class="col product-cta-btn px-2 align-self-center">
                             <button>
                                 Ver producto
                                 

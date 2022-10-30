@@ -114,8 +114,8 @@ export function drawCart(){
                         <h4 class="col-12" style="width:300px">
                             ${name}
                           </h4>
-                        <div class="col-6 p-0"  onclick="windowReplace(${productId})" title="Ir a ver producto: ${name}">
-                              <img src="${product.image}" class="img-thumbnail ">
+                        <div class="col-6 p-0"  onclick="windowReplace(${productId},${product.catId})" title="Ir a ver producto: ${name}">
+                              <img src=${product.image} class="img-thumbnail ">
                         </div>
                         <div class="col-6 row">
                           <p class="col-10 articleCant " >

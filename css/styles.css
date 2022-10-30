@@ -1,12 +1,16 @@
 :root{
   --primary-color: #1f5b64 ;
   --soft-primary-color:#397f8a;
+  --dark-primary-color: #154249 ;
 }
 .toast-close{
   opacity: 1;
 }
 #dotted-e{
   width: 32px;
+}
+body{
+  background: var(--bs-dark);
 }
 .jumbotron{
   background-image: url("https://firebasestorage.googleapis.com/v0/b/emercado-359900.appspot.com/o/cover_back-img.png?alt=media&token=22c44f28-4e40-4d35-8e3f-66df9f4aebd4");
@@ -52,13 +56,19 @@ li{
   -ms-user-select: none;
   user-select: none;
 }
-
+.navbar-brand{
+  display: none;
+}
+#clearRangeFilter{
+  min-width: 20px;
+  width: 80%;
+}
 @media (min-width: 768px) {
   .bd-placeholder-img-lg {
     font-size: 3.5rem;
   }
-  .navbar-brand::after{
-    content: "E-Mercado";
+  .navbar-brand{
+    display: block;
   }
 }
 
@@ -298,6 +308,8 @@ a.custom-card:hover {
 }
 
 .product-header{
+  align-items: center;
+  min-height: 52px;
   font-weight: 600;
 
 }
@@ -324,14 +336,18 @@ a.custom-card:hover {
 }
 .product-card{
   box-shadow: #5e616476 2px 4px 15px .1px;
+  border-radius: 0 0 10px 10px;
 }
 .product-card>.col>p{
-  min-height: 48px;
+  min-height: 72px;
 }
 .product-card img{
   border: none;
 }
 
+.product-card>div:last-child{
+  border-radius: 0 0 10px 10px;
+}
 .category-cta-btn button:focus{
   background-color: var(--soft-primary-color);
 }

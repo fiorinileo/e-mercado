@@ -94,6 +94,24 @@ input[type=number] {
     border-color: #bbc5d4;
     box-shadow: none;
   }
+.logged-out{  /*Botones para iniciar sesion*/
+  padding: 5px 10px;
+  margin: 0 5px;
+  background-color: var(--dark-primary-color);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0);
+  border-radius: 8px;
+  box-shadow: 3px 4px 10px -1px #000000;
+  -webkit-box-shadow: 3px 4px 10px -1px #000000;
+  -moz-box-shadow: 3px 4px 10px -1px #000000;
+
+}
+.btn-shadow{
+  box-shadow: 3px 4px 8px -2px #000000;
+  -webkit-box-shadow: 3px 4px 8px -2px #000000;
+  -moz-box-shadow: 3px 4px 8px -2px #000000;
+
+}
 .btn-primary{
   background-color: var(--primary-color);
   border-color: rgba(255, 255, 255, 0);
@@ -131,6 +149,7 @@ input[type=number] {
   background: #fff;
   width: 300px;
   border: none;
+  left: calc(100% - 130px);
 }
 .fa-trash:before {
   color: #fff;
@@ -247,16 +266,19 @@ p.articleCant span{
   background-color: #fff;
 
 }
+.text-muted{
+  color: rgb(183, 183, 183)!important;
+}
 /*----------------------------- FIN CARRITO DE COMPRAS--------------------------------*/
 @media (min-width: 992px) {
   nav{
     height: 63px;
   }
-}
-@media (min-width: 992px) {
-
   .navbar-nav{
     order: 1;
+  }
+  #CartDropdown{
+    left: -110% ;
   }
 }
 

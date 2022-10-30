@@ -19,8 +19,20 @@
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="navbar">
       <!-- Container wrapper -->
       <div class="container">
+        <!-- Toggle button -->
+         <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
         <!-- Navbar brand -->
-        <a class="navbar-brand" href="#"></a>
+        <a class="navbar-brand" href="#">E-Mercado</a>
         <ul class="navbar-nav d-flex flex-row me-1" id="navbar-actions--logged">
           <!-- Logged in -->
                 <li class="nav-item me-3 me-lg-0 logged-in" style="display: none;">
@@ -105,18 +117,6 @@
           <!-- Loged out-->
           
         </ul>
-        <!-- Toggle button -->
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <i class="fas fa-bars"></i>
-        </button>
 
         <!-- Collapsible wrapper -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -187,32 +187,32 @@
     </div>
     <div class="container">
         
-        <div class="row">
+        <div class="row justify-content-center">
           <div class="mb-2 pt-3 d-flex row">
 
-            <div class="col-sm-12 col-md-5 col-lg-5 mb-2 row">
-              <div class="d-flex justify-content-sm-center">
-                <div>
-                  <label class="form-label my-2" for="search-input">Buscar</label>
+            <div class="col-sm-12 col-md-5 col-lg-5 mb-2 mx-0 row">
+              <div class="row p-0 m-0 justify-content-sm-center">
+                <div class=" col-lg-2 p-0 text-center text-md-start">
+                  <label class="form-label my-2 " for="search-input">Buscar</label>
                 </div>
-                <div class="col py-1">
-                  <input id="search-input" onkeyup="searchFunction()" type="search" id="form1" class="form-control col-sm-4 pe-4">
+                <div class="col-12 col-lg-10 px-0 mx-auto py-1">
+                  <input id="search-input" onkeyup="searchFunction()" type="search" id="form1" placeholder="Busca un artículo" class="form-control col-sm-4 pe-4">
                 </div>
               </div>
             </div>
 
             <div class=" col-lg-7 col-md-7 mb-2 ">
                 <div class="row container p-0 m-0">
-                  <div class="col-xs-12 col-md-2">
-                    <p class="font-weight-normal text-center my-2">Precio.</p>
+                  <div class="col-xs-12 col-md-12 col-lg-2">
+                    <p class="font-weight-normal text-center text-md-start my-2">Precio.</p>
                   </div>
-                  <div class="col py-1">
+                  <div class="col col-lg-3  py-1 mx-1 px-0">
                     <input class="form-control" type="number" placeholder="min." id="rangeFilterPriceMin" onkeyup="sortFunction()">
                   </div>
-                  <div class="col py-1 me-3">
+                  <div class="col col-lg-3  py-1 mx-1 px-0">
                     <input class="form-control" type="number" placeholder="máx." id="rangeFilterPriceMax" onkeyup="sortFunction()">
                   </div>
-                  <div class="col-xs-6 col-lg-2 p-0 d-flex justify-content-center justify-content-md-end">
+                  <div class="col-xs-6 col-md-3 p-0 d-flex justify-content-center mt-3 mx-1 mt-md-0 justify-content-md-end">
                     <div class="btn-group product-cta-btn" role="group">
                       <button class="btn btn-primary btn-xs" id="clearRangeFilter">Limpiar</button>
                     </div>
@@ -224,9 +224,9 @@
         </div>
         <div class="container">
 
-          <div class="row">
-            <div class="col text-end px-0">
-              <div class="btn-group btn-group-toggle mb-4" data-bs-toggle="buttons">
+          <div class="row ">
+            <div class="col text-md-end text-center px-0 ">
+              <div class="btn-group btn-group-toggle mb-4 justify-content-center" data-bs-toggle="buttons">
                 <input type="radio" class="btn-check" name="options" id="sortAsc">
                 <label class="btn btn-dark" for="sortAsc"><i class="fas fa-sort-amount-down mr-1 py-1 px-2">$</i></label>
                 <input type="radio" class="btn-check" name="options" id="sortDesc">

@@ -319,7 +319,8 @@ document.addEventListener("DOMContentLoaded", async ()=> {
                         count:count,
                         name:product.name,
                         currency: product.currency,
-                        image:product.images[0]
+                        image:product.images[0],
+                        catId:product.catId
                       }
                     }
                     else{
@@ -328,7 +329,8 @@ document.addEventListener("DOMContentLoaded", async ()=> {
                       count:count,
                       name:product.name,
                       currency: product.currency,
-                      image:product.images[0]
+                      image:product.images[0],
+                      catId:product.catId
                     }
                     }
                     
@@ -340,10 +342,11 @@ document.addEventListener("DOMContentLoaded", async ()=> {
                       count:count,
                       name:product.name,
                       currency: product.currency,
-                      image:product.images[0]
+                      image:product.images[0],
+                      catId:product.catId
                     }
                   }
-                  saveCart(userEmail,currentProduct,product.cost,count,product.name,product.currency,product.images[0])
+                  saveCart(userEmail,currentProduct,product.cost,count,product.name,product.currency,product.images[0],product.catId)
                   localStorage.setItem("cart", JSON.stringify(cart));//guardamos el carrito general(con todos los usuarios) en localStorage
                   showProductInCart();
                   drawCart();

@@ -56,7 +56,7 @@ async function showCategoriesList(){
     
                 htmlContentToAppend += `
                 <li class="cursor-active col-md-6 col-lg-4 p-4" onclick="setCatID(${category.id})" >
-                        <div class="row px-1 pb-4 pt-2 product-card">
+                        <div class="row pb-0 pt-2 product-card">
                             <div class="col-">
                                 <div>
                                     <img src=${imageURL} class="img-thumbnail" alt="${category.description}">
@@ -65,13 +65,13 @@ async function showCategoriesList(){
                             </div>
                             <div class="col mt-3">
                                 <div class="d-flex w-100 justify-content-between">
-                                    <h4 class="mb-1 product-header">${category.name.toUpperCase()}</h4>
+                                    <h4 class="mb-1 product-header px-2">${category.name.toUpperCase()}</h4>
                                 </div>
                                 <p class="mb-1">${category.description}</p>
                             </div>
-                            <div class="row pe-0">
-                             <p class="product-price col">${productCount} Artículos</p>
-                             <div class="col category-cta-btn">
+                            <div class="row pe-0  m-0 mt-1 bg-light py-2">
+                             <p class="product-price col  m-0 align-self-center">${productCount} Artículos</p>
+                             <div class="col category-cta-btn px-2 align-self-center">
                                 <button>
                                     Ver más
                                 </button>

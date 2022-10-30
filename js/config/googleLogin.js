@@ -12,7 +12,8 @@ googlebtn.addEventListener("click",async ()=>{
             localStorage.setItem('userEmail',credentials.user.email);
             await getUserName()
             bootstrap.Modal.getInstance(document.querySelector("#signinModal")).hide()
-            document.getElementById("userEmail").innerHTML= `<img class="img-thumbnail" src=${credentials.user.photoURL} width="24px"> <span>${credentials.user.displayName}</span>`;
+            let userName = (credentials.user.displayName).substring(0,9)+"...";
+            document.getElementById("userEmail").innerHTML= `<img class="img-thumbnail" src=${credentials.user.photoURL} width="24px"> <span>${userName}</span>`;
             splitName(credentials.user.displayName,credentials.user.email)
             
             loadCart();

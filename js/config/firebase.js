@@ -42,13 +42,14 @@ export const firebaseGetImage= async (imageName)=>{ // Función para obtener la 
   
 
 }
-export const saveCart =  async (userEmail,productId,cost,count,productName,currency,image) =>{
+export const saveCart =  async (userEmail,productId,cost,count,productName,currency,image,catId) =>{
   let docData={
       cost:cost,
       count:count,
       currency:currency,
       name:productName,
-      image:image
+      image:image,
+      catId:catId,
 };
   let ruta= doc(db,"usersInfo/"+userEmail+"/cartUser/"+productId);
   await setDoc(ruta,docData);

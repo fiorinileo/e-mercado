@@ -37,8 +37,21 @@
       <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="navbar">
         <!-- Container wrapper -->
         <div class="container">
+              <!-- Toggle button -->
+            <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+
           <!-- Navbar brand -->
-          <a class="navbar-brand" href="#"></a>
+          <a class="navbar-brand" href="#">E-Mercado</a>
           <ul class="navbar-nav d-flex flex-row me-1" id="navbar-actions--logged">
             <!-- Logged in -->
                   <li class="nav-item me-3 me-lg-0 logged-in" style="display: none;">
@@ -113,28 +126,15 @@
             <!-- Logged in -->
             <!-- Logged out-->
             <li class="nav-item logged-out" style="display: none;">
-              <a class="nav-link" data-bs-toggle="modal" data-bs-target="#signinModal">Signin</a>
+              <a  data-bs-toggle="modal" data-bs-target="#signinModal">Signin</a>
             </li>
            
             <li class="nav-item logged-out" style="display: none;">
-              <a class="nav-link"  data-bs-toggle="modal" data-bs-target="#signupModal">Signup</a>
+              <a   data-bs-toggle="modal" data-bs-target="#signupModal">Signup</a>
             </li>
             <!-- Loged out-->
             
           </ul>
-          <!-- Toggle button -->
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <i class="fas fa-bars"></i>
-          </button>
-
           <!-- Collapsible wrapper -->
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mb-2 mb-lg-0">
@@ -168,7 +168,7 @@
         <div class="col-md-7">
           <h1><img src="https://firebasestorage.googleapis.com/v0/b/emercado-359900.appspot.com/o/cover_back-e.png?alt=media&token=8faade95-09f6-4a70-b74f-a1c93b21db34" id="dotted-e" />·mercado</h1>
           <p class="slogan">tu <span>e_commerce</span> favorito</p>
-          <p>
+          <p class="text-white">
             Este sitio es una herramienta generada con fines estrictamente
             educativos. No realiza compras o ventas reales a terceros. Tampoco
             administra datos personales o de clientes. Todo lo expresado en este
@@ -176,7 +176,7 @@
           </p>
         </div>
       </div>
-      <div class="album py-5 bg-light">
+      <div class="album py-5 bg-dark">
         <div class="container">
           <div class="row text-dark">
             <div class="col-md-4">
@@ -237,14 +237,14 @@
             </div>
           </div>
           <div class="row">
-            <a class="btn btn-light btn-lg btn-block" href="categories.html"
+            <a class="btn btn-primary btn-lg btn-block" href="categories.html"
               >Y mucho más!</a
             >
           </div>
         </div>
       </div>
     </main>
-    <footer class="text-muted">
+    <footer class="text-muted bg-light">
       <div class="container">
         <p class="float-end">
           <a href="#">Volver arriba</a>
@@ -291,7 +291,7 @@
               <label for="email">password:</label>
               <input type="password" id="signin-password" required placeholder="********" class="form-control mb-3">
       
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary  btn-shadow">
                     Login
                 </button>
               </form>
