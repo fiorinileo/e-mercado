@@ -26,8 +26,9 @@ function sortCategories(criteria, array){
         });
     }else if (criteria === ORDER_BY_PROD_COUNT){
         result = array.sort(function(a, b) {
-            let aCount = parseInt(a.productCount);
-            let bCount = parseInt(b.productCount);
+            let aCount = parseInt(Object.keys(a.products || 0).length);
+            console.log(a);
+            let bCount = parseInt(Object.keys(b.products || 0).length);
 
             if ( aCount > bCount ){ return -1; }
             if ( aCount < bCount ){ return 1; }
@@ -48,12 +49,12 @@ async function showCategoriesList(){
     let htmlContentToAppend = "";
     if(currentCategoriesArray.length >= 0){
         for(let i = 0; i < currentCategoriesArray.length; i++){
-            let category = currentCategoriesArray[i].data();
+            let category = currentCategoriesArray[i];
             let imageURL = await firebaseGetImage("cat"+category.id+"_1.jpg")
             let productCount=0;
             category.products? productCount = (Object.keys(category.products)).length: {}; // si tiene productos, le seteamos su cantidad
-            if (((minCount == undefined) || (minCount != undefined && parseInt(category.productCount) >= minCount)) &&
-                ((maxCount == undefined) || (maxCount != undefined && parseInt(category.productCount) <= maxCount))){
+            if (((minCount == undefined) || (minCount != undefined && parseInt(productCount) >= minCount)) &&
+                ((maxCount == undefined) || (maxCount != undefined && parseInt(productCount) <= maxCount))){
     
                 htmlContentToAppend += `
                 <li class="cursor-active col-md-6 col-lg-4 p-4" onclick="setCatID(${category.id})" >
@@ -96,17 +97,17 @@ async function showCategoriesList(){
 
 function sortAndShowCategories(sortCriteria, categoriesArray){
     currentSortCriteria = sortCriteria;
-
+    
     if(categoriesArray != undefined){
         currentCategoriesArray = categoriesArray;
     }
-
+    
     currentCategoriesArray = sortCategories(currentSortCriteria, currentCategoriesArray);
 
     //Muestro las categorías ordenadas
     showCategoriesList();
 }
-function sortFunction(){
+const sortFunction=()=>{
     //Obtengo el mínimo y máximo de los intervalos para filtrar por cantidad
     //de productos por categoría.
     minCount = document.getElementById("rangeFilterCountMin").value;
@@ -133,7 +134,12 @@ function sortFunction(){
 //elementos HTML presentes.
 document.addEventListener("DOMContentLoaded",async  function(e){
 
-        currentCategoriesArray= await getCategoriesInfo()
+         let categoryArray = await getCategoriesInfo()
+        
+        for(let i = 0; i < categoryArray.length; i++){
+            let category = categoryArray[i].data();
+            currentCategoriesArray[i]=category;
+        }
         showCategoriesList()
 
     document.getElementById("sortAsc").addEventListener("click", function(){
@@ -159,5 +165,6 @@ document.addEventListener("DOMContentLoaded",async  function(e){
     });
 });
 
-window.setCatID = setCatID;
 window.sortFunction = sortFunction;
+window.sortAndShowCategories = sortAndShowCategories;
+window.setCatID = setCatID;

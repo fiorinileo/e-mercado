@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded",async ()=>{
 
 
     if (localStorage.getItem("userEmail")) {
-       drawCartList();
+      drawCartList();
       paymentMethodSelected();
       
       document.getElementsByName("paymentMethod").forEach((button)=>{

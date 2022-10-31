@@ -243,12 +243,12 @@ function scorePrint(productComments) {
 }
 document.getElementById("sendComment").addEventListener("click", () => {
 
-  if (localStorage.getItem("userEmail")) {
+  if (JSON.parse(localStorage.getItem("credentials"))) {
     var date = new Date();
   let comment = document.getElementById("commentDescription").value;
   if (comment) {
-    let userEmail = localStorage.getItem("userEmail");
-
+    let credentials = JSON.parse(localStorage.getItem("credentials"));
+    let userName = credentials.userName+"_"+credentials.userLastname
     let commentDate =
       date.getFullYear() +
       "-" +
@@ -264,18 +264,18 @@ document.getElementById("sendComment").addEventListener("click", () => {
     let arrayComments = document.getElementById("commentList");
     arrayComments = arrayComments.getElementsByTagName("li");
     let score = document.getElementsByClassName("submitScore checked").length;
-    drawComment(arrayComments.length, userEmail, commentDate, comment);
+    drawComment(arrayComments.length, userName, commentDate, comment);
     let commentId = arrayComments.length;
     let arraySpan =
       arrayComments[arrayComments.length - 1].getElementsByTagName("span");
     
     
-    let productId = localStorage.getItem("productID");
+    let productId = localStorage.getItem("productId");
     drawScore(arraySpan, score);
     document.getElementById("commentDescription").value = "";
     averageScore();
 
-    saveComment(userEmail,score,comment,commentDate,productId,commentId);
+    saveComment(userName,score,comment,commentDate,productId,commentId);
 
   } else {
     alert("Ingrese un comentario para enviarlo.");
@@ -291,7 +291,8 @@ document.addEventListener("DOMContentLoaded", async ()=> {
   let catId = localStorage.getItem("catId");
   let productId = localStorage.getItem("productId");
   if (productId) {
-
+          let credentials = JSON.parse(localStorage.getItem("credentials"));
+          let userName = credentials.userName+"_"+credentials.userLastname
           let category = await getCategorieInfo(catId);
           var product = (category.products[productId]);
           var currentProduct = String(productId);
@@ -299,9 +300,10 @@ document.addEventListener("DOMContentLoaded", async ()=> {
           showRelatedProducts(product);
           // Cargamos información del producto desde Firebase (más actualizada)
           
-          await loadFirebaseComments();
+          await loadFirebaseComments(); // cargamos los comentiarios realizados
           printSelectedScore();
-          document.getElementById("commentUser").innerHTML=localStorage.getItem("userEmail") || "Anonymus";
+          averageScore() // imprimimos la calificación promedio
+          document.getElementById("commentUser").innerHTML=userName || "Anonymus";
           document.getElementById("buy_btn").addEventListener("click", async () => {//creamos el evento de escucha a "click" en el boton de comprar
               if (localStorage.getItem("userEmail")) { //comprobamos que el usuario está logeado
                 
