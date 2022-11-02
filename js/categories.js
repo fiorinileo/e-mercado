@@ -50,7 +50,6 @@ async function showCategoriesList(){
     if(currentCategoriesArray.length >= 0){
         for(let i = 0; i < currentCategoriesArray.length; i++){
             let category = currentCategoriesArray[i];
-            console.log(category);
             let imageURL = category.imgSrc
             let productCount=0;
             category.productCount? productCount = category.productCount: {}; // si tiene productos, le seteamos su cantidad

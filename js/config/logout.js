@@ -12,6 +12,7 @@ logout.addEventListener("click", async()=>{
         localStorage.removeItem("session");
         localStorage.removeItem("userEmail");
         localStorage.removeItem("catID");
+        localStorage.removeItem("credentials")
         drawCart();
         location.replace("./index.html")
 })

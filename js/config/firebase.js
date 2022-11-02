@@ -154,6 +154,7 @@ export const getUserName = async ()=>{
   let credentials = {}
   const querySnapshot = await getDoc(doc(db, "usersInfo/"+userEmail));
   credentials = querySnapshot.data()
+  credentials["withGoogle"]=false;
   console.log(credentials);
   localStorage.setItem("credentials",JSON.stringify(credentials))
   document.getElementById("userEmail").innerHTML=(credentials.userName+" "+credentials.userLastname).substring(0,9)+"...";
@@ -198,7 +199,7 @@ export const saveCategorieInfo = async (catGroup) =>{
 
       let imagesProduct = [];
       console.log(product);
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 4; i++) {
         let imageURL = await firebaseGetImage("prod"+product.id+"_"+(i+1)+".jpg")
         imagesProduct.push(imageURL)
       }
@@ -299,7 +300,6 @@ export const saveCategorie = async (catId) =>{
 
 export const getCategoriesInfo = async()=>{
   const docSnap= await getDocs(collection(db,"catInfo"));
-  console.log(docSnap.docs);
     return docSnap.docs;  
 }
 export const getProductsOfCategory = async (catId)=>{

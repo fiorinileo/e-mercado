@@ -13,9 +13,11 @@ googlebtn.addEventListener("click",async ()=>{
             await getUserName()
             bootstrap.Modal.getInstance(document.querySelector("#signinModal")).hide()
             let userName = (credentials.user.displayName).substring(0,9)+"...";
+            let localCredentials = JSON.parse(localStorage.getItem("credentials"))
+            localCredentials["withGoogle"]=true;
+            localStorage.setItem("credentials",JSON.stringify(localCredentials))
             document.getElementById("userEmail").innerHTML= `<img class="img-thumbnail" src=${credentials.user.photoURL} width="24px"> <span>${userName}</span>`;
             splitName(credentials.user.displayName,credentials.user.email)
-            
             loadCart();
         } catch (error) {
             console.log(error);

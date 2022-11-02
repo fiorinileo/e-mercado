@@ -24,6 +24,7 @@ function drawScore(place, value) {
 }
 async function imagesProduct(product) {
   let htmlContentToAppend = "";
+  console.log(product);
   let carouselContainer = document.getElementsByClassName("carousel-indicators")[0];
   for (let i = 0; i < product.images.length; i++) {
     let imageURL = await firebaseGetImage("prod"+product.id+"_"+(i+1)+".jpg")
@@ -158,7 +159,6 @@ function dualDigits(num) {
 }
 async function showRelatedProducts(product) {
   let htmlContentToAppend = "";
-  console.log(product);
   for (let i = 0; i < product.relatedProducts.length; i++) {
     let relatedProduct = product.relatedProducts[i];
     let imageURL = await firebaseGetImage("prod"+relatedProduct.id+"_1.jpg")
@@ -290,7 +290,6 @@ document.addEventListener("DOMContentLoaded", async ()=> {
           let credentials = JSON.parse(localStorage.getItem("credentials"));
           let userName = credentials.userName+"_"+credentials.userLastname
           let category = await getProductsOfCategory(catId);
-          console.log(category);
           var product = category[productId];
           var currentProduct = String(productId);
           showProductInfo(product);
