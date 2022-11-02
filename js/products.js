@@ -1,4 +1,4 @@
-import { firebaseGetImage, getCategorieInfo, saveCategorieInfo } from "./config/firebase.js";
+import { firebaseGetImage, getCategorieInfo, getCategoriesInfo, getProductsOfCategory, saveCategorieInfo } from "./config/firebase.js";
 import { hideSpinner, showSpinner } from "./init.js";
 
 //  Los comentarios de todos los documentos están realizados con el
@@ -39,8 +39,8 @@ async function showProductsList(){
     // Reutilización del código ya creado en "Products", esto se debe a que la visualización que se solicita es idéntica, sustituyendo en este caso las distintas categorias, por los distintos productos pertenecientes a la categoría solicitada.
     let htmlContentToAppend = "";
     for(const productId in currentProductsArray){
-        let imageURL = await firebaseGetImage("prod"+productId+"_1.jpg")
         const product = currentProductsArray[productId];
+        let imageURL = product.images[0]
         if (((minPrice == undefined) || (minPrice != undefined && parseInt(product.cost) >= minPrice)) &&
             ((maxPrice == undefined) || (maxPrice != undefined && parseInt(product.cost) <= maxPrice))){
                 htmlContentToAppend += `
@@ -82,7 +82,9 @@ let currentSortCriteria = undefined;
 let minPrice = undefined;
 let maxPrice = undefined;
 export function sortProducts(criteria, array){
-    let result = [];
+    console.table(Object.values(array));
+    let result = Object.values(array);
+    console.log(result[0].cost);
     if (criteria === ORDER_DESC_BY_PRICE)
     {
         result = array.sort(function(a, b) {
@@ -121,7 +123,7 @@ export function sortAndShowProducts(sortCriteria, ProductsArray){
     //Muestro las categorías ordenadas
     showProductsList();
 } 
-export function sortFunction(){
+export const sortFunction= ()=> {
     //Obtengo el mínimo y máximo de los intervalos para filtrar por cantidad
     //de productos por categoría.
     minPrice = document.getElementById("rangeFilterPriceMin").value;
@@ -175,11 +177,11 @@ document.addEventListener("DOMContentLoaded",async function(e){
     showSpinner()
     let catId = localStorage.getItem("catId");
     if(catId){
-            currentProductsArray= await getCategorieInfo(catId)
+            currentProductsArray= await getProductsOfCategory(catId)
+            let categoryInfo = await getCategorieInfo(catId)
+            console.log(currentProductsArray);
             /* await saveCategorieInfo(currentProductsArray)  //Agregar atributos nuevos en todos los objetos */
-           
-            categoryName = currentProductsArray.catName;
-            currentProductsArray = currentProductsArray.products;
+            categoryName = categoryInfo.name;
 
             showProductsList()
             hideSpinner()

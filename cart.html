@@ -213,7 +213,7 @@
                 </h2>
                 <div>
                   <div>
-                    <input  class="form-check-input"type="radio" id="Premium" name="delivery" required>
+                    <input  class="form-check-input"type="radio" id="Premium" name="delivery" checked required>
                     <label class="form-check-label" for="Premium"><b>Premium</b> 2 a 5 días (15%)</label>
                   </div>
                   <div>
@@ -236,7 +236,7 @@
                 <div class="direccionEnvio">
                   <div class="position-relative mb-4">
                     <label for="calle">Calle</label>
-                    <input class="input-group-text form-control" type="text" id="calle" name="delivery" placeholder="EJ: Gral. Flores, Cisplatina" required>
+                    <input class="input-group-text form-control" type="text" id="calle" name="delivery" placeholder="EJ: Gral. Flores, Cisplatina" value="3" required>
                     <div class="invalid-tooltip">
                       Ingresa tu calle 
                     </div>
@@ -244,7 +244,7 @@
                   <div class="position-relative mb-4">
                     <label for="numeroPuerta">Número de puerta</label>
                     
-                    <input  class="input-group-text form-control" type="text" id="numeroPuerta" name="delivery" placeholder="EJ: 2376, M44 S8" required >
+                    <input  class="input-group-text form-control" type="text" id="numeroPuerta" name="delivery" placeholder="EJ: 2376, M44 S8" value="3" required >
                     <div class="invalid-tooltip">
                       Ingresa un número de puerta
                     </div>
@@ -252,7 +252,7 @@
                   <div class="position-relative mb-4">
                     <label for="esquina">Esquina</label>
                     
-                    <input class="input-group-text form-control" type="text" id="esquina" name="delivery" placeholder="EJ: Mercedes, Gral. Acha" required>
+                    <input class="input-group-text form-control" type="text" id="esquina" name="delivery" placeholder="EJ: Mercedes, Gral. Acha" value="3" required>
                     <div class="invalid-tooltip">
                       Ingresa tu esquina
                     </div>
@@ -407,13 +407,13 @@
                         </div>
                         <div class="row paymentMethodContainer" id="bankTransferContainer">
                           <div>
-                            <input type="radio" class="form-check-input" name="paymentMethod" id="radio-bankTransfer"  required>
+                            <input type="radio" class="form-check-input" name="paymentMethod" id="radio-bankTransfer" checked  required>
                             <label class="form-check-label">Transferencia bancaria</label>
                           </div>
                           <div>
                             <label for="input-creditCard">Número de cuenta</label>
-                            <input class="input-group-text form-control" type="text" ondrop="return false;" onpaste="return false;"
-                            onkeypress="return event.charCode>=48 && event.charCode<=57" minlength="20" maxlength="20" required>
+                            <input class="input-group-text form-control" type="text" ondrop="return false;" value="2323" onpaste="return false;"
+                            onkeypress="return event.charCode>=48 && event.charCode<=57" minlength="1" maxlength="20" required>
                             <div  class="invalid-feedback">Ingresa tu número de cuenta</div>
                           </div>
                         </div>

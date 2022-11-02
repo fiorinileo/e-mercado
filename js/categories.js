@@ -50,7 +50,8 @@ async function showCategoriesList(){
     if(currentCategoriesArray.length >= 0){
         for(let i = 0; i < currentCategoriesArray.length; i++){
             let category = currentCategoriesArray[i];
-            let imageURL = await firebaseGetImage("cat"+category.id+"_1.jpg")
+            console.log(category);
+            let imageURL = category.imgSrc
             let productCount=0;
             category.products? productCount = (Object.keys(category.products)).length: {}; // si tiene productos, le seteamos su cantidad
             if (((minCount == undefined) || (minCount != undefined && parseInt(productCount) >= minCount)) &&
@@ -134,7 +135,7 @@ const sortFunction=()=>{
 //elementos HTML presentes.
 document.addEventListener("DOMContentLoaded",async  function(e){
 
-         let categoryArray = await getCategoriesInfo()
+        let categoryArray = await getCategoriesInfo()
         
         for(let i = 0; i < categoryArray.length; i++){
             let category = categoryArray[i].data();

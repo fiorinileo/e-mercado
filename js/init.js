@@ -45,7 +45,7 @@ export function chgCount(action,idProduct){ //cambia la cantidad del articulo en
   let product = cart[idProduct];
   if(action) {// en el caso de que la acción sea true se suma 1, en caso de que sea false, se resta
     product.count++;
-    saveCart(userEmail,idProduct,product.cost,product.count,product.name,product.currency,product.image)
+    saveCart(userEmail,idProduct,product.cost,product.count,product.name,product.currency,product.image,product.catId)
 
   }
   else{
@@ -55,7 +55,7 @@ export function chgCount(action,idProduct){ //cambia la cantidad del articulo en
     }
     else{
       product.count--; // en el caso que sea mayor, la reducimos en una unidad
-      saveCart(userEmail,idProduct,product.cost,product.count,product.name,product.currency,product.image)
+      saveCart(userEmail,idProduct,product.cost,product.count,product.name,product.currency,product.image,product.catId)
     } 
   }
   localStorage.setItem("cart",JSON.stringify(cart));

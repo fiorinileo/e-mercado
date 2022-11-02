@@ -115,14 +115,42 @@ export const saveUserPurchase = async () =>{
   let ticket = {}
   ticket["address"]= address;
   ticket["cart"]= cart;
+  saveSoldProduct(cart) // Función que se encarga de modificar y guardar la cantidad de productos vendidos en Firebase
   let userEmail = localStorage.getItem("userEmail") 
   let totalPurchases = await getDocs(collection(db,"usersInfo/"+userEmail+"/purchases"))
   let ruta=doc(collection(db,"usersInfo",userEmail,"purchases"),"ticket_"+totalPurchases.docs.length);
   await setDoc(ruta,ticket,{merge:true});
-  deleteCart();
+  /* deleteCart(); */
   
 }
+const saveSoldProduct = async (cart)=>{
+  console.log("saveSoldProduct");
+  for (const productId in cart) {
+      const product = cart[productId]; // obtenemos los productos individualmente del carrito
+      let catId = product.catId; // Obtenemos la categoria a la que pertenecen 
+      let category = await getCategorieInfo(catId); // Traemos toda la información de esa categoria
+      console.log(category.products[productId]); 
+      let previusSoldCount  = category.products[productId].soldCount // Traemos la cantidad previa artículos de vendidos del artículo que estamos trabajando
+      let cartSoldCount = cart[productId].count // Separamos la cantidad que el usuario desea comprar
+      let newSoldCount = previusSoldCount+cartSoldCount; // sumamos esas dos cantidades en NewSoldCount
+      console.log(newSoldCount);
+      const docRef = doc(collection(db,"catInfo/catId_"+catId+"/products"),"products");
+      await updateDoc(docRef,{
+          [productId]:{
+            catId:catId,
+            id:productId,
+            name:product.name,
+            cost:product.cost,
+            currency:product.currency,
+            soldCount:newSoldCount,
+            images:"imagesProduct",
+          }   
+      } 
+      ,{merge:true});
+    
+  }
 
+}
 export const saveUserName = async (name,lastname,email)=>{
   let credentials = {
     userName:name,
@@ -143,26 +171,37 @@ export const getUserName = async ()=>{
 }
 
 export const saveCategorieInfo = async (catGroup) =>{
+  let catId;
+  let catName;
   let catInfo ={}
   let catProducts = {};
-  console.log("si");
-  if (catGroup.products) { // Si la categoria tiene productos =>
-    for  (const productId in catGroup.products) { // Recorremos la categoria 
-      const product = catGroup.products[productId]; // Guardamos el producto de este ciclo
-
-
+  console.log(catGroup);
+  if (catGroup) { // Si la categoria tiene productos =>
+    for  (const productId in catGroup) { // Recorremos la categoria 
+      const product = catGroup[productId]; // Guardamos el producto de este ciclo
       let relatedProducts =  await getJSONData(PRODUCT_INFO_URL+productId+".json")
       relatedProducts=relatedProducts.data.relatedProducts // Guardamos el array de productos relacionados
-
+      console.log(relatedProducts);
       for (let i = 0; i < relatedProducts.length; i++) { // Recorremos el array de productos relacionados
         let relatedProduct = relatedProducts[i];
-        let categoryOfRelatedProduct = await categoryOf(relatedProduct.id)  // Averiguamos la categoria del producto relacionado
+        let categoryOfRelatedProduct;
+        for (let i = 101; i < 109; i++) {
+          let respuesta = await categoryOf(relatedProduct.id,i)
+          if (respuesta) {
+            categoryOfRelatedProduct = respuesta
+            catName = await getCategorieInfo(categoryOfRelatedProduct)
+            catName = catName.name;
+          }
+             // Averiguamos la categoria del producto relacionado
+        }
+        console.log(categoryOfRelatedProduct);
         let imageURL = await firebaseGetImage("prod"+relatedProduct.id+"_1.jpg")
-          console.log(categoryOfRelatedProduct +" != "+ catGroup.id);
+          console.log(categoryOfRelatedProduct +" != "+ product.catId);
           console.log(relatedProduct);
+          catId = product.catId;
           relatedProduct["catId"] = categoryOfRelatedProduct; // le agregamos un atributo al producto relacionado, que es la categoría a la que pertenece
           relatedProduct["image"] = imageURL;
-        console.log(relatedProducts["catId"]);
+        console.log(relatedProducts);
 
       }// Fin de recorrer el array de productos relacionados
 
@@ -172,7 +211,7 @@ export const saveCategorieInfo = async (catGroup) =>{
         imagesProduct.push(imageURL)
       }
       catProducts[product.id]= {
-        catId:catGroup.id,
+        catId:product.catId,
         id:product.id,
         name:product.name,
         description:product.description,
@@ -184,27 +223,77 @@ export const saveCategorieInfo = async (catGroup) =>{
       }
     
     }// Fin recorrer categoria
+    let imgSrc = await firebaseGetImage("cat"+catId+"_1.jpg")
     catInfo= {
-      id:catGroup.id,
-      name:catGroup.name,
-      products: catProducts
+      productCount: Object.keys(catProducts).length,
+      id:catId,
+      name:catName,
+      imgSrc: imgSrc,
     }
     console.log(catInfo);
-    await setDoc(doc(db,"catInfo","catId_"+catGroup.id),
-      catInfo,{ merge: true })
+    await setDoc(doc(db,"catInfo","catId_"+catId),
+    catInfo,{ merge: true })
+    await setDoc(doc(db,"catInfo","catId_"+catId+"/products/products"),
+    catProducts,{ merge: true })
   }
   else{
-    catGroup.forEach(async(cat)=>{
-      catInfo= {
-        id:cat.id,
-        name:cat.name,
-        description: cat.description,
-        imgSrc:cat.imgSrc
-      }
-      console.log(catInfo);
-      await setDoc(doc(db,"catInfo","catId_"+cat.id),
-      catInfo,{ merge: true })
+    await getJSONData("https://japceibal.github.io/emercado-api/cats_products/"+catGroup.id+".json")
+    .then(async (resultObj)=>{
+      if (resultObj.status === "ok"){
+        let currentProductsArray = resultObj.data;
+        for  (let i = 0; i < currentProductsArray.products.length; i++) { // Recorremos la categoria 
+          const product = currentProductsArray.products[i]; // Guardamos el producto de este ciclo
+
+          let relatedProducts =  await getJSONData(PRODUCT_INFO_URL+product.id+".json")
+          relatedProducts=relatedProducts.data.relatedProducts // Guardamos el array de productos relacionados
+          
+          for (let i = 0; i < relatedProducts.length; i++) { // Recorremos el array de productos relacionados
+            let relatedProduct = relatedProducts[i];
+            let categoryOfRelatedProduct;
+            for (let i = 101; i < 109; i++) {
+              let respuesta = await categoryOf(relatedProduct.id,i)
+              if (respuesta) {
+                categoryOfRelatedProduct = respuesta
+              }
+                 // Averiguamos la categoria del producto relacionado
+            }
+            console.log(categoryOfRelatedProduct);
+            let imageURL = await firebaseGetImage("prod"+relatedProduct.id+"_1.jpg")
+              console.log(categoryOfRelatedProduct +" != "+ catGroup.id);
+              console.log(relatedProduct);
+              relatedProduct["catId"] = categoryOfRelatedProduct; // le agregamos un atributo al producto relacionado, que es la categoría a la que pertenece
+              relatedProduct["image"] = imageURL;
+            console.log(relatedProducts);
+    
+          }// Fin de recorrer el array de productos relacionados
+    
+          let imagesProduct = [];
+          for (let i = 0; i < 3; i++) {
+            let imageURL = await firebaseGetImage("prod"+product.id+"_"+(i+1)+".jpg")
+            imagesProduct.push(imageURL)
+          }
+          catProducts[product.id]= {
+            catId:currentProductsArray.catID,
+            id:product.id,
+            name:product.name,
+            description:product.description,
+            cost:product.cost,
+            currency:product.currency,
+            soldCount:product.soldCount,
+            images:imagesProduct,
+            relatedProducts:relatedProducts
+          }
+        
+        }// Fin recorrer categoria
+          console.log(catProducts);
+          await setDoc(doc(db,"catInfo","catId_"+catGroup.id+"/products/products"),
+          catProducts,{ merge: true })
+
+        
+        
+    }
     })
+    
   }
 
 }
@@ -218,8 +307,12 @@ export const saveCategorie = async (catId) =>{
 
 export const getCategoriesInfo = async()=>{
   const docSnap= await getDocs(collection(db,"catInfo"));
-    return docSnap.docs;
-  
+  console.log(docSnap.docs);
+    return docSnap.docs;  
+}
+export const getProductsOfCategory = async (catId)=>{
+  const docSnap = await getDoc(doc(collection(db,"catInfo/catId_"+catId+"/products"),"products"))
+  return docSnap.data();
 }
 export const getCategorieInfo = async(catId)=>{
   const docSnap= await getDoc(doc(db,"catInfo","catId_"+catId));
@@ -229,20 +322,25 @@ export const getCategorieInfo = async(catId)=>{
   
 }
 
-export const categoryOf = async (productId)=>{
-  let categories = await getCategoriesInfo()
-  for (let i = 0; i < categories.length; i++) { // recorremos las categorias
-
-    const products = Object.keys(categories[i].data().products); // obtenemos todos los productos de una categoria
-    
-    if (products) { // si existen =>
-      for (let j = 0; j < products.length; j++) { // Recorremos los productos
-        const product = products[j];
-        
-        if (product == productId) {
-         return (categories[i].data().id);
-        }
+export const categoryOf = async (productId,catId)=>{
+  let categoryOfRelatedProduct;
+  await getJSONData("https://japceibal.github.io/emercado-api/cats_products/"+catId+".json")
+    .then(async (resultObj)=>{
+      if (resultObj.status === "ok"){
+        let catInfo = resultObj.data
+        console.log(catInfo);
+        for (let i = 0; i < catInfo.products.length; i++) { // recorremos las categorias
+          const product = catInfo.products[i]; // obtenemos todos los productos de una categoria
+          if (product) { // si existen =>
+              if (product.id == productId) {
+                console.log("Producto: " + productId);
+                console.log("retorna Categoria: " + catInfo.catID);
+                categoryOfRelatedProduct = catInfo.catID;
+             }
+          }
+        } // Fin de recorrer categorias
+      }});
+      if (categoryOfRelatedProduct) {
+        return categoryOfRelatedProduct;
       }
-    }
-  } // Fin de recorrer categorias
 }

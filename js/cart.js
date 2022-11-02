@@ -153,7 +153,7 @@ function billingValidate(){ // Función que valida todos los campos de la factur
         showMessage("Se ha completado su pedido con EXITO!",true,"bottom","right") // se visualiza un toast con mensaje de Exito
         saveUserPurchase()
         setTimeout(() => {
-          window.location.reload()  
+          /* window.location.reload()   */
         }, 2000);
       } 
       // Se agregan a los dos formularios las clases de "was-validated" para darle feedback al usuario

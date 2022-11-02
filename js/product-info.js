@@ -1,4 +1,4 @@
-import { firebaseGetImage, getCategorieInfo, getCategoriesInfo, getComments, getProductInfo, saveCart,saveComment, saveProductInfo } from "./config/firebase.js"
+import { firebaseGetImage, getCategorieInfo, getCategoriesInfo, getComments, getProductInfo, getProductsOfCategory, saveCart,saveComment, saveProductInfo } from "./config/firebase.js"
 import { loadCart } from "./config/loadCart.js";
 import { loadFirebaseComments } from "./config/loadComments.js";
 import { showMessage } from "./config/showMessage.js";
@@ -157,8 +157,8 @@ function dualDigits(num) {
   return parseInt(num) < 10 ? (num = "0" + num) : num;
 }
 async function showRelatedProducts(product) {
-  const relatedProductList = document.getElementById("related-products");
   let htmlContentToAppend = "";
+  console.log(product);
   for (let i = 0; i < product.relatedProducts.length; i++) {
     let relatedProduct = product.relatedProducts[i];
     let imageURL = await firebaseGetImage("prod"+relatedProduct.id+"_1.jpg")
@@ -236,11 +236,7 @@ function printSelectedScore() {
     });
   }
 }
-function scorePrint(productComments) {
-  for (let i = 0; i < productComments.length; i++) {
-    const scoreNum = productComments.score[i];
-  }
-}
+
 document.getElementById("sendComment").addEventListener("click", () => {
 
   if (JSON.parse(localStorage.getItem("credentials"))) {
@@ -293,8 +289,9 @@ document.addEventListener("DOMContentLoaded", async ()=> {
   if (productId) {
           let credentials = JSON.parse(localStorage.getItem("credentials"));
           let userName = credentials.userName+"_"+credentials.userLastname
-          let category = await getCategorieInfo(catId);
-          var product = (category.products[productId]);
+          let category = await getProductsOfCategory(catId);
+          console.log(category);
+          var product = category[productId];
           var currentProduct = String(productId);
           showProductInfo(product);
           showRelatedProducts(product);
