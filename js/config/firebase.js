@@ -128,25 +128,15 @@ const saveSoldProduct = async (cart)=>{
   for (const productId in cart) {
       const product = cart[productId]; // obtenemos los productos individualmente del carrito
       let catId = product.catId; // Obtenemos la categoria a la que pertenecen 
-      let category = await getCategorieInfo(catId); // Traemos toda la información de esa categoria
-      console.log(category.products[productId]); 
-      let previusSoldCount  = category.products[productId].soldCount // Traemos la cantidad previa artículos de vendidos del artículo que estamos trabajando
+      let productsOfCategory = await getProductsOfCategory(catId); // Traemos toda la información de esa categoria
+      console.log(productsOfCategory[productId]);
+      let previusSoldCount  = productsOfCategory[productId].soldCount // Traemos la cantidad previa artículos de vendidos del artículo que estamos trabajando
       let cartSoldCount = cart[productId].count // Separamos la cantidad que el usuario desea comprar
       let newSoldCount = previusSoldCount+cartSoldCount; // sumamos esas dos cantidades en NewSoldCount
-      console.log(newSoldCount);
+      console.log(productsOfCategory);
+      productsOfCategory[productId].soldCount=newSoldCount;
       const docRef = doc(collection(db,"catInfo/catId_"+catId+"/products"),"products");
-      await updateDoc(docRef,{
-          [productId]:{
-            catId:catId,
-            id:productId,
-            name:product.name,
-            cost:product.cost,
-            currency:product.currency,
-            soldCount:newSoldCount,
-            images:"imagesProduct",
-          }   
-      } 
-      ,{merge:true});
+      await updateDoc(docRef,productsOfCategory,{merge:true});
     
   }
 
@@ -179,6 +169,7 @@ export const saveCategorieInfo = async (catGroup) =>{
   if (catGroup) { // Si la categoria tiene productos =>
     for  (const productId in catGroup) { // Recorremos la categoria 
       const product = catGroup[productId]; // Guardamos el producto de este ciclo
+      console.log(catGroup);
       let relatedProducts =  await getJSONData(PRODUCT_INFO_URL+productId+".json")
       relatedProducts=relatedProducts.data.relatedProducts // Guardamos el array de productos relacionados
       console.log(relatedProducts);
@@ -206,7 +197,8 @@ export const saveCategorieInfo = async (catGroup) =>{
       }// Fin de recorrer el array de productos relacionados
 
       let imagesProduct = [];
-      for (let i = 0; i < product.images.length; i++) {
+      console.log(product);
+      for (let i = 0; i < 3; i++) {
         let imageURL = await firebaseGetImage("prod"+product.id+"_"+(i+1)+".jpg")
         imagesProduct.push(imageURL)
       }
@@ -237,7 +229,7 @@ export const saveCategorieInfo = async (catGroup) =>{
     catProducts,{ merge: true })
   }
   else{
-    await getJSONData("https://japceibal.github.io/emercado-api/cats_products/"+catGroup.id+".json")
+    await getJSONData("https://japceibal.github.io/emercado-api/cats_products/105.json")
     .then(async (resultObj)=>{
       if (resultObj.status === "ok"){
         let currentProductsArray = resultObj.data;
@@ -259,7 +251,7 @@ export const saveCategorieInfo = async (catGroup) =>{
             }
             console.log(categoryOfRelatedProduct);
             let imageURL = await firebaseGetImage("prod"+relatedProduct.id+"_1.jpg")
-              console.log(categoryOfRelatedProduct +" != "+ catGroup.id);
+              console.log(categoryOfRelatedProduct +" != "+ 105);
               console.log(relatedProduct);
               relatedProduct["catId"] = categoryOfRelatedProduct; // le agregamos un atributo al producto relacionado, que es la categoría a la que pertenece
               relatedProduct["image"] = imageURL;
@@ -286,7 +278,7 @@ export const saveCategorieInfo = async (catGroup) =>{
         
         }// Fin recorrer categoria
           console.log(catProducts);
-          await setDoc(doc(db,"catInfo","catId_"+catGroup.id+"/products/products"),
+          await setDoc(doc(db,"catInfo","catId_105/products/products"),
           catProducts,{ merge: true })
 
         

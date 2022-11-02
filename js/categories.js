@@ -53,7 +53,7 @@ async function showCategoriesList(){
             console.log(category);
             let imageURL = category.imgSrc
             let productCount=0;
-            category.products? productCount = (Object.keys(category.products)).length: {}; // si tiene productos, le seteamos su cantidad
+            category.productCount? productCount = category.productCount: {}; // si tiene productos, le seteamos su cantidad
             if (((minCount == undefined) || (minCount != undefined && parseInt(productCount) >= minCount)) &&
                 ((maxCount == undefined) || (maxCount != undefined && parseInt(productCount) <= maxCount))){
     

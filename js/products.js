@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded",async function(e){
             currentProductsArray= await getProductsOfCategory(catId)
             let categoryInfo = await getCategorieInfo(catId)
             console.log(currentProductsArray);
-            /* await saveCategorieInfo(currentProductsArray)  //Agregar atributos nuevos en todos los objetos */
+           /*  await saveCategorieInfo(currentProductsArray)  //Agregar atributos nuevos en todos los objetos */
             categoryName = categoryInfo.name;
 
             showProductsList()
