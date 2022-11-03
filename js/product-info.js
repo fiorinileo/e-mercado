@@ -154,7 +154,7 @@ function averageScore() {
   let spanGeneralScore = generalScore.getElementsByTagName("span");
   drawScore(spanGeneralScore, avgScore);
 }
-function dualDigits(num) {
+ function dualDigits(num) {
   return parseInt(num) < 10 ? (num = "0" + num) : num;
 }
 async function showRelatedProducts(product) {
@@ -302,7 +302,7 @@ document.addEventListener("DOMContentLoaded", async ()=> {
           averageScore() // imprimimos la calificación promedio
           document.getElementById("commentUser").innerHTML=userName || "Anonymus";
           document.getElementById("buy_btn").addEventListener("click", async () => {//creamos el evento de escucha a "click" en el boton de comprar
-              if (localStorage.getItem("credentials")) { //comprobamos que el usuario está logeado
+              if (localStorage.getItem("userEmail")) { //comprobamos que el usuario está logeado
                 
                 if (document.getElementById("nudCant").value>0) {
 

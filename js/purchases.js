@@ -17,19 +17,20 @@ document.addEventListener("DOMContentLoaded",async()=>{
     if (Object.keys(tickets).length>0) {   
         for (const ticketId in tickets) {
             const ticket = tickets[ticketId];
+            console.log(ticket);
             let payMethod = "tarjeta de crédito o débito"
-            ticket.address.payMethod == "Bank Transfer"? payMethod = "Transferencia bancaria":{};
+            ticket.billingInfo.payMethod == "Bank Transfer"? payMethod = "Transferencia bancaria":{};
             HTMLListItems = `
             <li class="bg-white text-dark p-3 my-4">
                 <h2 class="text-center">
                     ${ticketId}
                 </h2>
                 <div>
-                    <h3 class="d-inline">
-                        Información de pago:
-                    </h3>
+                    <h4 class="d-inline">
+                        Compra realizada el:
+                    </h4>
                     <p class="d-inline">
-                        Pago realizado mediante ${payMethod}
+                        ${ticket.billingInfo.date}
                     </p>
                 </div>
                 <div>
@@ -65,10 +66,10 @@ document.addEventListener("DOMContentLoaded",async()=>{
     //
     // Update the modal's content.
     let cartCostContainer = document.getElementById("cartCost");
-    let addressTicket = tickets[ticketId].address
+    let billingInfo = tickets[ticketId].billingInfo
     let payMethod = "tarjeta de crédito o débito"
-    addressTicket.payMethod == "Bank Transfer"? payMethod = "Transferencia bancaria":{};
-    let billingInfo = `
+    billingInfo.payMethod == "Bank Transfer"? payMethod = "Transferencia bancaria":{};
+    let HTMLbillingInfo = `
         <li>
             <div class="row">
                 <p class="col-12">
@@ -83,17 +84,17 @@ document.addEventListener("DOMContentLoaded",async()=>{
                 </p>
                 <p class="col-12">
                     <span>
-                        Calle: ${addressTicket.street}
+                        Calle: ${billingInfo.street}
                     </span>
                 </p>
                 <p class="col-12">
                     <span>
-                       Esquina: ${addressTicket.corner}
+                       Esquina: ${billingInfo.corner}
                     </span>
                 </p>
                 <p class="col-12">
                     <span>
-                        Número de puerta: ${addressTicket.doorNum}
+                        Número de puerta: ${billingInfo.doorNum}
                     </span>
                 </p>
             </div>
@@ -129,7 +130,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
             `
     }
     let shipCost;
-    switch(addressTicket.shipType){
+    switch(billingInfo.shipType){
         case("Premium"):
             shipCost=0.15;
         break;
@@ -151,7 +152,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
             </li>
             <li class="row">
                 <p class="col-5 fw-bold">
-                    Tipo de envío ${addressTicket.shipType}(${shipCost}%):
+                    Tipo de envío ${billingInfo.shipType}(${shipCost}%):
                 </p>
                 <p class="col-6">
                     USD ${totalCost*shipCost}
@@ -169,7 +170,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
     var modalTitle = ticketModal.querySelector('.modal-title')
     var cartList = ticketModal.querySelector('#cartList')
     let payMethodInfo = ticketModal.querySelector('#payMethodInfo')
-    payMethodInfo.innerHTML = billingInfo;
+    payMethodInfo.innerHTML = HTMLbillingInfo;
     modalTitle.textContent = 'Detallado de ' + ticketId
     cartList.innerHTML = cartContent
     cartCostContainer.innerHTML = HTMLCost;

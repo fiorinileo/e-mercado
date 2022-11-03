@@ -26,7 +26,9 @@ export const auth = getAuth(app);
 export const db= getFirestore(app);
 
 // Initialize Cloud Storage and get a reference to the service
-
+function dualDigits(num) {
+  return parseInt(num) < 10 ? (num = "0" + num) : num;
+}
 export const storage = getStorage(app);
 export async function uploadFile(file){
   const storageRef = ref(storage, 'icons')
@@ -95,7 +97,18 @@ export const saveProductInfo = async (product) =>{
 }
 // almacena el carrito del usuario, en su historial de compras una vez la confirma
 export const saveUserPurchase = async () =>{
-
+  let date = new Date();
+  let purchaseDate =
+      date.getFullYear() +
+      "-" +
+      (parseInt(dualDigits(date.getMonth())) + 1) +
+      "-" +
+      dualDigits(date.getDate())+
+      " " +
+      dualDigits(date.getHours()) +
+      ":" +
+      dualDigits(date.getMinutes());
+ 
   let paymentMethod ="Credit Card" // El método de pago comienza teniendo el valor de tarjeta de credito
   document.getElementById("radio-bankTransfer").checked ? paymentMethod = "Bank Transfer":{}; // si está checkeado el campo de banco, se cambia a transferencia bancaria
   let shipType;
@@ -110,22 +123,23 @@ export const saveUserPurchase = async () =>{
   }
 
   let cart = JSON.parse(localStorage.getItem("cart")) // traemos el carrito del usuario
-  let address = {
+  let billingInfo = {
     street: document.getElementById("calle").value,
     doorNum: document.getElementById("numeroPuerta").value,
     corner: document.getElementById("esquina").value,
     payMethod:paymentMethod ,
     shipType:shipType,
+    date:purchaseDate,
   } 
   let ticket = {}
-  ticket["address"]= address;
+  ticket["billingInfo"]= billingInfo;
   ticket["cart"]= cart;
   saveSoldProduct(cart) // Función que se encarga de modificar y guardar la cantidad de productos vendidos en Firebase
   let userEmail = localStorage.getItem("userEmail") 
   let totalPurchases = await getDocs(collection(db,"usersInfo/"+userEmail+"/purchases"))
   let ruta=doc(collection(db,"usersInfo",userEmail,"purchases"),"ticket_"+totalPurchases.docs.length);
   await setDoc(ruta,ticket,{merge:true});
-  deleteCart();
+  await deleteCart();
   location.reload()
   
 }
