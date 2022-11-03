@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded",async()=>{
         </li>
     `
     if (Object.keys(tickets).length>0) {   
-        console.log("Existe paaa");
         for (const ticketId in tickets) {
             const ticket = tickets[ticketId];
             let payMethod = "tarjeta de crédito o débito"
