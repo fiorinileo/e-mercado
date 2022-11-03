@@ -288,7 +288,7 @@ document.addEventListener("DOMContentLoaded", async ()=> {
   let productId = localStorage.getItem("productId");
   if (productId) {
           let credentials = JSON.parse(localStorage.getItem("credentials"));
-          let userName = credentials.userName+"_"+credentials.userLastname
+          let userName = credentials.userName+"_"+credentials.userLastname || "Anonymus";
           let category = await getProductsOfCategory(catId);
           var product = category[productId];
           var currentProduct = String(productId);
