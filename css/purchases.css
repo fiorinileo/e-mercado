@@ -1,0 +1,6 @@
+#ticketContainer>li>h2{
+    border-bottom: 1px solid var(--primary-color);
+}
+#ticketContainer>li{
+    border-radius: 12px;
+}

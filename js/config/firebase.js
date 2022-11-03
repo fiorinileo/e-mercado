@@ -53,7 +53,6 @@ export const saveCart =  async (userEmail,productId,cost,count,productName,curre
 };
   let ruta= doc(db,"usersInfo/"+userEmail+"/cartUser/"+productId);
   await setDoc(ruta,docData);
-
 } 
 export const deleteProduct = async (userEmail,productId)=>{
   let ruta= doc(db,"usersInfo/"+userEmail+"/cartUser/"+productId);
@@ -69,7 +68,6 @@ export const getCart = async (userEmail)=>{
   }
   return cart
 }
-
 /* Función para guardar comentarios en Firebase */
 export const saveComment = async (userName,score,description,dateTime,productId,commentId) =>{
   await setDoc(doc(db,"comments","comments_"+productId),
@@ -78,7 +76,6 @@ export const saveComment = async (userName,score,description,dateTime,productId,
    
  },{ merge: true })
 }
-
 /*Función para traer comentarios de Firebase*/
 export const getComments = async (productId)=>{
   const docSnap= await getDoc(doc(db,"comments","comments_"+productId));
@@ -86,31 +83,39 @@ export const getComments = async (productId)=>{
     return docSnap.data();
   }
 }
-
 export const getProductInfo = async(productId,catId)=>{
   catId ?{}: catId=  localStorage.getItem("catId");
   let categoryInfo = await getCategorieInfo(catId)
   return categoryInfo.products[productId];
 }
-
 export const saveProductInfo = async (product) =>{
 
   await setDoc(doc(db,"catInfo","catId_"+catId),
   product,{ merge: true })
 }
-
 // almacena el carrito del usuario, en su historial de compras una vez la confirma
 export const saveUserPurchase = async () =>{
 
   let paymentMethod ="Credit Card" // El método de pago comienza teniendo el valor de tarjeta de credito
   document.getElementById("radio-bankTransfer").checked ? paymentMethod = "Bank Transfer":{}; // si está checkeado el campo de banco, se cambia a transferencia bancaria
+  let shipType;
+  if (document.getElementById("Premium").checked) {
+    shipType = "Premium"
+  }
+  else if (document.getElementById("Express").checked){
+    shipType="Express"
+  }
+  else{
+    shipType="Standard"
+  }
 
   let cart = JSON.parse(localStorage.getItem("cart")) // traemos el carrito del usuario
   let address = {
     street: document.getElementById("calle").value,
     doorNum: document.getElementById("numeroPuerta").value,
     corner: document.getElementById("esquina").value,
-    payMethod:paymentMethod
+    payMethod:paymentMethod ,
+    shipType:shipType,
   } 
   let ticket = {}
   ticket["address"]= address;
@@ -120,24 +125,21 @@ export const saveUserPurchase = async () =>{
   let totalPurchases = await getDocs(collection(db,"usersInfo/"+userEmail+"/purchases"))
   let ruta=doc(collection(db,"usersInfo",userEmail,"purchases"),"ticket_"+totalPurchases.docs.length);
   await setDoc(ruta,ticket,{merge:true});
-  /* deleteCart(); */
+  deleteCart();
+  location.reload()
   
 }
 const saveSoldProduct = async (cart)=>{
-  console.log("saveSoldProduct");
   for (const productId in cart) {
       const product = cart[productId]; // obtenemos los productos individualmente del carrito
       let catId = product.catId; // Obtenemos la categoria a la que pertenecen 
       let productsOfCategory = await getProductsOfCategory(catId); // Traemos toda la información de esa categoria
-      console.log(productsOfCategory[productId]);
       let previusSoldCount  = productsOfCategory[productId].soldCount // Traemos la cantidad previa artículos de vendidos del artículo que estamos trabajando
       let cartSoldCount = cart[productId].count // Separamos la cantidad que el usuario desea comprar
       let newSoldCount = previusSoldCount+cartSoldCount; // sumamos esas dos cantidades en NewSoldCount
-      console.log(productsOfCategory);
       productsOfCategory[productId].soldCount=newSoldCount;
       const docRef = doc(collection(db,"catInfo/catId_"+catId+"/products"),"products");
       await updateDoc(docRef,productsOfCategory,{merge:true});
-    
   }
 
 }
@@ -148,6 +150,7 @@ export const saveUserName = async (name,lastname,email)=>{
   }
   let ruta= doc(db,"usersInfo/"+email); 
   setDoc(ruta,credentials)
+  return 
 }
 export const getUserName = async ()=>{
   let userEmail = localStorage.getItem("userEmail")
@@ -160,7 +163,6 @@ export const getUserName = async ()=>{
   document.getElementById("userEmail").innerHTML=(credentials.userName+" "+credentials.userLastname).substring(0,9)+"...";
 
 }
-
 export const saveCategorieInfo = async (catGroup) =>{
   let catId;
   let catName;
@@ -290,14 +292,12 @@ export const saveCategorieInfo = async (catGroup) =>{
   }
 
 }
-
 export const saveCategorie = async (catId) =>{
 
   let product = "!"
   await setDoc(doc(db,"catInfo","catId_"+catId),
   product,{ merge: true })
 }
-
 export const getCategoriesInfo = async()=>{
   const docSnap= await getDocs(collection(db,"catInfo"));
     return docSnap.docs;  
@@ -313,7 +313,6 @@ export const getCategorieInfo = async(catId)=>{
   }
   
 }
-
 export const categoryOf = async (productId,catId)=>{
   let categoryOfRelatedProduct;
   await getJSONData("https://japceibal.github.io/emercado-api/cats_products/"+catId+".json")
@@ -335,4 +334,15 @@ export const categoryOf = async (productId,catId)=>{
       if (categoryOfRelatedProduct) {
         return categoryOfRelatedProduct;
       }
+}
+export const ticketLoader = async ()=>{
+  let userEmail = localStorage.getItem("userEmail")
+  let tickets = {}
+  const querySnapshot = await getDocs(collection(db, "usersInfo",userEmail,"purchases"));
+  if (querySnapshot) {
+    querySnapshot.forEach((ticket) => {
+      tickets["ticket_"+Object.keys(tickets).length]=ticket.data()
+    });
+  }
+  return tickets;
 }

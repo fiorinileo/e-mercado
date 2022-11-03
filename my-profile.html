@@ -153,6 +153,9 @@
             <li class="nav-item">
               <a class="nav-link" href="sell.html">Vender</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="purchases.html">Compras</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -163,7 +166,7 @@
       <div class="row">
           <div class="col-md-3 border-right">
               <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                <img class="rounded-circle mt-5" width="150px" src="https://firebasestorage.googleapis.com/v0/b/emercado-359900.appspot.com/o/img_perfil.png?alt=media&token=214661d3-8e00-4ea3-8e87-325cdd903d68">
                 <span> </span>
               </div>
           </div>
@@ -173,7 +176,7 @@
                       <h4 class="text-right">Ajustes de perfil</h4>
                   </div>
                   <div class="row mt-2">
-                      <div class="col-md-6"><label class="labels">Nombre*</label><input type="text" class="form-control" placeholder="Nombre" value="" id="inputName"></div>
+                      <div class="col-md-6"><label class="labels">Nombre*</label><input type="text" class="form-control" placeholder="Nombre"  id="inputName"></div>
                       <div class="col-md-6"><label class="labels">Segundo Nombre</label><input type="text" class="form-control" value="" placeholder="Segundo Nombre" id="inputSecondName"></div>
                   </div>
                   <div class="row mt-2">
@@ -188,9 +191,10 @@
                       <div class="col-md-12"><label class="labels">Departamento</label><input type="text" class="form-control" placeholder="Ingrese su departamento" value=""></div>
                       <span>Los campos con * indican que son obligatorios</span>
                     </div>
-                  <div class="mt-5 text-center"><button class="btn btn-primary cta-button" type="button">Guardar cambios</button></div>
+                  <div class="mt-5 text-center"><button class="btn btn-primary cta-button" type="button" id="btnSaveChanges">Guardar cambios</button></div>
               </div>
           </div>
+         
       </div>
   </div>
   </div>
@@ -290,7 +294,7 @@
   <script type="module" src="./js/config/firebase.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
   <script type="module" src="js/init.js"></script>
-  <script src="js/my-profile.js"></script>
+  <script type="module" src="js/my-profile.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
 

@@ -5,10 +5,10 @@ import { loadCart } from "./loadCart.js";
 const signupForm = document.querySelector("#signup-form")
 signupForm.addEventListener("submit",async (e)=>{
     e.preventDefault();
-    let email =  signupForm['signup-email'].value;
-    let password = signupForm['signup-password'].value;
-    let name = signupForm['signup-name'].value;
-    let lastname = signupForm['signup-lastname'].value;
+    let email =  (signupForm['signup-email'].value).toLowerCase();
+    let password = (signupForm['signup-password'].value).toLowerCase();
+    let name = (signupForm['signup-name'].value).toLowerCase();
+    let lastname = (signupForm['signup-lastname'].value).toLowerCase();
     try { 
         const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
         const signupModal = document.querySelector("#signupModal")

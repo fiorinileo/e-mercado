@@ -30,13 +30,19 @@
     height: auto;
 }
 .carousel-indicators {
-    margin: auto;
     bottom: -50px;
 }
 .product_info{
     margin-top: 0.55rem;
     border-radius: 0 0 50px 0;
 }
+.carousel-control-next{
+    background: linear-gradient(270deg, rgb(0 0 0 / 86%) 0%, rgb(26 26 26 / 0%) 100%);
+}
+.carousel-control-prev{
+    background: linear-gradient(90deg, rgb(0 0 0 / 86%) 0%, rgb(26 26 26 / 0%) 100%);
+}
+
 #carouselExampleIndicators ul{
     margin-bottom: 0;
 }

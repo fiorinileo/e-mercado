@@ -210,7 +210,10 @@ document.addEventListener("DOMContentLoaded",async ()=>{
 export async function deleteCart(){
   let cart = JSON.parse(localStorage.getItem("cart"))
   let userEmail = localStorage.getItem("userEmail")
+
+  console.log("DeleteCart");
   for (const productId in cart) {
+    console.log("se elimina"+ productId);
       await deleteProduct(userEmail,productId)
   }
   localStorage.setItem("cart",JSON.stringify({}))
