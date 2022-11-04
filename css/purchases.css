@@ -4,3 +4,10 @@
 #ticketContainer>li{
     border-radius: 12px;
 }
+#ticketContainer>li>div:last-of-type{
+    display: flex;
+    flex-direction: row-reverse;
+}
+#ticketContainer{
+    justify-content: space-between;
+}

@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
             let payMethod = "tarjeta de crédito o débito"
             ticket.billingInfo.payMethod == "Bank Transfer"? payMethod = "Transferencia bancaria":{};
             HTMLListItems = `
-            <li class="bg-white text-dark p-3 my-4">
+            <li class="bg-white text-dark p-3 my-4 col-md-5">
                 <h2 class="text-center">
                     ${ticketId}
                 </h2>

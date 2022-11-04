@@ -10,7 +10,6 @@ googlebtn.addEventListener("click",async ()=>{
         try {
             const credentials =  await signInWithPopup(auth,provider);
             localStorage.setItem('userEmail',credentials.user.email);
-            await getUserName()
             splitName(credentials.user.displayName,credentials.user.email)
             bootstrap.Modal.getInstance(document.querySelector("#signinModal")).hide()
             let userName = (credentials.user.displayName).substring(0,9)+"...";
