@@ -211,7 +211,8 @@ document.addEventListener("DOMContentLoaded", async ()=>{
       
     }
     let credentials = JSON.parse(localStorage.getItem("credentials"))
-    document.getElementById("userEmail").innerHTML=(credentials.userName+" "+credentials.userLastname).substring(0,9)+"...";
+    document.getElementById("userName").innerHTML=(credentials.userName+" "+credentials.userLastname).substring(0,9)+"...";
+    document.getElementById("userEmail").getElementsByTagName("img")[0].src=credentials.photo;
   }
   
 

@@ -21,8 +21,6 @@ googlebtn.addEventListener("click",async ()=>{
 
     
 })
-
-
 function splitName(nameGroup,email){
     let localCredentials={};
     let flag = true

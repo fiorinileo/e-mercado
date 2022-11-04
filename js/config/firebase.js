@@ -157,10 +157,11 @@ const saveSoldProduct = async (cart)=>{
   }
 
 }
-export const saveUserName = async (name,lastname,email)=>{
+export const saveUserName = async (name,lastname,email,photo)=>{
   let credentials = {
     userName:name,
-    userLastname:lastname
+    userLastname:lastname,
+    photo:photo,
   }
   let ruta= doc(db,"usersInfo/"+email); 
   setDoc(ruta,credentials)
@@ -174,7 +175,8 @@ export const getUserName = async ()=>{
   credentials["withGoogle"]=false;
   console.log(credentials);
   localStorage.setItem("credentials",JSON.stringify(credentials))
-  document.getElementById("userEmail").innerHTML=(credentials.userName+" "+credentials.userLastname).substring(0,9)+"...";
+  document.getElementById("userName").innerHTML=(credentials.userName+" "+credentials.userLastname).substring(0,9)+"...";
+  document.getElementById("userEmail").getElementsByTagName("img")[0].src=credentials.photo;
 
 }
 export const saveCategorieInfo = async (catGroup) =>{
