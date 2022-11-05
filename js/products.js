@@ -179,7 +179,6 @@ document.addEventListener("DOMContentLoaded",async function(e){
             let categoryInfo = await getCategorieInfo(catId)
             /* await saveCategorieInfo(currentProductsArray)  //Agregar atributos nuevos en todos los objetos */
             categoryName = categoryInfo.name;
-
             showProductsList()
             hideSpinner()
         

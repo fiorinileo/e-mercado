@@ -7,6 +7,7 @@ import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPers
 import { getFirestore, addDoc,collection, setDoc, doc, getDocs,getDoc, updateDoc, deleteField, deleteDoc } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js"
 import { deleteCart } from "../cart.js";
 import { getJSONData, PRODUCT_INFO_URL } from "../init.js";
+import { saveFirebaseComments } from "./postComments.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
       
@@ -304,7 +305,8 @@ export const saveCategorieInfo = async (catGroup) =>{
               relatedProduct.id=relatedProductId;
     
           }// Fin de recorrer el array de productos relacionados
-    
+          
+          await saveFirebaseComments(product.id,productId);
           let imagesProduct = [];
           for (let i = 0; i < 4; i++) {
             let imageURL = await firebaseGetImage("prod"+productId+"_"+(i+1)+".jpg")
