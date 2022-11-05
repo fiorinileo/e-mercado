@@ -33,8 +33,6 @@ export const storage = getStorage(app);
 
 export async function uploadFile(dataURL,fileName){
   const storageRef = ref(storage, '/'+fileName)
-  console.log(storageRef);
-  console.log(dataURL.dataURL);
   let src;
   if (dataURL.type !== "image/jpeg" ) {
     src = dataURL.dataURL.substring(23)
@@ -44,7 +42,6 @@ export async function uploadFile(dataURL,fileName){
   }
   let data=b64toBlob(src,dataURL.type)
   let snapshot = await uploadBytes(storageRef,data)
-  console.log(snapshot);
 }
 function b64toBlob(b64Data, contentType, sliceSize) {
   contentType = contentType || "";
@@ -66,7 +63,6 @@ function b64toBlob(b64Data, contentType, sliceSize) {
     byteArrays.push(byteArray);
   }
 
-  console.log(byteArrays);
 
   return new File(byteArrays, "pot", { type: contentType });
 }
@@ -208,7 +204,6 @@ export const getUserName = async ()=>{
   const querySnapshot = await getDoc(doc(db, "usersInfo/"+userEmail));
   credentials = querySnapshot.data()
   credentials["withGoogle"]=false;
-  console.log(credentials);
   localStorage.setItem("credentials",JSON.stringify(credentials))
   document.getElementById("userName").innerHTML=(credentials.userName+" "+credentials.userLastname).substring(0,9)+"...";
   document.getElementById("userEmail").getElementsByTagName("img")[0].src=credentials.photo;
@@ -220,14 +215,11 @@ export const saveCategorieInfo = async (catGroup) =>{
   let catName;
   let catInfo ={}
   let catProducts = {};
-  console.log(catGroup);
   if (null) { // Si la categoria tiene productos =>
     for  (const productId in catGroup) { // Recorremos la categoria 
       const product = catGroup[productId]; // Guardamos el producto de este ciclo
-      console.log(catGroup);
       let relatedProducts =  await getJSONData(PRODUCT_INFO_URL+productId+".json")
       relatedProducts=relatedProducts.data.relatedProducts // Guardamos el array de productos relacionados
-      console.log(relatedProducts);
       for (let i = 0; i < relatedProducts.length; i++) { // Recorremos el array de productos relacionados
         let relatedProduct = relatedProducts[i];
         let categoryOfRelatedProduct;
@@ -240,19 +232,14 @@ export const saveCategorieInfo = async (catGroup) =>{
           }
              // Averiguamos la categoria del producto relacionado
         }
-        console.log(categoryOfRelatedProduct);
         let imageURL = await firebaseGetImage("prod"+relatedProduct.id+"_1.jpg")
-          console.log(categoryOfRelatedProduct +" != "+ product.catId);
-          console.log(relatedProduct);
           catId = product.catId;
           relatedProduct["catId"] = categoryOfRelatedProduct; // le agregamos un atributo al producto relacionado, que es la categoría a la que pertenece
           relatedProduct["image"] = imageURL;
-        console.log(relatedProducts);
 
       }// Fin de recorrer el array de productos relacionados
 
       let imagesProduct = [];
-      console.log(product);
       for (let i = 0; i < 4; i++) {
         let imageURL = await firebaseGetImage("prod"+product.id+"_"+(i+1)+".jpg")
         imagesProduct.push(imageURL)
@@ -278,7 +265,6 @@ export const saveCategorieInfo = async (catGroup) =>{
       name:catName,
       imgSrc: imgSrc,
     }
-    console.log(catInfo);
     await setDoc(doc(db,"catInfo","catId_"+catId),
     catInfo,{ merge: true })
     await setDoc(doc(db,"catInfo","catId_"+catId+"/products/products"),
@@ -305,13 +291,9 @@ export const saveCategorieInfo = async (catGroup) =>{
               }
                  // Averiguamos la categoria del producto relacionado
             }
-            console.log(categoryOfRelatedProduct);
             let imageURL = await firebaseGetImage("prod"+relatedProduct.id+"_1.jpg")
-              console.log(categoryOfRelatedProduct +" != "+ catId);
-              console.log(relatedProduct);
               relatedProduct["catId"] = categoryOfRelatedProduct; // le agregamos un atributo al producto relacionado, que es la categoría a la que pertenece
               relatedProduct["image"] = imageURL;
-            console.log(relatedProducts);
     
           }// Fin de recorrer el array de productos relacionados
     
@@ -334,7 +316,6 @@ export const saveCategorieInfo = async (catGroup) =>{
           }
         
         }// Fin recorrer categoria
-          console.log(catProducts);
           await setDoc(doc(db,"catInfo","catId_"+catId+"/products/products"),
           catProducts,{ merge: true })
 
@@ -346,11 +327,11 @@ export const saveCategorieInfo = async (catGroup) =>{
   }
 
 }
-export const saveCategorie = async (catId) =>{
-
-  let product = "!"
-  await setDoc(doc(db,"catInfo","catId_"+catId),
-  product,{ merge: true })
+export const saveCategorieCount = async (catId) =>{
+  let categoryInfo = await getCategorieInfo(catId)
+  categoryInfo.productCount += 1;
+  const docRef = doc(db,"catInfo/catId_"+catId);
+  await updateDoc(docRef,categoryInfo,{merge:true});
 }
 export const getCategoriesInfo = async()=>{
   const docSnap= await getDocs(collection(db,"catInfo"));
@@ -373,13 +354,10 @@ export const categoryOf = async (productId,catId)=>{
     .then(async (resultObj)=>{
       if (resultObj.status === "ok"){
         let catInfo = resultObj.data
-        console.log(catInfo);
         for (let i = 0; i < catInfo.products.length; i++) { // recorremos las categorias
           const product = catInfo.products[i]; // obtenemos todos los productos de una categoria
           if (product) { // si existen =>
               if (product.id == productId) {
-                console.log("Producto: " + productId);
-                console.log("retorna Categoria: " + catInfo.catID);
                 categoryOfRelatedProduct = catInfo.catID;
              }
           }

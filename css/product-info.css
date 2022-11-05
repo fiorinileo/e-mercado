@@ -1,4 +1,9 @@
-
+#product-list-images li{
+    text-align: center;
+}
+#product-list-images li img{
+    max-height: 500px ;
+}
 #product-info-container{
     background-repeat:no-repeat ;
     background-size: cover;

@@ -1,4 +1,4 @@
-import { firebaseGetImage, getCategorieInfo, getCategoriesInfo, saveCategorie, saveCategorieInfo } from "./config/firebase.js";
+import { firebaseGetImage, getCategorieInfo, getCategoriesInfo } from "./config/firebase.js";
 import { CATEGORIES_URL, getJSONData, hideSpinner, showSpinner } from "./init.js";
 
 const ORDER_ASC_BY_NAME = "AZ";
@@ -27,7 +27,6 @@ function sortCategories(criteria, array){
     }else if (criteria === ORDER_BY_PROD_COUNT){
         result = array.sort(function(a, b) {
             let aCount = parseInt(Object.keys(a.products || 0).length);
-            console.log(a);
             let bCount = parseInt(Object.keys(b.products || 0).length);
 
             if ( aCount > bCount ){ return -1; }

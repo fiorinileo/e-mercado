@@ -39,7 +39,6 @@ async function showProductsList(){
     // Reutilización del código ya creado en "Products", esto se debe a que la visualización que se solicita es idéntica, sustituyendo en este caso las distintas categorias, por los distintos productos pertenecientes a la categoría solicitada.
     let htmlContentToAppend = "";
     for(const productId in currentProductsArray){
-        console.log(currentProductsArray);
         const product = currentProductsArray[productId];
         let imageURL = product.images[0]
         if (((minPrice == undefined) || (minPrice != undefined && parseInt(product.cost) >= minPrice)) &&
@@ -48,8 +47,8 @@ async function showProductsList(){
                 <li class="cursor-active col-md-6 col-lg-4 p-4">
                     <div class="row pb-0 pt-2 product-card" onclick="windowReplace(${product.id})">
                         <div class="col-">
-                            <div>
-                                <img src=${imageURL} class="img-thumbnail">
+                            <div class="d-flex bg-white">
+                                <img src=${imageURL} class="img-thumbnail mx-auto">
                             </div>
                             
                         </div>
@@ -83,9 +82,7 @@ let currentSortCriteria = undefined;
 let minPrice = undefined;
 let maxPrice = undefined;
 export function sortProducts(criteria, array){
-    console.table(Object.values(array));
     let result = Object.values(array);
-    console.log(result[0].cost);
     if (criteria === ORDER_DESC_BY_PRICE)
     {
         result = array.sort(function(a, b) {

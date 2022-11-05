@@ -1,4 +1,4 @@
-import { firebaseGetImage, getProductsOfCategory, saveProductInfo, uploadFile } from "./config/firebase.js";
+import { firebaseGetImage, getProductsOfCategory, saveCategorieCount, saveProductInfo, uploadFile } from "./config/firebase.js";
 import { showMessage } from "./config/showMessage.js";
 import { hideSpinner, showSpinner } from "./init.js";
 
@@ -27,14 +27,12 @@ function updateTotalCosts(){
     comissionCostHTML.innerHTML = comissionToShow;
     totalCostHTML.innerHTML = totalCostToShow;
 }
-
 //Función que se ejecuta una vez que se haya lanzado el evento de
 //que el documento se encuentra cargado, es decir, se encuentran todos los
 //elementos HTML presentes.
 document.addEventListener("DOMContentLoaded", function(e){
     document.getElementById("productCountInput").addEventListener("change", function(){
         productCount = this.value;
-        console.log(myDropzone);
         updateTotalCosts();
     });
 
@@ -100,7 +98,6 @@ document.addEventListener("DOMContentLoaded", function(e){
         let selectedCategory = "10"+[productCategory.selectedIndex]; // calculamos el id de la categoria del producto
         let Category = await getProductsOfCategory(selectedCategory) // traemos la categoría donde le usuario desea agregar su producto
         let productId = String(selectedCategory)+(Object.keys(Category).length+1); // Seteamos nuevo id para el producto a agregar
-        console.log(productId);
         //Quito las clases que marcan como inválidos
         productNameInput.classList.remove('is-invalid');
         productCategory.classList.remove('is-invalid');
@@ -131,17 +128,13 @@ document.addEventListener("DOMContentLoaded", function(e){
         if (myDropzone.files.length<3) {
             infoMissing = true;
         }
-        console.log(infoMissing);
         if(!infoMissing)
         {
                let imagesProduct=[];
                 for (let i = 0; i < myDropzone.files.length; i++) { // recorremos el array de imagenes del producto
                     let file = myDropzone.files[i]; // separamos la imagen a trabajar
-                    console.log(file);
                     let NewFile = Object.assign({},file)
                     NewFile.name="prod"+productId+"_"+(i+1)+".jpg" // le asignamos el nombre específico a esa imagen
-                    console.log(NewFile.name);
-                    console.log(NewFile);
                     await uploadFile(NewFile,NewFile.name); // subimos esa imagen a firebase
                     imagesProduct[i] = await firebaseGetImage(NewFile.name);
                 }
@@ -153,13 +146,12 @@ document.addEventListener("DOMContentLoaded", function(e){
                     description:productDescription.value,
                     cost:productCost.value,
                     currency:productCurrency.value,
-                    soldCount:productCountInput.value,
+                    stock:productCountInput.value,
                     images:imagesProduct,
-                    relatedProducts:[]
+                    soldCount:0,
+                    relatedProducts:[],
                   }
-                  console.log(imagesProduct);
-                  console.log(catProducts);
-                  console.log(selectedCategory);
+                await saveCategorieCount(selectedCategory)
                 await saveProductInfo(selectedCategory,catProducts)
                 hideSpinner();
                 showMessage("Su producto se ha publicado con exito!",true,"top","center");

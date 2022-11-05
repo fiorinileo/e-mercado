@@ -23,14 +23,10 @@ function drawScore(place, value) {
   }
 }
 async function imagesProduct(product) {
-  console.log(product);
   let htmlContentToAppend = "";
   let carouselContainer = document.getElementsByClassName("carousel-indicators")[0];
   for (let i = 0; i < product.images.length; i++) {
-    console.log(product);
-    console.log(product.id);
     let imageURL = await firebaseGetImage("prod"+product.id+"_"+(i+1)+".jpg")
-    console.log(imageURL);
     carouselContainer.innerHTML+=`
                       <img src=${imageURL}
                         type="button" data-bs-target="#carouselExampleIndicators"
@@ -294,7 +290,6 @@ document.addEventListener("DOMContentLoaded", async ()=> {
           let userName;
           credentials?userName = credentials.userName+"_"+credentials.userLastname :userName= "Anonymus";
           let category = await getProductsOfCategory(catId);
-          console.log(category);
           var product = category[productId];
           var currentProduct = String(productId);
           showProductInfo(product);

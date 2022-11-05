@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded",async()=>{
     if (Object.keys(tickets).length>0) {   
         for (const ticketId in tickets) {
             const ticket = tickets[ticketId];
-            console.log(ticket);
             let payMethod = "tarjeta de crédito o débito"
             ticket.billingInfo.payMethod == "Bank Transfer"? payMethod = "Transferencia bancaria":{};
             HTMLListItems = `
