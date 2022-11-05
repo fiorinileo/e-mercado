@@ -218,6 +218,7 @@ export const saveCategorieInfo = async (catGroup) =>{
   if (null) { // Si la categoria tiene productos =>
     for  (const productId in catGroup) { // Recorremos la categoria 
       const product = catGroup[productId]; // Guardamos el producto de este ciclo
+       
       let relatedProducts =  await getJSONData(PRODUCT_INFO_URL+productId+".json")
       relatedProducts=relatedProducts.data.relatedProducts // Guardamos el array de productos relacionados
       for (let i = 0; i < relatedProducts.length; i++) { // Recorremos el array de productos relacionados
@@ -277,10 +278,11 @@ export const saveCategorieInfo = async (catGroup) =>{
         let currentProductsArray = resultObj.data;
         for  (let i = 0; i < currentProductsArray.products.length; i++) { // Recorremos la categoria 
           const product = currentProductsArray.products[i]; // Guardamos el producto de este ciclo
-
+          console.log(product);
+          const productId = String(catId)+(i+1)
           let relatedProducts =  await getJSONData(PRODUCT_INFO_URL+product.id+".json")
           relatedProducts=relatedProducts.data.relatedProducts // Guardamos el array de productos relacionados
-          
+          /* relatedProducts = [] */
           for (let i = 0; i < relatedProducts.length; i++) { // Recorremos el array de productos relacionados
             let relatedProduct = relatedProducts[i];
             let categoryOfRelatedProduct;
@@ -291,20 +293,26 @@ export const saveCategorieInfo = async (catGroup) =>{
               }
                  // Averiguamos la categoria del producto relacionado
             }
-            let imageURL = await firebaseGetImage("prod"+relatedProduct.id+"_1.jpg")
+            console.log(categoryOfRelatedProduct);
+            console.log(relatedProduct);
+            let productIndex = String(relatedProduct.id).substring(4)
+            let relatedProductId = String(categoryOfRelatedProduct)+String(productIndex)
+            console.log("relatedProductId"+relatedProductId);
+            let imageURL = await firebaseGetImage("prod"+relatedProductId+"_1.jpg")
               relatedProduct["catId"] = categoryOfRelatedProduct; // le agregamos un atributo al producto relacionado, que es la categoría a la que pertenece
               relatedProduct["image"] = imageURL;
+              relatedProduct.id=relatedProductId;
     
           }// Fin de recorrer el array de productos relacionados
     
           let imagesProduct = [];
           for (let i = 0; i < 4; i++) {
-            let imageURL = await firebaseGetImage("prod"+product.id+"_"+(i+1)+".jpg")
+            let imageURL = await firebaseGetImage("prod"+productId+"_"+(i+1)+".jpg")
             imagesProduct.push(imageURL)
           }
-          catProducts[product.id]= {
+          catProducts[productId]= {
             catId:currentProductsArray.catID,
-            id:product.id,
+            id:productId,
             name:product.name,
             description:product.description,
             cost:product.cost,
