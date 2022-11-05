@@ -25,13 +25,11 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db= getFirestore(app);
+export const storage = getStorage(app);
 
-// Initialize Cloud Storage and get a reference to the service
 function dualDigits(num) {
   return parseInt(num) < 10 ? (num = "0" + num) : num;
 }
-export const storage = getStorage(app);
-
 export async function uploadFile(dataURL,fileName){
   const storageRef = ref(storage, '/'+fileName)
   let src;
