@@ -1,6 +1,6 @@
 //Archivo base que posee las credenciales para poder acceder a la base de datos de Firebase
 
-import { getStorage,  ref, getDownloadURL, uploadBytes } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-storage.js";
+import { getStorage,  ref, getDownloadURL, uploadString,uploadBytes } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-storage.js";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
 import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"
@@ -30,10 +30,45 @@ function dualDigits(num) {
   return parseInt(num) < 10 ? (num = "0" + num) : num;
 }
 export const storage = getStorage(app);
-export async function uploadFile(file){
-  const storageRef = ref(storage, 'icons')
-  let snapshot = await uploadBytes(storageRef,file)
+
+export async function uploadFile(dataURL,fileName){
+  const storageRef = ref(storage, '/'+fileName)
+  console.log(storageRef);
+  console.log(dataURL.dataURL);
+  let src;
+  if (dataURL.type !== "image/jpeg" ) {
+    src = dataURL.dataURL.substring(23)
+  }
+  else{
+    src = dataURL.dataURL.substring(22)
+  }
+  let data=b64toBlob(src,dataURL.type)
+  let snapshot = await uploadBytes(storageRef,data)
   console.log(snapshot);
+}
+function b64toBlob(b64Data, contentType, sliceSize) {
+  contentType = contentType || "";
+  sliceSize = sliceSize || 512;
+
+  var byteCharacters = atob(b64Data);
+  var byteArrays = [];
+
+  for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+    var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+    var byteNumbers = new Array(slice.length);
+    for (var i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+
+    var byteArray = new Uint8Array(byteNumbers);
+
+    byteArrays.push(byteArray);
+  }
+
+  console.log(byteArrays);
+
+  return new File(byteArrays, "pot", { type: contentType });
 }
 export const firebaseGetImage= async (imageName)=>{ // Función para obtener la URL de una imagen pasandole el nombre como parametro
   const pathReference = ref(storage,imageName);
@@ -90,9 +125,9 @@ export const getProductInfo = async(productId,catId)=>{
   let categoryInfo = await getCategorieInfo(catId)
   return categoryInfo.products[productId];
 }
-export const saveProductInfo = async (product) =>{
+export const saveProductInfo = async (catId,product) =>{
 
-  await setDoc(doc(db,"catInfo","catId_"+catId),
+  await setDoc(doc(db,"catInfo","catId_"+catId+"/products/products"),
   product,{ merge: true })
 }
 // almacena el carrito del usuario, en su historial de compras una vez la confirma
@@ -180,12 +215,13 @@ export const getUserName = async ()=>{
 
 }
 export const saveCategorieInfo = async (catGroup) =>{
-  let catId;
+  
+  let catId = localStorage.getItem("catId");
   let catName;
   let catInfo ={}
   let catProducts = {};
   console.log(catGroup);
-  if (catGroup) { // Si la categoria tiene productos =>
+  if (null) { // Si la categoria tiene productos =>
     for  (const productId in catGroup) { // Recorremos la categoria 
       const product = catGroup[productId]; // Guardamos el producto de este ciclo
       console.log(catGroup);
@@ -230,7 +266,8 @@ export const saveCategorieInfo = async (catGroup) =>{
         currency:product.currency,
         soldCount:product.soldCount,
         images:imagesProduct,
-        relatedProducts:relatedProducts
+        stock:undefined,
+        relatedProducts:relatedProducts,
       }
     
     }// Fin recorrer categoria
@@ -248,7 +285,7 @@ export const saveCategorieInfo = async (catGroup) =>{
     catProducts,{ merge: true })
   }
   else{
-    await getJSONData("https://japceibal.github.io/emercado-api/cats_products/105.json")
+    await getJSONData("https://japceibal.github.io/emercado-api/cats_products/"+catId+".json")
     .then(async (resultObj)=>{
       if (resultObj.status === "ok"){
         let currentProductsArray = resultObj.data;
@@ -270,7 +307,7 @@ export const saveCategorieInfo = async (catGroup) =>{
             }
             console.log(categoryOfRelatedProduct);
             let imageURL = await firebaseGetImage("prod"+relatedProduct.id+"_1.jpg")
-              console.log(categoryOfRelatedProduct +" != "+ 105);
+              console.log(categoryOfRelatedProduct +" != "+ catId);
               console.log(relatedProduct);
               relatedProduct["catId"] = categoryOfRelatedProduct; // le agregamos un atributo al producto relacionado, que es la categoría a la que pertenece
               relatedProduct["image"] = imageURL;
@@ -279,7 +316,7 @@ export const saveCategorieInfo = async (catGroup) =>{
           }// Fin de recorrer el array de productos relacionados
     
           let imagesProduct = [];
-          for (let i = 0; i < 3; i++) {
+          for (let i = 0; i < 4; i++) {
             let imageURL = await firebaseGetImage("prod"+product.id+"_"+(i+1)+".jpg")
             imagesProduct.push(imageURL)
           }
@@ -292,12 +329,13 @@ export const saveCategorieInfo = async (catGroup) =>{
             currency:product.currency,
             soldCount:product.soldCount,
             images:imagesProduct,
-            relatedProducts:relatedProducts
+            relatedProducts:relatedProducts,
+            stock:40,
           }
         
         }// Fin recorrer categoria
           console.log(catProducts);
-          await setDoc(doc(db,"catInfo","catId_105/products/products"),
+          await setDoc(doc(db,"catInfo","catId_"+catId+"/products/products"),
           catProducts,{ merge: true })
 
         

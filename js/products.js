@@ -39,6 +39,7 @@ async function showProductsList(){
     // Reutilización del código ya creado en "Products", esto se debe a que la visualización que se solicita es idéntica, sustituyendo en este caso las distintas categorias, por los distintos productos pertenecientes a la categoría solicitada.
     let htmlContentToAppend = "";
     for(const productId in currentProductsArray){
+        console.log(currentProductsArray);
         const product = currentProductsArray[productId];
         let imageURL = product.images[0]
         if (((minPrice == undefined) || (minPrice != undefined && parseInt(product.cost) >= minPrice)) &&

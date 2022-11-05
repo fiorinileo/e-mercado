@@ -75,6 +75,21 @@ main{
     padding-bottom: 10px;
     margin-bottom: 20px;
 }
+
 #expirationDateCard>input.form-control{
     width: 40%;
+}
+.needs-validation svg{
+    fill:#5d5a5b;
+    fill-opacity:1;
+    fill-rule:evenodd;
+    stroke:none;
+    width: 40px;
+    height: 40px;
+}
+.was-validated .form-check-input:valid~.form-check-label svg{
+    fill: #198754;
+}
+.was-validated .form-check-input:invalid~.form-check-label svg{
+    fill: #dc3545;
 }

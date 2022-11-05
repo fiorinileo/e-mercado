@@ -152,10 +152,10 @@ document.addEventListener("DOMContentLoaded",async()=>{
             </li>
             <li class="row">
                 <p class="col-5 fw-bold">
-                    Tipo de envío ${billingInfo.shipType}(${shipCost}%):
+                    Tipo de envío ${billingInfo.shipType}(${String(shipCost).substring(2,4)}%):
                 </p>
                 <p class="col-6">
-                    USD ${totalCost*shipCost}
+                    USD ${parseInt(totalCost*shipCost)}
                 </p>
             </li>
             <li class="row">

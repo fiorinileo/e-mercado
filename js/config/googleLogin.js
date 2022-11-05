@@ -10,10 +10,11 @@ googlebtn.addEventListener("click",async ()=>{
         try {
             const credentials =  await signInWithPopup(auth,provider);
             localStorage.setItem('userEmail',credentials.user.email);
-            splitName(credentials.user.displayName,credentials.user.email)
+            splitName(credentials.user.displayName,credentials.user.email,credentials.user.photoURL)
             bootstrap.Modal.getInstance(document.querySelector("#signinModal")).hide()
             let userName = (credentials.user.displayName).substring(0,9)+"...";
-            document.getElementById("userEmail").innerHTML= `<img class="img-thumbnail" src=${credentials.user.photoURL} width="24px"> <span>${userName}</span>`;
+            document.getElementById("userName").innerHTML=userName;
+            document.getElementById("userEmail").getElementsByTagName("img")[0].src=credentials.user.photoURL;
             loadCart();
         } catch (error) {
             console.log(error);
@@ -21,7 +22,7 @@ googlebtn.addEventListener("click",async ()=>{
 
     
 })
-function splitName(nameGroup,email){
+function splitName(nameGroup,email,photo){
     let localCredentials={};
     let flag = true
     let name = ""
@@ -38,9 +39,10 @@ function splitName(nameGroup,email){
             lastname+=letra;
         }
     }
-    localCredentials["userName"]=name.trim()
-    localCredentials["userLastname"]=lastname.trim()
+    localCredentials["userName"]=name.trim();
+    localCredentials["userLastname"]=lastname.trim();
+    localCredentials["photo"]=photo;
     localCredentials["withGoogle"]=true;
     localStorage.setItem("credentials",JSON.stringify(localCredentials))
-    saveUserName(name,lastname,email)
+    saveUserName(name,lastname,email,photo)
 }

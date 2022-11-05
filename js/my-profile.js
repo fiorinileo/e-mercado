@@ -8,12 +8,15 @@ document.addEventListener("DOMContentLoaded",async ()=>{
     let inputLastname = document.getElementById("inputLastname");
     let inputEmail = document.getElementById("inputEmail");
     let inputPhoto = document.getElementById("inputPhoto");
+
     inputName.disabled=credentials.withGoogle
     inputLastname.disabled=credentials.withGoogle
     inputName.value = credentials.userName;
     inputLastname.value = credentials.userLastname;
     inputEmail.value = userEmail;
     
+
+    document.querySelector('#perfilPhoto').src = credentials.photo;
     const btnSaveChanges = document.getElementById("btnSaveChanges")
     btnSaveChanges.addEventListener("click",async ()=>{
         if ( credentials.userName != inputName.value || credentials.userLastname != inputLastname.value ) {    

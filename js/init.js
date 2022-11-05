@@ -140,8 +140,8 @@ export function drawCart(){
     <div class="priceContainer">
       <div>
         <div>
-          <p>
-            Total en USD: $ ${totalCostUSD}
+          <p class="fw-bold">
+            Subtotal en USD: $ ${totalCostUSD}
           </p>
         </div>
       </div>

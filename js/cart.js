@@ -1,4 +1,4 @@
-import { deleteProduct, saveProductInfo, saveUserPurchase } from "./config/firebase.js";
+import { deleteProduct, saveUserPurchase } from "./config/firebase.js";
 import { loadCart } from "./config/loadCart.js";
 import { showMessage } from "./config/showMessage.js";
 import { drawCart, windowReplace } from "./init.js";

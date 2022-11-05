@@ -1,4 +1,6 @@
-import { uploadFile } from "./config/firebase.js";
+import { firebaseGetImage, getProductsOfCategory, saveProductInfo, uploadFile } from "./config/firebase.js";
+import { showMessage } from "./config/showMessage.js";
+import { hideSpinner, showSpinner } from "./init.js";
 
 let productCost = 0;
 let productCount = 0;
@@ -79,26 +81,26 @@ document.addEventListener("DOMContentLoaded", function(e){
 
 
     //Se obtiene el formulario de publicación de producto
-    let sellForm1 = document.getElementById("sell-form");
-    sellForm1.addEventListener("submit",(e)=>{
-        e.preventDefault()
-        console.log(myDropzone.files[0]);
-        if (myDropzone.files[0]) {
-            uploadFile(myDropzone.files[0])
-        }
-    })
+    let sellForm = document.getElementById("sell-form");
     //Se agrega una escucha en el evento 'submit' que será
     //lanzado por el formulario cuando se seleccione 'Vender'.
-   /*  sellForm.addEventListener("submit", function(e){
-
+    sellForm.addEventListener("submit",async function(e){
+        showSpinner()
         e.preventDefault(); 
         e.preventDefault();
-
+        
+        
         let productNameInput = document.getElementById("productName");
         let productCategory = document.getElementById("productCategory");
         let productCost = document.getElementById("productCostInput");
+        let productDescription = document.getElementById("productDescription");
+        let productCurrency = document.getElementById("productCurrency");
+        let productCountInput = document.getElementById("productCountInput");
         let infoMissing = false;
-
+        let selectedCategory = "10"+[productCategory.selectedIndex]; // calculamos el id de la categoria del producto
+        let Category = await getProductsOfCategory(selectedCategory) // traemos la categoría donde le usuario desea agregar su producto
+        let productId = String(selectedCategory)+(Object.keys(Category).length+1); // Seteamos nuevo id para el producto a agregar
+        console.log(productId);
         //Quito las clases que marcan como inválidos
         productNameInput.classList.remove('is-invalid');
         productCategory.classList.remove('is-invalid');
@@ -126,13 +128,48 @@ document.addEventListener("DOMContentLoaded", function(e){
             productCost.classList.add('is-invalid');
             infoMissing = true;
         }
-        
+        if (myDropzone.files.length<3) {
+            infoMissing = true;
+        }
+        console.log(infoMissing);
         if(!infoMissing)
         {
+               let imagesProduct=[];
+                for (let i = 0; i < myDropzone.files.length; i++) { // recorremos el array de imagenes del producto
+                    let file = myDropzone.files[i]; // separamos la imagen a trabajar
+                    console.log(file);
+                    let NewFile = Object.assign({},file)
+                    NewFile.name="prod"+productId+"_"+(i+1)+".jpg" // le asignamos el nombre específico a esa imagen
+                    console.log(NewFile.name);
+                    console.log(NewFile);
+                    await uploadFile(NewFile,NewFile.name); // subimos esa imagen a firebase
+                    imagesProduct[i] = await firebaseGetImage(NewFile.name);
+                }
+                let catProducts = {};
+                catProducts[productId] ={
+                    catId:selectedCategory,
+                    id:productId,
+                    name:productNameInput.value,
+                    description:productDescription.value,
+                    cost:productCost.value,
+                    currency:productCurrency.value,
+                    soldCount:productCountInput.value,
+                    images:imagesProduct,
+                    relatedProducts:[]
+                  }
+                  console.log(imagesProduct);
+                  console.log(catProducts);
+                  console.log(selectedCategory);
+                await saveProductInfo(selectedCategory,catProducts)
+                hideSpinner();
+                showMessage("Su producto se ha publicado con exito!",true,"top","center");
+                setTimeout(() => {
+                    location.reload()
+                }, 2000);
             //Aquí ingresa si pasó los controles, irá a enviar
             //la solicitud para crear la publicación.
+           /*  getJSONData(PUBLISH_PRODUCT_URL).then(function(resultObj){
 
-            getJSONData(PUBLISH_PRODUCT_URL).then(function(resultObj){
                 let msgToShowHTML = document.getElementById("resultSpan");
                 let msgToShow = "";
     
@@ -152,7 +189,8 @@ document.addEventListener("DOMContentLoaded", function(e){
     
                 msgToShowHTML.innerHTML = msgToShow;
                 document.getElementById("alertResult").classList.add("show");
-            });
+            }); */
+            
         }
-    }); */
+    });
 });

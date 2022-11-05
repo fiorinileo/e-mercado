@@ -63,7 +63,7 @@ li{
   min-width: 20px;
   width: 80%;
 }
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .bd-placeholder-img-lg {
     font-size: 3.5rem;
   }
@@ -281,6 +281,10 @@ a.custom-card:hover {
 }
 
 .form-control{
+  box-shadow: 10px 13px 19px -5px rgb(227 227 227 / 75%);
+  text-decoration: none;
+  -webkit-box-shadow: inset 2px 2px 10px -2px #3b3b3b82;
+  -moz-box-shadow: 10px 13px 19px -5px rgba(227,227,227,0.75);
   border: var(--primary-color) solid 1px;
 }
 
