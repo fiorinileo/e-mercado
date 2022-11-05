@@ -1,8 +1,7 @@
-import { firebaseGetImage, getCategorieInfo, getCategoriesInfo, getComments, getProductInfo, getProductsOfCategory, saveCart,saveComment } from "./config/firebase.js"
-import { loadCart } from "./config/loadCart.js";
+import { firebaseGetImage, getProductsOfCategory, saveCart,saveComment } from "./config/firebase.js"
 import { loadFirebaseComments } from "./config/loadComments.js";
 import { showMessage } from "./config/showMessage.js";
-import {getJSONData, showProductInCart, windowReplace, drawCart, showSpinner, hideSpinner } from "./init.js"
+import {getJSONData, showProductInCart, windowReplace, drawCart} from "./init.js"
 
 var date = new Date();
 

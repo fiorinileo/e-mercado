@@ -3,8 +3,8 @@
 import { getStorage,  ref, getDownloadURL, uploadString,uploadBytes } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-storage.js";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
-import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"
-import { getFirestore, addDoc,collection, setDoc, doc, getDocs,getDoc, updateDoc, deleteField, deleteDoc } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js"
+import { getAuth } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"
+import { getFirestore,collection, setDoc, doc, getDocs,getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js"
 import { deleteCart } from "../cart.js";
 import { getJSONData, PRODUCT_INFO_URL } from "../init.js";
 import { saveFirebaseComments } from "./postComments.js";

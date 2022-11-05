@@ -1,7 +1,6 @@
 import { deleteProduct, saveUserPurchase } from "./config/firebase.js";
-import { loadCart } from "./config/loadCart.js";
 import { showMessage } from "./config/showMessage.js";
-import { drawCart, windowReplace } from "./init.js";
+import { windowReplace } from "./init.js";
 
 var totalCostUSD = 0;
 function printShipCost(){

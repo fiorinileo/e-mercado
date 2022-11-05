@@ -1,4 +1,4 @@
-import { saveUserName, ticketLoader } from "./config/firebase.js";
+import { saveUserName } from "./config/firebase.js";
 import { showMessage } from "./config/showMessage.js";
 
 document.addEventListener("DOMContentLoaded",async ()=>{

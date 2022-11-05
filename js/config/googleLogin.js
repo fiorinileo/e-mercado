@@ -1,6 +1,6 @@
 // Archivo que permite el logeo al sitio mediante la cuenta de google 
 import { GoogleAuthProvider,signInWithPopup } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"
-import { auth, getUserName, saveUserName } from "./firebase.js"
+import { auth, saveUserName } from "./firebase.js"
 import { loadCart } from "./loadCart.js";
 
 

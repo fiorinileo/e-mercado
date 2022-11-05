@@ -1,5 +1,5 @@
-import { firebaseGetImage, getCategorieInfo, getCategoriesInfo } from "./config/firebase.js";
-import { CATEGORIES_URL, getJSONData, hideSpinner, showSpinner } from "./init.js";
+import {  getCategoriesInfo } from "./config/firebase.js";
+import {  hideSpinner, showSpinner } from "./init.js";
 
 const ORDER_ASC_BY_NAME = "AZ";
 const ORDER_DESC_BY_NAME = "ZA";
@@ -49,8 +49,6 @@ async function showCategoriesList(){
         for(let i = 0; i < currentCategoriesArray.length; i++){
             let category = currentCategoriesArray[i];
             let imageURL = category.imgSrc
-            let productCount=0;
-            category.productCount? productCount = category.productCount: {}; // si tiene productos, le seteamos su cantidad
             if (((minCount == undefined) || (minCount != undefined && parseInt(productCount) >= minCount)) &&
                 ((maxCount == undefined) || (maxCount != undefined && parseInt(productCount) <= maxCount))){
     
@@ -70,7 +68,7 @@ async function showCategoriesList(){
                                 <p class="mb-1">${category.description}</p>
                             </div>
                             <div class="row pe-0  m-0 mt-1 bg-light py-2">
-                             <p class="product-price col  m-0 align-self-center">${productCount} Artículos</p>
+                             <p class="product-price col  m-0 align-self-center">${category.productCount} Artículos</p>
                              <div class="col category-cta-btn px-2 align-self-center">
                                 <button>
                                     Ver más
