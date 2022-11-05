@@ -227,7 +227,12 @@ p.articleCant span{
   position: relative;
   border-radius: 0 0 12px 12px;
 }
+a{
+ color: #6791ce
+}
 a.nav-link{
+  color: rgb(255 255 255);
+  background: var(--primary-color);
   border-bottom: solid 2px #f1f1f18c;
   border-radius: 12px;
 }
