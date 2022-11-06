@@ -49,6 +49,14 @@ async function imagesProduct(product) {
   }
 }
 function showProductInfo(product) {
+    let countStatus;
+    console.log(parseInt(product.stock));
+    if (parseInt(product.stock) > 0) {
+      countStatus = product.soldCount+" vendidos";
+    }
+    else{
+      countStatus = "Agotado"
+    }
   // Reutilización del código ya creado en "Products", esto se debe a que la visualización que se solicita es idéntica, sustituyendo en este caso las distintas categorias, por los distintos productos pertenecientes a la categoría solicitada.
   let htmlContentToAppend = "";
   htmlContentToAppend += `
@@ -75,8 +83,8 @@ function showProductInfo(product) {
                     <div class="col-lg-12 p-1 p-md-5 product_info p-4">
                         <div class="col mt-3">
                         <small id="soldCountSpan">Nuevo | ${
-                          product.soldCount
-                        } vendidos </small>
+                          countStatus
+                        }  </small>
                             <div class="d-flex w-100 justify-content-between">
                                 <h4 class="mb-1 product-header">${product.name.toUpperCase()}</h4>
                             </div>
@@ -302,55 +310,72 @@ document.addEventListener("DOMContentLoaded", async ()=> {
           document.getElementById("buy_btn").addEventListener("click", async () => {//creamos el evento de escucha a "click" en el boton de comprar
               if (localStorage.getItem("userEmail")) { //comprobamos que el usuario está logeado
                 
-                if (document.getElementById("nudCant").value>0) {
-
-                  let userEmail = localStorage.getItem("userEmail");//cargamos el nombre de usuario en [userEmail]
-                  let cart = JSON.parse(localStorage.getItem("cart"));//declaramos el objeto cartUser
-                  let count = parseInt(document.getElementById("nudCant").value);//sumamos la cantidad previa de dicho producto con la seleccionada previamente en el nud(numeric Up Down)
-                  if (cart) { // si existe en el carrito, le sumamos a count, la cantidad previa
-                    if (cart[currentProduct]) {
-                      count+=cart[currentProduct].count;
+                if (product.stock >= document.getElementById("nudCant").value) { // Si hay artículos en stock suficientes, se ejecuta el codigo
+                  if (document.getElementById("nudCant").value>0) {
+  
+                    let userEmail = localStorage.getItem("userEmail");//cargamos el nombre de usuario en [userEmail]
+                    let cart = JSON.parse(localStorage.getItem("cart"));//declaramos el objeto cartUser
+                    let count = parseInt(document.getElementById("nudCant").value);//sumamos la cantidad previa de dicho producto con la seleccionada previamente en el nud(numeric Up Down)
+                    let flag = true;
+                    if (cart) { // si existe en el carrito, le sumamos a count, la cantidad previa
+                      if (cart[currentProduct]) { // Si el producto existe en el carrito, le sumamos la cantidad
+                        if (product.stock > (cart[currentProduct].count+count) ) {
+                          count+=cart[currentProduct].count;
+                          cart[currentProduct] = {
+                            cost:product.cost,
+                            count:count,
+                            name:product.name,
+                            currency: product.currency,
+                            image:product.images[0],
+                            catId:product.catId,
+                            stock:product.stock,
+                          }
+                        }
+                        else{
+                          flag = false;
+                          showMessage("Lo sentimos, no disponemos de stock suficiente para su compra",false,"top","center")
+                        }
+                      }
+                      else{
+                        cart[currentProduct] = {
+                        cost:product.cost,
+                        count:count,
+                        name:product.name,
+                        currency: product.currency,
+                        image:product.images[0],
+                        catId:product.catId,
+                        stock:product.stock,
+                      }
+                      }
+                      
+                    }
+                    else{
+                      cart = {}
                       cart[currentProduct] = {
                         cost:product.cost,
                         count:count,
                         name:product.name,
                         currency: product.currency,
                         image:product.images[0],
-                        catId:product.catId
+                        catId:product.catId,
+                        stock:product.stock,
                       }
                     }
-                    else{
-                      cart[currentProduct] = {
-                      cost:product.cost,
-                      count:count,
-                      name:product.name,
-                      currency: product.currency,
-                      image:product.images[0],
-                      catId:product.catId
+                    if (flag) {
+                      saveCart(userEmail,currentProduct,product.cost,count,product.name,product.currency,product.images[0],product.catId,product.stock)
+                      localStorage.setItem("cart", JSON.stringify(cart));//guardamos el carrito general(con todos los usuarios) en localStorage
+                      showProductInCart();
+                      drawCart();
+                      showMessage("Se ha agregado su producto al carrito",true,"top","center")
                     }
-                    }
-                    
                   }
                   else{
-                    cart = {}
-                    cart[currentProduct] = {
-                      cost:product.cost,
-                      count:count,
-                      name:product.name,
-                      currency: product.currency,
-                      image:product.images[0],
-                      catId:product.catId
-                    }
+                    alert("Debes ingresar un valor positivo entero");
                   }
-                  saveCart(userEmail,currentProduct,product.cost,count,product.name,product.currency,product.images[0],product.catId)
-                  localStorage.setItem("cart", JSON.stringify(cart));//guardamos el carrito general(con todos los usuarios) en localStorage
-                  showProductInCart();
-                  drawCart();
-                  showMessage("Se ha agregado su producto al carrito",true,"top","center")
                 }
                 else{
-                  alert("Debes ingresar un valor positivo entero");
-                }
+                  showMessage("Lo sentimos, no hay artículos suficientes a la venta",false,"top","center");
+                } 
             }
             else{
               showMessage("Necesitas estar Logeado para hacer eso",false,"top","center");

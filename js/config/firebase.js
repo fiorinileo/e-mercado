@@ -1,17 +1,13 @@
-//Archivo base que posee las credenciales para poder acceder a la base de datos de Firebase
+//Archivo base que posee las credenciales y funciones CRUD para poder acceder a la base de datos de Firebase
 
-import { getStorage,  ref, getDownloadURL, uploadString,uploadBytes } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-storage.js";
-// Import the functions you need from the SDKs you need
+import { getStorage,  ref, getDownloadURL,uploadBytes } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-storage.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"
 import { getFirestore,collection, setDoc, doc, getDocs,getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js"
 import { deleteCart } from "../cart.js";
 import { getJSONData, PRODUCT_INFO_URL } from "../init.js";
 import { saveFirebaseComments } from "./postComments.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-      
-// Your web app's Firebase configuration
+
 const firebaseConfig = {
   apiKey: "AIzaSyC4uWhBDz6xTJe4CQUv98u-oJ_QyUR3S5c",
   authDomain: "emercado-359900.firebaseapp.com",
@@ -27,108 +23,97 @@ export const auth = getAuth(app);
 export const db= getFirestore(app);
 export const storage = getStorage(app);
 
-function dualDigits(num) {
+function dualDigits(num) { // recibe un numero como parámetro, si es menor que 10, le agrega un 0 adelante
   return parseInt(num) < 10 ? (num = "0" + num) : num;
 }
-export async function uploadFile(dataURL,fileName){
-  const storageRef = ref(storage, '/'+fileName)
-  let src;
-  if (dataURL.type !== "image/jpeg" ) {
-    src = dataURL.dataURL.substring(23)
+export async function uploadFile(dataURL,fileName){ // Funcion que sube una imágen Fire Storage para poder utilizarla posteriormente
+  const storageRef = ref(storage, '/'+fileName) // guardamos la referencia de la imágen con su nombre
+  let src; // variable que almacenará el string base64 de la imágen
+  if (dataURL.type !== "image/jpeg" ) { // si el archivo es diferente a jpeg
+    src = dataURL.dataURL.substring(23) // se retiran los primeros 23 caracteres de su dataURL
   }
-  else{
-    src = dataURL.dataURL.substring(22)
+  else{ // sino es diferente 
+    src = dataURL.dataURL.substring(22) // se retiran los primeros 22 caracteres de su dataURL
   }
-  let data=b64toBlob(src,dataURL.type)
-  let snapshot = await uploadBytes(storageRef,data)
+  let data=b64toBlob(src,dataURL.type) // luego eso se envía a la función b64toBlob, que devuelve el formato que acepta la función uploadBytes de Firease para subir archivos
+  let snapshot = await uploadBytes(storageRef,data) // con el resultado se ejecuta uploadBytes y se envía ese archivo a la ruta que especificamos antes
 }
-function b64toBlob(b64Data, contentType, sliceSize) {
+function b64toBlob(b64Data, contentType, sliceSize) { // Función extraída de foros de internet ligeramente modificada recibe sus 3 parámetros y devuelve un array de bytes que es el formato que necesitamos
   contentType = contentType || "";
   sliceSize = sliceSize || 512;
-
   var byteCharacters = atob(b64Data);
   var byteArrays = [];
-
   for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
     var slice = byteCharacters.slice(offset, offset + sliceSize);
-
     var byteNumbers = new Array(slice.length);
     for (var i = 0; i < slice.length; i++) {
       byteNumbers[i] = slice.charCodeAt(i);
     }
-
     var byteArray = new Uint8Array(byteNumbers);
-
     byteArrays.push(byteArray);
   }
-
-
   return new File(byteArrays, "pot", { type: contentType });
 }
 export const firebaseGetImage= async (imageName)=>{ // Función para obtener la URL de una imagen pasandole el nombre como parametro
-  const pathReference = ref(storage,imageName);
-  let urlObj = await getDownloadURL(pathReference)
+  const pathReference = ref(storage,imageName); // guardamos la referencia donde se encuentra la imágens
+  let urlObj = await getDownloadURL(pathReference) // ejecutamos la funcion de Firebase con dicha referencia, y su response la almacenamos en la variable "url"
   let url =JSON.stringify(urlObj);
-  return url;
-  
-  
-
+  return url; // retornamos la url de la imágen
 }
-export const saveCart =  async (userEmail,productId,cost,count,productName,currency,image,catId) =>{
-  let docData={
+export const saveCart =  async (userEmail,productId,cost,count,productName,currency,image,catId,stock) =>{ // Función que almacena un único producto en carrito del usuario en Firebase
+  let docData={ // con los parámetros creamos el objeto del producto 
       cost:cost,
       count:count,
       currency:currency,
       name:productName,
       image:image,
       catId:catId,
+      stock:stock,
 };
-  let ruta= doc(db,"usersInfo/"+userEmail+"/cartUser/"+productId);
-  await setDoc(ruta,docData);
+  let ruta= doc(db,"usersInfo/"+userEmail+"/cartUser/"+productId); //creamos la ruta donde se almacenará ese producto dentro del carrito del usuario
+  await setDoc(ruta,docData); // establecemos esa ruta y almacenamos en Firebase mediante la función setDoc
 } 
-export const deleteProduct = async (userEmail,productId)=>{
-  let ruta= doc(db,"usersInfo/"+userEmail+"/cartUser/"+productId);
-  await deleteDoc(ruta);
+export const deleteProduct = async (userEmail,productId)=>{ // Función que elimina un único producto del carrito del usuario en Firebase
+  let ruta= doc(db,"usersInfo/"+userEmail+"/cartUser/"+productId); // Creamos la ruta donde se almacena ese artículo en Firebase
+  await deleteDoc(ruta); // Eliminamos la ruta, por ende, el producto del carrito
 }
-export const getCart = async (userEmail)=>{
-  let cart = {}
-  const querySnapshot = await getDocs(collection(db, "usersInfo",userEmail,"cartUser"));
-  if (querySnapshot) {
+export const getCart = async (userEmail)=>{ // Función que obtiene el carrito completo del usuario almacenado en Firebase
+  let cart = {} // creamos el objeto cart, vacío
+  const querySnapshot = await getDocs(collection(db, "usersInfo",userEmail,"cartUser")); // ejecutamos un getDocs de la ruta donde se encuentra el carrito y su response la almacenamos en una "querySnapshot"
+  if (querySnapshot) { // si la "querySnapshot"(carrito) existe, lo recorremos generando cada instancia en el objeto carrito anteriormente creado
     querySnapshot.forEach((product) => {
       cart[product.id]=product.data()
     });
   }
-  return cart
+  return cart // devolvemos el objeto cart completo
 }
-/* Función para guardar comentarios en Firebase */
-export const saveComment = async (userName,score,description,dateTime,productId,commentId) =>{
-  await setDoc(doc(db,"comments","comments_"+productId),
+export const saveComment = async (userName,score,description,dateTime,productId,commentId) =>{ // Función que almacena un único comentario realizado por el usuario
+  await setDoc(doc(db,"comments","comments_"+productId), // establecemos la ruta donde se almacenará dicho comentario
  {
-     [commentId]:{userName,score,description,dateTime} 
+     [commentId]:{userName,score,description,dateTime} //creamos el objeto comentario con sus parámetros y lo envíamos
    
- },{ merge: true })
+ },{ merge: true }) // habilitamos el merge para que no hayan sobrescrituras
 }
-/*Función para traer comentarios de Firebase*/
-export const getComments = async (productId)=>{
-  const docSnap= await getDoc(doc(db,"comments","comments_"+productId));
-  if (docSnap.exists()){
-    return docSnap.data();
+
+export const getComments = async (productId)=>{ // Función para traer comentarios de Firebase de un producto
+  const docSnap= await getDoc(doc(db,"comments","comments_"+productId)); // establecemos la ruta donde se guardan los comentarios de ese producto
+  if (docSnap.exists()){ // si existe la ruta 
+    return docSnap.data(); // retornamos su respuesta
   }
 }
-export const getProductInfo = async(productId,catId)=>{
-  catId ?{}: catId=  localStorage.getItem("catId");
-  let categoryInfo = await getCategorieInfo(catId)
-  return categoryInfo.products[productId];
+export const getProductInfo = async(productId,catId)=>{ //Función para obtener la información de un producto
+  catId ?{}: catId=  localStorage.getItem("catId"); // si catId no se pasó como parámetro, la obtenemos desde el LS,
+  let categoryInfo = await getCategorieInfo(catId) // Ejecutamoos getCategorieInfo y almacenamos toda la información de esa categoría en categoryInfo
+  return categoryInfo.products[productId]; //retornamos toda la información existente acerca de un producto
 }
-export const saveProductInfo = async (catId,product) =>{
-
+export const saveProductInfo = async (catId,product) =>{ // Función que almacena el producto que se le pase como parámetro, dentro de la categoría especificada
   await setDoc(doc(db,"catInfo","catId_"+catId+"/products/products"),
   product,{ merge: true })
 }
 // almacena el carrito del usuario, en su historial de compras una vez la confirma
 export const saveUserPurchase = async () =>{
   let date = new Date();
-  let purchaseDate =
+  let purchaseDate = // creamos un string que almacena la fecha actual
       date.getFullYear() +
       "-" +
       (parseInt(dualDigits(date.getMonth())) + 1) +
@@ -141,7 +126,7 @@ export const saveUserPurchase = async () =>{
  
   let paymentMethod ="Credit Card" // El método de pago comienza teniendo el valor de tarjeta de credito
   document.getElementById("radio-bankTransfer").checked ? paymentMethod = "Bank Transfer":{}; // si está checkeado el campo de banco, se cambia a transferencia bancaria
-  let shipType;
+  let shipType; // almacenamos el tipo de envío
   if (document.getElementById("Premium").checked) {
     shipType = "Premium"
   }
@@ -151,9 +136,8 @@ export const saveUserPurchase = async () =>{
   else{
     shipType="Standard"
   }
-
-  let cart = JSON.parse(localStorage.getItem("cart")) // traemos el carrito del usuario
-  let billingInfo = {
+  let cart = JSON.parse(localStorage.getItem("cart")) // traemos el carrito del usuario del LS
+  let billingInfo = { // creamos un objeto con los datos de la compra
     street: document.getElementById("calle").value,
     doorNum: document.getElementById("numeroPuerta").value,
     corner: document.getElementById("esquina").value,
@@ -161,228 +145,81 @@ export const saveUserPurchase = async () =>{
     shipType:shipType,
     date:purchaseDate,
   } 
-  let ticket = {}
-  ticket["billingInfo"]= billingInfo;
-  ticket["cart"]= cart;
+  let ticket = {} // generamos un objeto ticket con dos atributos, 
+  ticket["billingInfo"]= billingInfo; //uno con la información referente a la compra
+  ticket["cart"]= cart; // y otro con el carrito completo del usuario en ese momento
   saveSoldProduct(cart) // Función que se encarga de modificar y guardar la cantidad de productos vendidos en Firebase
-  let userEmail = localStorage.getItem("userEmail") 
-  let totalPurchases = await getDocs(collection(db,"usersInfo/"+userEmail+"/purchases"))
-  let ruta=doc(collection(db,"usersInfo",userEmail,"purchases"),"ticket_"+totalPurchases.docs.length);
-  await setDoc(ruta,ticket,{merge:true});
-  await deleteCart();
-  location.reload()
-  
+  let userEmail = localStorage.getItem("userEmail") // extraemos el email del usuario
+  let totalPurchases = await getDocs(collection(db,"usersInfo/"+userEmail+"/purchases")) // obtenemos todas la compras previas realizadas por el usuario para poder calcular el largo del array y asignarselo al ticket presente para tener un criterio a la hora de dar nombre
+  let ruta=doc(collection(db,"usersInfo",userEmail,"purchases"),"ticket_"+totalPurchases.docs.length); // creamos la ruta donde se almacenara la presente compra
+  await setDoc(ruta,ticket,{merge:true}); // almacenamos el objeto ticket en Firebase
+  await deleteCart(); // Ejecutamos la función deleteCart para eliminar todos los carritos
+  location.reload() // recargamos la página para que se refresquen todos los inputs y HTML
 }
-const saveSoldProduct = async (cart)=>{
-  for (const productId in cart) {
-      const product = cart[productId]; // obtenemos los productos individualmente del carrito
+const saveSoldProduct = async (cart)=>{ // Función que se ejecuta una vez el usuario realizó la compra para almacenar la cantidad de todos los productos vendidos en Firebase
+  for (const productId in cart) { // recorremos el carrito del usuario
+      const product = cart[productId]; // obtenemos los productos individualmente
       let catId = product.catId; // Obtenemos la categoria a la que pertenecen 
       let productsOfCategory = await getProductsOfCategory(catId); // Traemos toda la información de esa categoria
       let previusSoldCount  = productsOfCategory[productId].soldCount // Traemos la cantidad previa artículos de vendidos del artículo que estamos trabajando
       let cartSoldCount = cart[productId].count // Separamos la cantidad que el usuario desea comprar
       let newSoldCount = previusSoldCount+cartSoldCount; // sumamos esas dos cantidades en NewSoldCount
-      productsOfCategory[productId].soldCount=newSoldCount;
-      const docRef = doc(collection(db,"catInfo/catId_"+catId+"/products"),"products");
-      await updateDoc(docRef,productsOfCategory,{merge:true});
+      productsOfCategory[productId].soldCount=newSoldCount; // establecemos esa cantidad resultante en el objeto de su producto, dentro de la categoria
+      const docRef = doc(collection(db,"catInfo/catId_"+catId+"/products"),"products"); //creamos la referencia hacia ese producto
+      await updateDoc(docRef,productsOfCategory,{merge:true});// actualizamos dicho producto
   }
 
 }
-export const saveUserName = async (name,lastname,email,photo)=>{
-  let credentials = {
+export const saveUserName = async (name,lastname,email,photo)=>{ // Función que se ejecuta una vez el usuario de logeo para almacenar sus credenciales en Firebase
+  let credentials = { // creamos el objeto con las credenciales que almacenaremos
     userName:name,
     userLastname:lastname,
     photo:photo,
   }
-  let ruta= doc(db,"usersInfo/"+email); 
-  setDoc(ruta,credentials)
-  return 
+  let ruta= doc(db,"usersInfo/"+email); //establecemos la ruta que es el email del usuario (identificador único)
+  setDoc(ruta,credentials) // seteamos sus credenciales
 }
-export const getUserName = async ()=>{
+export const getUserName = async ()=>{ // Función que obtiene obtiene las credenciales desde Firebase una vez el usuario se logeó y las establece en el LocalStorage
   let userEmail = localStorage.getItem("userEmail")
   let credentials = {}
   const querySnapshot = await getDoc(doc(db, "usersInfo/"+userEmail));
   credentials = querySnapshot.data()
-  credentials["withGoogle"]=false;
+  credentials["withGoogle"]=false; // ya que se ejecuta esta finción significa que el usuario no inició sesión con google, por lo que la establecemos en false
   localStorage.setItem("credentials",JSON.stringify(credentials))
-  document.getElementById("userName").innerHTML=(credentials.userName+" "+credentials.userLastname).substring(0,9)+"...";
-  document.getElementById("userEmail").getElementsByTagName("img")[0].src=credentials.photo;
+  document.getElementById("userName").innerHTML=(credentials.userName+" "+credentials.userLastname).substring(0,9)+"..."; // seteamos el nombre del usuario en el navbar
+  document.getElementById("userEmail").getElementsByTagName("img")[0].src=credentials.photo; // junto con su foto de perfil
 
 }
-export const saveCategorieInfo = async (catGroup) =>{
-  
-  let catId = localStorage.getItem("catId");
-  let catName;
-  let catInfo ={}
-  let catProducts = {};
-  if (null) { // Si la categoria tiene productos =>
-    for  (const productId in catGroup) { // Recorremos la categoria 
-      const product = catGroup[productId]; // Guardamos el producto de este ciclo
-       
-      let relatedProducts =  await getJSONData(PRODUCT_INFO_URL+productId+".json")
-      relatedProducts=relatedProducts.data.relatedProducts // Guardamos el array de productos relacionados
-      for (let i = 0; i < relatedProducts.length; i++) { // Recorremos el array de productos relacionados
-        let relatedProduct = relatedProducts[i];
-        let categoryOfRelatedProduct;
-        for (let i = 101; i < 109; i++) {
-          let respuesta = await categoryOf(relatedProduct.id,i)
-          if (respuesta) {
-            categoryOfRelatedProduct = respuesta
-            catName = await getCategorieInfo(categoryOfRelatedProduct)
-            catName = catName.name;
-          }
-             // Averiguamos la categoria del producto relacionado
-        }
-        let imageURL = await firebaseGetImage("prod"+relatedProduct.id+"_1.jpg")
-          catId = product.catId;
-          relatedProduct["catId"] = categoryOfRelatedProduct; // le agregamos un atributo al producto relacionado, que es la categoría a la que pertenece
-          relatedProduct["image"] = imageURL;
-
-      }// Fin de recorrer el array de productos relacionados
-
-      let imagesProduct = [];
-      for (let i = 0; i < 4; i++) {
-        let imageURL = await firebaseGetImage("prod"+product.id+"_"+(i+1)+".jpg")
-        imagesProduct.push(imageURL)
-      }
-      catProducts[product.id]= {
-        catId:product.catId,
-        id:product.id,
-        name:product.name,
-        description:product.description,
-        cost:product.cost,
-        currency:product.currency,
-        soldCount:product.soldCount,
-        images:imagesProduct,
-        stock:undefined,
-        relatedProducts:relatedProducts,
-      }
-    
-    }// Fin recorrer categoria
-    let imgSrc = await firebaseGetImage("cat"+catId+"_1.jpg")
-    catInfo= {
-      productCount: Object.keys(catProducts).length,
-      id:catId,
-      name:catName,
-      imgSrc: imgSrc,
-    }
-    await setDoc(doc(db,"catInfo","catId_"+catId),
-    catInfo,{ merge: true })
-    await setDoc(doc(db,"catInfo","catId_"+catId+"/products/products"),
-    catProducts,{ merge: true })
-  }
-  else{
-    await getJSONData("https://japceibal.github.io/emercado-api/cats_products/"+catId+".json")
-    .then(async (resultObj)=>{
-      if (resultObj.status === "ok"){
-        let currentProductsArray = resultObj.data;
-        for  (let i = 0; i < currentProductsArray.products.length; i++) { // Recorremos la categoria 
-          const product = currentProductsArray.products[i]; // Guardamos el producto de este ciclo
-          console.log(product);
-          const productId = String(catId)+(i+1)
-          let relatedProducts =  await getJSONData(PRODUCT_INFO_URL+product.id+".json")
-          relatedProducts=relatedProducts.data.relatedProducts // Guardamos el array de productos relacionados
-          /* relatedProducts = [] */
-          for (let i = 0; i < relatedProducts.length; i++) { // Recorremos el array de productos relacionados
-            let relatedProduct = relatedProducts[i];
-            let categoryOfRelatedProduct;
-            for (let i = 101; i < 109; i++) {
-              let respuesta = await categoryOf(relatedProduct.id,i)
-              if (respuesta) {
-                categoryOfRelatedProduct = respuesta
-              }
-                 // Averiguamos la categoria del producto relacionado
-            }
-            console.log(categoryOfRelatedProduct);
-            console.log(relatedProduct);
-            let productIndex = String(relatedProduct.id).substring(4)
-            let relatedProductId = String(categoryOfRelatedProduct)+String(productIndex)
-            console.log("relatedProductId"+relatedProductId);
-            let imageURL = await firebaseGetImage("prod"+relatedProductId+"_1.jpg")
-              relatedProduct["catId"] = categoryOfRelatedProduct; // le agregamos un atributo al producto relacionado, que es la categoría a la que pertenece
-              relatedProduct["image"] = imageURL;
-              relatedProduct.id=relatedProductId;
-    
-          }// Fin de recorrer el array de productos relacionados
-          
-          await saveFirebaseComments(product.id,productId);
-          let imagesProduct = [];
-          for (let i = 0; i < 4; i++) {
-            let imageURL = await firebaseGetImage("prod"+productId+"_"+(i+1)+".jpg")
-            imagesProduct.push(imageURL)
-          }
-          catProducts[productId]= {
-            catId:currentProductsArray.catID,
-            id:productId,
-            name:product.name,
-            description:product.description,
-            cost:product.cost,
-            currency:product.currency,
-            soldCount:product.soldCount,
-            images:imagesProduct,
-            relatedProducts:relatedProducts,
-            stock:40,
-          }
-        
-        }// Fin recorrer categoria
-          await setDoc(doc(db,"catInfo","catId_"+catId+"/products/products"),
-          catProducts,{ merge: true })
-
-        
-        
-    }
-    })
-    
-  }
-
-}
-export const saveCategorieCount = async (catId) =>{
-  let categoryInfo = await getCategorieInfo(catId)
-  categoryInfo.productCount += 1;
+export const saveCategorieCount = async (catId) =>{// Función que se ejecuta una vez se ha puesto un nuevo artículo a la venta para incrementar su cantidad
+  let categoryInfo = await getCategorieInfo(catId) // creamos una petición al servidor para obtener información acerca de la categoría de ese producto
+  categoryInfo.productCount++; //incrementamos la cantidad de artículos en 1
   const docRef = doc(db,"catInfo/catId_"+catId);
-  await updateDoc(docRef,categoryInfo,{merge:true});
+  await updateDoc(docRef,categoryInfo,{merge:true}); // seteamos el objeto actualizado en Firebase
 }
-export const getCategoriesInfo = async()=>{
+export const getCategoriesInfo = async()=>{ //Obtenemos TODAS las categorías existentes en Firebase
   const docSnap= await getDocs(collection(db,"catInfo"));
     return docSnap.docs;  
 }
-export const getProductsOfCategory = async (catId)=>{
+export const getProductsOfCategory = async (catId)=>{ // obtenemos un objeto con todos los artículos pertenecientes a una categoría 
   const docSnap = await getDoc(doc(collection(db,"catInfo/catId_"+catId+"/products"),"products"))
   return docSnap.data();
 }
-export const getCategorieInfo = async(catId)=>{
+export const getCategorieInfo = async(catId)=>{ // Función que trae toda la información existente acerca de una categoría
   const docSnap= await getDoc(doc(db,"catInfo","catId_"+catId));
   if (docSnap.exists()){
     return docSnap.data();
   }
   
 }
-export const categoryOf = async (productId,catId)=>{
-  let categoryOfRelatedProduct;
-  await getJSONData("https://japceibal.github.io/emercado-api/cats_products/"+catId+".json")
-    .then(async (resultObj)=>{
-      if (resultObj.status === "ok"){
-        let catInfo = resultObj.data
-        for (let i = 0; i < catInfo.products.length; i++) { // recorremos las categorias
-          const product = catInfo.products[i]; // obtenemos todos los productos de una categoria
-          if (product) { // si existen =>
-              if (product.id == productId) {
-                categoryOfRelatedProduct = catInfo.catID;
-             }
-          }
-        } // Fin de recorrer categorias
-      }});
-      if (categoryOfRelatedProduct) {
-        return categoryOfRelatedProduct;
-      }
-}
-export const ticketLoader = async ()=>{
+export const ticketLoader = async ()=>{ // Función que devuelve todas las compras realizadas por un usuario
   let userEmail = localStorage.getItem("userEmail")
   let tickets = {}
-  const querySnapshot = await getDocs(collection(db, "usersInfo",userEmail,"purchases"));
+  const querySnapshot = await getDocs(collection(db, "usersInfo",userEmail,"purchases")); // obtenemos un array que contiene todas las compras
   if (querySnapshot) {
-    querySnapshot.forEach((ticket) => {
+    querySnapshot.forEach((ticket) => { // pasamos el array que recibimos a objeto
       tickets["ticket_"+Object.keys(tickets).length]=ticket.data()
     });
   }
-  return tickets;
+  return tickets; //devolvemos el objeto de todas las compras
 }
+// FIN :)

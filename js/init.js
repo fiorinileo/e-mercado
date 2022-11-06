@@ -1,6 +1,7 @@
 import { drawCartList } from "./cart.js";
 import {saveCart,deleteProduct} from "./config/firebase.js"
 import { loadCart } from "./config/loadCart.js";
+import { showMessage } from "./config/showMessage.js";
 export const CATEGORIES_URL = "https://japceibal.github.io/emercado-api/cats/cat.json";
 export const PUBLISH_PRODUCT_URL = "https://japceibal.github.io/emercado-api/sell/publish.json";
 export const PRODUCTS_URL = "https://japceibal.github.io/emercado-api/cats_products/";
@@ -43,10 +44,15 @@ export function chgCount(action,idProduct){ //cambia la cantidad del articulo en
   let userEmail = localStorage.getItem("userEmail");
   let cart = JSON.parse(localStorage.getItem("cart"));
   let product = cart[idProduct];
-  if(action) {// en el caso de que la acción sea true se suma 1, en caso de que sea false, se resta
-    product.count++;
-    saveCart(userEmail,idProduct,product.cost,product.count,product.name,product.currency,product.image,product.catId)
 
+  if(action) {// en el caso de que la acción sea true se suma 1, en caso de que sea false, se resta
+    if (product.stock == product.count) {
+      showMessage("Lo sentimos, no disponemos de stock suficiente para su compra",false,"top","center")
+    }
+    else{
+      product.count++;
+      saveCart(userEmail,idProduct,product.cost,product.count,product.name,product.currency,product.image,product.catId,product.stock)
+    }
   }
   else{
     if (product.count==1) {//preguntamos si la cantidad que tiene de ese producto es igual a 1
@@ -55,7 +61,7 @@ export function chgCount(action,idProduct){ //cambia la cantidad del articulo en
     }
     else{
       product.count--; // en el caso que sea mayor, la reducimos en una unidad
-      saveCart(userEmail,idProduct,product.cost,product.count,product.name,product.currency,product.image,product.catId)
+      saveCart(userEmail,idProduct,product.cost,product.count,product.name,product.currency,product.image,product.catId,product.stock)
     } 
   }
   localStorage.setItem("cart",JSON.stringify(cart));
@@ -114,8 +120,8 @@ export function drawCart(){
                         <h4 class="col-12" style="width:300px">
                             ${name}
                           </h4>
-                        <div class="col-6 p-0"  onclick="windowReplace(${productId},${product.catId})" title="Ir a ver producto: ${name}">
-                              <img src=${product.image} class="img-thumbnail ">
+                        <div class="col-6 p-0 text-center"  onclick="windowReplace(${productId},${product.catId})" title="Ir a ver producto: ${name}">
+                              <img src=${product.image} class="img-thumbnail " style="max-height:100px;">
                         </div>
                         <div class="col-6 row">
                           <p class="col-10 articleCant " >

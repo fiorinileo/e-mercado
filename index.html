@@ -25,6 +25,23 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="./css/navbar.css" />
+  <!--  Favicon-->
+  <link rel="apple-touch-icon" sizes="57x57" href="./favicon/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="./favicon/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="./favicon/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="./favicon/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="./favicon/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="./favicon/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="./favicon/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="./favicon/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="./favicon/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png">
+  <link rel="manifest" href="./favicon/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
   </head>
 
   <body>
@@ -46,7 +63,8 @@
           </button>
 
           <!-- Navbar brand -->
-          <a class="navbar-brand" href="#">E-Mercado</a>
+          <a class="navbar-brand" href="#"> <img src="./e-logo.svg" width="40px">-Mercado</a>
+          
           <ul class="navbar-nav d-flex flex-row me-1" id="navbar-actions--logged">
             <!-- Logged in -->
                   <li class="nav-item me-3 me-lg-0 logged-in" style="display: none;">
@@ -89,17 +107,7 @@
                         href="./cart.html"
                         style="display: block"
                       >
-                      <svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" version="1.1" id="svg2" viewBox="0 0 36.446654 29.709534" sodipodi:docname="1573.eps">
-                        <defs id="defs6"></defs>
-                        <sodipodi:namedview id="namedview4" pagecolor="#ffffff" bordercolor="#000000" borderopacity="0.25" inkscape:showpageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0" inkscape:deskcolor="#d1d1d1" showgrid="false"></sodipodi:namedview>
-                        <g id="g10" inkscape:groupmode="layer" inkscape:label="Page 1" transform="matrix(1.3333333,0,0,-1.3333333,-856.02665,554.708)">
-                          <g id="g12" transform="scale(0.1)">
-                            <a xmlns="http://www.w3.org/2000/svg" id="a472">
-                              <path d="m 6539.64,4041.04 c 39.78,0 80.68,0 120.56,0 l 33.35,84.89 h -187.27 l 5.4,-17.24 h 32.25 l 6.51,-17.15 h -31.21 l 6.43,-16.12 h 32.33 l 6.42,-18.26 h -31.21 z m 3.25,-51.54 c -9.69,-2.22 -18.34,-10.8 -20.49,-20.49 -2.15,-16.12 8.66,-29.07 20.49,-31.12 20.41,-3.26 33.36,13.89 31.22,31.12 -2.15,13.98 -16.12,22.55 -31.22,20.49 z m 84.98,0 c -9.69,-2.22 -18.26,-10.8 -19.37,-20.49 -3.18,-16.12 7.54,-29.07 19.37,-31.12 21.52,-3.26 34.47,13.89 31.21,31.12 -2.15,13.98 -16.12,22.55 -31.21,20.49 z m 31.21,33.27 h -129.13 c -21.52,45.11 -40.91,92.44 -61.31,137.54 h -48.44 v -17.15 h 36.61 c 19.38,-46.3 39.78,-91.4 60.28,-136.51 h 141.99 c 1.12,4.29 0,11.84 0,16.12 v 0" id="path102"/>
-                            </a>
-                          </g>
-                        </g>
-                      </svg> Ver carrito</a
+                      Ver carrito</a
                       >
                       <a
                         class="dropdown-item btn btn-secondary text-center"
@@ -329,44 +337,44 @@
       </div>
     </div>
     </div>
-  <!-- Fin Signin Modal --> 
-  <!-- SignUp Modal -->
-  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Sign Up</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body text-dark">
-              <form action="#" id="signup-form" class="needs-validation" novalidate>
-                <div class="row">
-                  <div class="col-md-6 col-12">
-                    <label for="signup-name" >Nombre</label>
-                    <input type="text" id="signup-name" required placeholder="Nombre" class="form-control mb-3">
+    <!-- Fin Signin Modal --> 
+    <!-- SignUp Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Sign Up</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-dark">
+                <form action="#" id="signup-form" class="needs-validation" novalidate>
+                  <div class="row">
+                    <div class="col-md-6 col-12">
+                      <label for="signup-name" >Nombre</label>
+                      <input type="text" id="signup-name" required placeholder="Nombre" class="form-control mb-3">
+                    </div>
+                    <div class="col-md-6 col-12">
+                      <label for="lastname" >Apellido</label>
+                      <input type="text" id="signup-lastname" required placeholder="Apellido" class="form-control mb-3">
+                    </div>
                   </div>
-                  <div class="col-md-6 col-12">
-                    <label for="lastname" >Apellido</label>
-                    <input type="text" id="signup-lastname" required placeholder="Apellido" class="form-control mb-3">
+                  <div>
+                    <label for="signup-email" >email:</label>
+                    <input type="email" id="signup-email" required placeholder="Email" class="form-control mb-3" autocomplete="username">
                   </div>
-                </div>
-                <div>
-                  <label for="signup-email" >email:</label>
-                  <input type="email" id="signup-email" required placeholder="Email" class="form-control mb-3" autocomplete="username">
-                </div>
-                <div>
-                  <label for="signup-password">password:</label>
-                  <input type="password" id="signup-password" required placeholder="********" class="form-control mb-3" autocomplete="current-password">
-                </div>
-                  <button type="submit" class="btn btn-primary">
-                      Login
-                  </button>
-              </form>
-          </div>
+                  <div>
+                    <label for="signup-password">password:</label>
+                    <input type="password" id="signup-password" required placeholder="********" class="form-control mb-3" autocomplete="current-password">
+                  </div>
+                    <button type="submit" class="btn btn-primary">
+                        Login
+                    </button>
+                </form>
+            </div>
+        </div>
       </div>
     </div>
-  </div>
-  <!-- Fin SignUp Modal --> 
+    <!-- Fin SignUp Modal --> 
   <!--  -->
   
     <script type="module" src="./js/main.js"></script>

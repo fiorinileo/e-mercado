@@ -134,10 +134,10 @@ document.addEventListener("DOMContentLoaded",async()=>{
             shipCost=0.15;
         break;
         case("Express"):
-            shipCost=0.07;
+            shipCost=.07;
         break;
-        case("Standar"):
-            shipCost=0.05;
+        case("Standard"):
+            shipCost=.05;
         break;
     }
     let HTMLCost = `
@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
             </li>
             <li class="row">
                 <p class="col-5 fw-bold">
-                    Tipo de envío ${billingInfo.shipType}(${String(shipCost).substring(2,4)}%):
+                    Tipo de envío ${billingInfo.shipType} (${String(shipCost).substring(2,4)}%):
                 </p>
                 <p class="col-6">
                     USD ${parseInt(totalCost*shipCost)}
@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
                     Total:
                 </p>
                 <p class="col-6">
-                   USD ${(totalCost*shipCost)+totalCost} 
+                   USD ${parseInt((totalCost*shipCost)+totalCost)} 
                 </p>
             </li>
     `

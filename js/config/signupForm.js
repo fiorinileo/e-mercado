@@ -3,8 +3,9 @@ import { auth, getUserName, saveUserName } from "./firebase.js"
 import { loadCart } from "./loadCart.js";
 
 const signupForm = document.querySelector("#signup-form")
-signupForm.addEventListener("submit",async (e)=>{
-    e.preventDefault();
+if (signupForm) {
+    signupForm.addEventListener("submit",async (e)=>{
+        e.preventDefault();
     let email =  (signupForm['signup-email'].value).toLowerCase();
     let password = (signupForm['signup-password'].value).toLowerCase();
     let name = (signupForm['signup-name'].value).toLowerCase();
@@ -30,3 +31,5 @@ signupForm.addEventListener("submit",async (e)=>{
     }
 
 })
+    
+}

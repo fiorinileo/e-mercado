@@ -12,6 +12,24 @@
   <link href="css/dropzone.css" rel="stylesheet">
   <link href="css/navbar.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
+    <!--  Favicon-->
+    <link rel="apple-touch-icon" sizes="57x57" href="./favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="./favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="./favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="./favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="./favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="./favicon/apple-icon-120x120.png">
+    
+    <link rel="apple-touch-icon" sizes="152x152" href="./favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="./favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="./favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png">
+    <link rel="manifest" href="./favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
 </head>
 
 <body>
@@ -196,6 +214,7 @@
                     class="form-control"
                     id="inputPassword"
                     placeholder="PASSWORD"
+                    
                   />
                 </div>
               </div>
@@ -402,61 +421,74 @@
       <div></div>
       <div></div>
     </div>
-  </div>   <!--  Signin Modal -->
-  <div class="modal fade" id="signinModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-     <div class="modal-content">
-       <div class="modal-header">
-         <h2 class="modal-title fs-5" id="exampleModalLabel">Iniciar Sesión</h2>
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          
-          <button id="googleLogin" class="customGPlusSignIn" type="submit">
-            <span class="icon"></span>
-            <span class="buttonText">Google</span>
-           </button>
-          <form action="" id="signin-Form">
-            <label for="email">email:</label>
-            <input type="email" id="signin-email" required placeholder="Email" class="form-control mb-3">
-            
-            <label for="email">password:</label>
-            <input type="password" id="signin-password" required placeholder="********" class="form-control mb-3">
-    
-              <button type="submit" class="btn btn-primary">
-                  Login
-              </button>
-            </form>
-        </div>   
-    </div>
-  </div>
-  </div>
-<!-- Fin Signin Modal --> 
-<!-- SignUp Modal -->
-<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  </div> 
+ <!--  Signin Modal -->
+ <div class="modal fade" id="signinModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-  <div class="modal-content">
+    <div class="modal-content text-dark">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Sign Up</h1>
+        <h2 class="modal-title fs-5" id="exampleModalLabel">Iniciar Sesión</h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form action="" id="signup-form">
-                <label for="email" >email:</label>
-                <input type="email" id="signup-email" required placeholder="Email" class="form-control mb-3">
-
-                <label for="email">password:</label>
-                <input type="password" id="signup-password" required placeholder="********" class="form-control mb-3">
-
-                <button type="submit" class="btn btn-primary">
-                    Login
-                </button>
-            </form>
-        </div>
-    </div>
-  </div>
-</div>
-<!-- Fin SignUp Modal --> 
+       </div>
+       <div class="modal-body">
+         
+         <button id="googleLogin" class="customGPlusSignIn" type="submit">
+           <span class="icon"></span>
+           <span class="buttonText">Google</span>
+          </button>
+         <form action="" id="signin-Form">
+           <label for="email">email:</label>
+           <input type="email" id="signin-email" required placeholder="Email" class="form-control mb-3" autocomplete="username">
+           
+           <label for="email">password:</label>
+           <input type="password" id="signin-password" required placeholder="********" class="form-control mb-3" autocomplete="current-password">
+   
+             <button type="submit" class="btn btn-primary  btn-shadow">
+                 Login
+             </button>
+           </form>
+       </div>   
+   </div>
+ </div>
+ </div>
+ <!-- Fin Signin Modal --> 
+ <!-- SignUp Modal -->
+ <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+   <div class="modal-content">
+       <div class="modal-header">
+         <h1 class="modal-title fs-5" id="exampleModalLabel">Sign Up</h1>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <div class="modal-body text-dark">
+             <form action="#" id="signup-form" class="needs-validation" novalidate>
+               <div class="row">
+                 <div class="col-md-6 col-12">
+                   <label for="signup-name" >Nombre</label>
+                   <input type="text" id="signup-name" required placeholder="Nombre" class="form-control mb-3">
+                 </div>
+                 <div class="col-md-6 col-12">
+                   <label for="lastname" >Apellido</label>
+                   <input type="text" id="signup-lastname" required placeholder="Apellido" class="form-control mb-3">
+                 </div>
+               </div>
+               <div>
+                 <label for="signup-email" >email:</label>
+                 <input type="email" id="signup-email" required placeholder="Email" class="form-control mb-3" autocomplete="username">
+               </div>
+               <div>
+                 <label for="signup-password">password:</label>
+                 <input type="password" id="signup-password" required placeholder="********" class="form-control mb-3" autocomplete="current-password">
+               </div>
+                 <button type="submit" class="btn btn-primary">
+                     Login
+                 </button>
+             </form>
+         </div>
+     </div>
+   </div>
+ </div>
+ <!-- Fin SignUp Modal --> 
 <!--  -->
   <script type="module" src="./js/main.js"></script>
 

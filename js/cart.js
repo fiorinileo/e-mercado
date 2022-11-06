@@ -45,8 +45,8 @@ export function drawCartList() {
                    
                    cartItem += `
                    <li class="row" id="id_${productId}" >
-                     <div class="col-md-6 col-12" onclick="windowReplace(${productId},${product.catId})">
-                           <img src=${product.image} class="img-thumbnail ">
+                     <div class="col-md-6 col-12 text-center" onclick="windowReplace(${productId},${product.catId})">
+                           <img src=${product.image} class="img-thumbnail my-1 " style="max-height:230px;">
                      </div>
                      
                      <div class="col-md-6 col-12 row">
