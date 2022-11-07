@@ -37,27 +37,25 @@ function sortCategories(criteria, array){
 
     return result;
 }
-function setCatID(id) {
+function setCatID(id) { // Establece la categoría seleccionada por el usuario en el LS
     localStorage.setItem("catId", id);
     window.location = "products.html"
 }
-
-async function showCategoriesList(){
-    showSpinner()
-    let htmlContentToAppend = "";
-    if(currentCategoriesArray.length >= 0){
-        for(let i = 0; i < currentCategoriesArray.length; i++){
-            let category = currentCategoriesArray[i];
-            let imageURL = category.imgSrc
+async function showCategoriesList(){ // Muestra todas las categorías existentes en pantalla
+    showSpinner() // Mostramos Spinner de carga
+    let htmlContentToAppend = ""; // creamos STRING que almacenara el formato HTML a implementar
+    if(currentCategoriesArray.length >= 0){ // si el array tiene elementos
+        for(let i = 0; i < currentCategoriesArray.length; i++){ // recorremos el array de categorias
+            let category = currentCategoriesArray[i]; // separamos la categoría correspondiente
             if (((minCount == undefined) || (minCount != undefined && parseInt(productCount) >= minCount)) &&
-                ((maxCount == undefined) || (maxCount != undefined && parseInt(productCount) <= maxCount))){
-    
-                htmlContentToAppend += `
+                ((maxCount == undefined) || (maxCount != undefined && parseInt(productCount) <= maxCount))){ // Comparador de filtros proporcionado por la Letra
+                    // Estructura HTML individual para presentar cada tarjeta de categoría
+                htmlContentToAppend += ` 
                 <li class="cursor-active col-md-6 col-lg-4 p-4" onclick="setCatID(${category.id})" >
                         <div class="row pb-0 pt-2 product-card">
                             <div class="col-">
                                 <div>
-                                    <img src=${imageURL} class="img-thumbnail" alt="${category.description}">
+                                    <img src=${category.imgSrc} class="img-thumbnail" alt="${category.description}">
                                 </div>
                                 
                             </div>
@@ -81,17 +79,16 @@ async function showCategoriesList(){
             }
         }
     }
-    else{
+    else{ //En el caso de que no hayan categorías con las especificaciones que el usuario quiere, mostramos lo siguiente 
         htmlContentToAppend = ` <div>
             <p>
             No hay categorías que cumplan con estos requisitos</p>
         </div>`
     }
-    document.getElementById("cat-list-container").innerHTML = htmlContentToAppend;
-    hideSpinner()
+    document.getElementById("cat-list-container").innerHTML = htmlContentToAppend; // enviamos el STRING HTML al documento para imprimirlo
+    hideSpinner() // ocultamos Spinner de carga
 }
-
-function sortAndShowCategories(sortCriteria, categoriesArray){
+function sortAndShowCategories(sortCriteria, categoriesArray){ // Función de filtrado proporcionada por la Letra
     currentSortCriteria = sortCriteria;
     
     if(categoriesArray != undefined){
@@ -103,7 +100,7 @@ function sortAndShowCategories(sortCriteria, categoriesArray){
     //Muestro las categorías ordenadas
     showCategoriesList();
 }
-const sortFunction=()=>{
+const sortFunction=()=>{ // Función de filtrado proporcionada por la Letra
     //Obtengo el mínimo y máximo de los intervalos para filtrar por cantidad
     //de productos por categoría.
     minCount = document.getElementById("rangeFilterCountMin").value;
@@ -130,11 +127,11 @@ const sortFunction=()=>{
 //elementos HTML presentes.
 document.addEventListener("DOMContentLoaded",async  function(e){
 
-        let categoryArray = await getCategoriesInfo()
+        let categoryArray = await getCategoriesInfo() // Obtenemos todas las categorías de la base de datos
         
-        for(let i = 0; i < categoryArray.length; i++){
-            let category = categoryArray[i].data();
-            currentCategoriesArray[i]=category;
+        for(let i = 0; i < categoryArray.length; i++){ // recorremos el array crudo de categorías que nos devuelve Firebase para filtrarlo y formar uno entendible y manejable
+            let category = categoryArray[i].data();     //obtenemos la información de esa categoría 
+            currentCategoriesArray[i]=category; // 
         }
         showCategoriesList()
 

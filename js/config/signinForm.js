@@ -6,13 +6,10 @@ import { showMessage } from "./showMessage.js";
 
 const signinForm = document.querySelector("#signin-Form");
 if (signinForm) {
-    
     signinForm.addEventListener("submit", async (e)=>{
         e.preventDefault();
-    
         const email =  (signinForm["signin-email"].value).toLowerCase();
         const password = (signinForm["signin-password"].value).toLowerCase();
-        
         try {
             await signInWithEmailAndPassword(auth,email,password);
             localStorage.setItem('userEmail',email);
@@ -25,7 +22,6 @@ if (signinForm) {
             }
             else if (error.code=="auth/user-not-found") {
                 showMessage("Usuario erróneo.",false,"top")
-    
             }
             console.log(error);
         }

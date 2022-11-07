@@ -2,10 +2,10 @@ import { deleteProduct, saveUserPurchase } from "./config/firebase.js";
 import { showMessage } from "./config/showMessage.js";
 import { windowReplace } from "./init.js";
 
-var totalCostUSD = 0;
-function printShipCost(){
-      let shipCost = document.getElementById("shipCost");
-      let totalCost = document.getElementById("totalCost")
+var totalCostUSD = 0; // variable global que almacenará el costo final de todo el carrito en USD
+function printShipCost(){ // Función que imprime el costo total de la compra
+      let shipCost = document.getElementById("shipCost"); //obtenemos la etiqueta donde va el costo del envío
+      let totalCost = document.getElementById("totalCost") // etiqueta de costo total final
 
        if (document.getElementById("Premium").checked) {
         shipCost.innerHTML= parseInt(totalCostUSD*0.15)
@@ -19,30 +19,30 @@ function printShipCost(){
         shipCost.innerHTML= parseInt(totalCostUSD*0.05)
         totalCost.innerHTML= totalCostUSD+parseInt(totalCostUSD*0.05)
        }
-       else{
+       else{ //si no hay ningún tipo de envío seleccionado, no se imprime ningún número
         shipCost.innerHTML = "------";
         totalCost.innerHTML = "------";
        }
 }
-export function drawCartList() {
-  if (document.getElementById("productListCart")) {
+export function drawCartList() { // Función que imprime todos los artículos en la página del carrito
+  if (document.getElementById("productListCart")) { // ya que el script se ejecuta siempre, comprobamos que exista la etiqueta contenedora del carrito, cuando devuelva "true" implica que el usuario se encuentra en cart.html, por lo que ejecutamos la función
   totalCostUSD = 0;
-    const cart = JSON.parse(localStorage.getItem("cart"));
-    if (cart) {
-      let cartItem= "";
-      for (const productId in cart) {
-                  let product = cart[productId]
-                  let totalCost = product.cost*product.count
-                  if (product.currency == "UYU") {
-                    totalCost = totalCost/42;
-                    totalCost=parseInt(totalCost);
-                    totalCostUSD += totalCost;
+    const cart = JSON.parse(localStorage.getItem("cart")); //obtenemos el carrito del usuario del localStorage
+    if (cart) { // si existe el carrito
+      let cartItem= ""; 
+      for (const productId in cart) { // recorremos el carrito, artículo por artículo
+                  let product = cart[productId] // separamos el artículo a trabajar
+                  let totalCostProduct = product.cost*product.count // calculamos el precio del lote del artículo, según su precio y la cantidad
+                  if (product.currency == "UYU") { // si el precio del artículo está en pesos uruguayos, hacemos un paso a dolar con precio fijo, y lo añadimos al costo final
+                    totalCostProduct = totalCostProduct/42;
+                    totalCostProduct=parseInt(totalCostProduct);
+                    totalCostUSD += totalCostProduct;
                   }
-                  else{
-                    totalCostUSD += totalCost;
+                  else{ // si el precio ya se encuentra en dólares, simplemente lo añadimos al costo total
+                    totalCostUSD += totalCostProduct;
                   }
                   
-                   
+                   // Estructuta HTML para presentar la tarjeta del producto en el carrito
                    cartItem += `
                    <li class="row" id="id_${productId}" >
                      <div class="col-md-6 col-12 text-center" onclick="windowReplace(${productId},${product.catId})">
@@ -63,7 +63,7 @@ export function drawCartList() {
                        </p>
                        <p class="col">
                          Total:
-                         USD ${totalCost}
+                         USD ${totalCostProduct}
                        </p>
                          </div>
                    </li>
@@ -75,7 +75,7 @@ export function drawCartList() {
                  
                      
 
-        }
+        } // Una vez finalizamos de recorrer el carrito y recopilar la información agregamos el precio total a la sección de Costos
         document.getElementById("Prices").innerHTML = `
              <p class="col-md-4 col-12">
               <b>Subtotal en USD:</b> $ ${totalCostUSD}
@@ -91,7 +91,7 @@ export function drawCartList() {
     }
   }
 }
-function paymentMethodSelected(){
+function paymentMethodSelected(){ // Función para saber el tipo de método de pago y así desactivar o activar los campos correspondientes 
   if (document.getElementById("productListCart")) {
       let inputsCard = document.getElementById("creditCardContainer").getElementsByTagName("input");
       let inputsBank = document.getElementById("bankTransferContainer").getElementsByTagName("input");
@@ -184,35 +184,33 @@ if (document.getElementById("paymentMethodModal")) {
 document.addEventListener("DOMContentLoaded",async ()=>{
 
 
-    if (localStorage.getItem("userEmail")) {
-      drawCartList();
-      paymentMethodSelected();
+    if (localStorage.getItem("userEmail")) { // si el usuario se encuentra logueado
+      drawCartList(); // imprimimos su carrito
+      paymentMethodSelected(); // verificamos su método de pago
       
-      document.getElementsByName("paymentMethod").forEach((button)=>{
-        button.addEventListener("click",()=>{
+      document.getElementsByName("paymentMethod").forEach((button)=>{ //creamos un evento de escucha a cada radio de método de pago
+        button.addEventListener("click",()=>{ // de esta manera generamos feedback en tiempo real
           paymentMethodSelected();
         })
       })
-      document.getElementsByName("delivery").forEach((button)=>{
-        button.addEventListener("click",()=>{
-          printShipCost()
+      document.getElementsByName("delivery").forEach((button)=>{  // seleccionamos todos los radio de tipo de envío
+        button.addEventListener("click",()=>{ // le agregamos un evento de escucha junto con la función que calcula el costo
+          printShipCost() // de esta manera proporcionamos feedback en tiempo real
         })
       })
-      if (document.getElementById("btn-finalizarCompra")) {
+      if (document.getElementById("btn-finalizarCompra")) { // si existe el botón de finalizar compra, se ejecuta =>>
         billingValidate()
       }
       
     }
     
-    
 });
-export async function deleteCart(){
-  let cart = JSON.parse(localStorage.getItem("cart"))
-  let userEmail = localStorage.getItem("userEmail")
-
-  for (const productId in cart) {
-      await deleteProduct(userEmail,productId)
-  }
-  localStorage.setItem("cart",JSON.stringify({}))
+export async function deleteCart(){ // Función que elimina el carrito del usuario por completo, tanto del LocalStorage como de Firebase
+  let cart = JSON.parse(localStorage.getItem("cart")) // Obtenemos el carrito del LS
+  let userEmail = localStorage.getItem("userEmail")// Obtenemos el usuario que está operando
+  for (const productId in cart) { // recorremos el carrito
+      await deleteProduct(userEmail,productId) // eliminamos ese producto de la base de datos
+  } // una vez eliminados todos los productos de la base de datos
+  localStorage.setItem("cart",JSON.stringify({})) // sobreescribimos el carrito del usuario del LS
 }
 window.windowReplace = windowReplace;

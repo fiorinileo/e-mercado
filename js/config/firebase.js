@@ -26,18 +26,6 @@ export const storage = getStorage(app);
 function dualDigits(num) { // recibe un numero como parámetro, si es menor que 10, le agrega un 0 adelante
   return parseInt(num) < 10 ? (num = "0" + num) : num;
 }
-export async function uploadFile(dataURL,fileName){ // Funcion que sube una imágen Fire Storage para poder utilizarla posteriormente
-  const storageRef = ref(storage, '/'+fileName) // guardamos la referencia de la imágen con su nombre
-  let src; // variable que almacenará el string base64 de la imágen
-  if (dataURL.type !== "image/jpeg" ) { // si el archivo es diferente a jpeg
-    src = dataURL.dataURL.substring(23) // se retiran los primeros 23 caracteres de su dataURL
-  }
-  else{ // sino es diferente 
-    src = dataURL.dataURL.substring(22) // se retiran los primeros 22 caracteres de su dataURL
-  }
-  let data=b64toBlob(src,dataURL.type) // luego eso se envía a la función b64toBlob, que devuelve el formato que acepta la función uploadBytes de Firease para subir archivos
-  let snapshot = await uploadBytes(storageRef,data) // con el resultado se ejecuta uploadBytes y se envía ese archivo a la ruta que especificamos antes
-}
 function b64toBlob(b64Data, contentType, sliceSize) { // Función extraída de foros de internet ligeramente modificada recibe sus 3 parámetros y devuelve un array de bytes que es el formato que necesitamos
   contentType = contentType || "";
   sliceSize = sliceSize || 512;
@@ -53,6 +41,18 @@ function b64toBlob(b64Data, contentType, sliceSize) { // Función extraída de f
     byteArrays.push(byteArray);
   }
   return new File(byteArrays, "pot", { type: contentType });
+}
+export const uploadFile = async (dataURL,fileName)=>{ // Funcion que sube una imágen Fire Storage para poder utilizarla posteriormente
+  const storageRef = ref(storage, '/'+fileName) // guardamos la referencia de la imágen con su nombre
+  let src; // variable que almacenará el string base64 de la imágen
+  if (dataURL.type !== "image/jpeg" ) { // si el archivo es diferente a jpeg
+    src = dataURL.dataURL.substring(23) // se retiran los primeros 23 caracteres de su dataURL
+  }
+  else{ // sino es diferente 
+    src = dataURL.dataURL.substring(22) // se retiran los primeros 22 caracteres de su dataURL
+  }
+  let data=b64toBlob(src,dataURL.type) // luego eso se envía a la función b64toBlob, que devuelve el formato que acepta la función uploadBytes de Firease para subir archivos
+  let snapshot = await uploadBytes(storageRef,data) // con el resultado se ejecuta uploadBytes y se envía ese archivo a la ruta que especificamos antes
 }
 export const firebaseGetImage= async (imageName)=>{ // Función para obtener la URL de una imagen pasandole el nombre como parametro
   const pathReference = ref(storage,imageName); // guardamos la referencia donde se encuentra la imágens
@@ -94,7 +94,6 @@ export const saveComment = async (userName,score,description,dateTime,productId,
    
  },{ merge: true }) // habilitamos el merge para que no hayan sobrescrituras
 }
-
 export const getComments = async (productId)=>{ // Función para traer comentarios de Firebase de un producto
   const docSnap= await getDoc(doc(db,"comments","comments_"+productId)); // establecemos la ruta donde se guardan los comentarios de ese producto
   if (docSnap.exists()){ // si existe la ruta 
@@ -110,8 +109,7 @@ export const saveProductInfo = async (catId,product) =>{ // Función que almacen
   await setDoc(doc(db,"catInfo","catId_"+catId+"/products/products"),
   product,{ merge: true })
 }
-// almacena el carrito del usuario, en su historial de compras una vez la confirma
-export const saveUserPurchase = async () =>{
+export const saveUserPurchase = async () =>{ // almacena el carrito del usuario, en su historial de compras una vez la confirma
   let date = new Date();
   let purchaseDate = // creamos un string que almacena la fecha actual
       date.getFullYear() +
@@ -156,7 +154,7 @@ export const saveUserPurchase = async () =>{
   await deleteCart(); // Ejecutamos la función deleteCart para eliminar todos los carritos
   location.reload() // recargamos la página para que se refresquen todos los inputs y HTML
 }
-const saveSoldProduct = async (cart)=>{ // Función que se ejecuta una vez el usuario realizó la compra para almacenar la cantidad de todos los productos vendidos en Firebase
+export const saveSoldProduct = async (cart)=>{ // Función que se ejecuta una vez el usuario realizó la compra para almacenar la cantidad de todos los productos vendidos en Firebase
   for (const productId in cart) { // recorremos el carrito del usuario
       const product = cart[productId]; // obtenemos los productos individualmente
       let catId = product.catId; // Obtenemos la categoria a la que pertenecen 

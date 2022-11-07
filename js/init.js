@@ -46,10 +46,10 @@ export function chgCount(action,idProduct){ //cambia la cantidad del articulo en
   let product = cart[idProduct];
 
   if(action) {// en el caso de que la acción sea true se suma 1, en caso de que sea false, se resta
-    if (product.stock == product.count) {
+    if (product.stock == product.count) { // si el usuario quiere aumentar la cantidad del producto, pero la cantidad que tiene, es igual al stock que existe, le avisaremos que no podrá añadir más artículos
       showMessage("Lo sentimos, no disponemos de stock suficiente para su compra",false,"top","center")
     }
-    else{
+    else{ // es caso de que haya stock disponible, añadiremos la cantidad
       product.count++;
       saveCart(userEmail,idProduct,product.cost,product.count,product.name,product.currency,product.image,product.catId,product.stock)
     }
@@ -67,13 +67,11 @@ export function chgCount(action,idProduct){ //cambia la cantidad del articulo en
   localStorage.setItem("cart",JSON.stringify(cart));
   drawCart();
   
-  if (document.getElementById("productListCart")) {
+  if (document.getElementById("productListCart")) { // cuando cambiamos la cantidad y nos encontramos en la pagina del carrito, tambien cambiaremos el carrito que se muestra en el Body del HTML
     drawCartList()
   } 
 }
-export function showProductInCart(){ //m Muestra la cantidad total de productos que tiene en el carrito dentro del navbar en una burbuja roja
-
-  let userEmail = localStorage.getItem("userEmail");
+export function showProductInCart(){ //Muestra la cantidad total de productos que tiene en el carrito dentro del navbar en una burbuja roja
   let cart = {};
   cart = JSON.parse(localStorage.getItem("cart"));
   if (cart) {
@@ -85,36 +83,32 @@ export function showProductInCart(){ //m Muestra la cantidad total de productos 
     }
   
 }
-export function deleteItemCart(idProduct){
-  const userEmail = localStorage.getItem("userEmail");
-  let cart = JSON.parse(localStorage.getItem("cart"));
-  delete cart[idProduct];
-  deleteProduct(userEmail,idProduct)
-  if (document.getElementById("productListCart")) { 
-    document.getElementById("productListCart").removeChild(document.getElementById("id_"+idProduct)); //boramos el li del carrito que tenga como id ese producto
-  } 
-  localStorage.setItem("cart",JSON.stringify(cart))
-  drawCart(); 
-  if (document.getElementById("productListCart")) {
-    drawCartList()
+export async function deleteItemCart(idProduct){  // Elimina un único artículo del carrito del usuario
+  const userEmail = localStorage.getItem("userEmail"); // Extraemos el email del usuario
+  let cart = JSON.parse(localStorage.getItem("cart")); // Extraemos su carrito
+  delete cart[idProduct]; // Eliminamos la sentencia que tenga de ese artículo
+  await deleteProduct(userEmail,idProduct) // Eliminamos ese producto tambien de Firebase
+  localStorage.setItem("cart",JSON.stringify(cart)) // almacenamos el nuevo carrito en LS
+  drawCart(); // Ejecutamos la función para reimprimir el carrio en el navbar
+  if (document.getElementById("productListCart")) { // En el caso de que el usuario se encuentre en cart.html tambien lo eliminamos del body del HTML
+    drawCartList() //reimprimimos el carrito del Body
   }  
 }
-export function drawCart(){
-
-
-  if (localStorage.getItem("userEmail")) {
-    let cart = JSON.parse(localStorage.getItem("cart"));
+export function drawCart(){ // Función que permite imprimir el carrito en el navbar 
+  if (localStorage.getItem("userEmail")) {  // si el usuario se encuentra logueado
+    let cart = JSON.parse(localStorage.getItem("cart")); // obtenemos su carrito
     let cartItem = "";
-    let totalCostUSD = 0;
-    for (const productId in cart) {
+    let totalCostUSD = 0; // variable que almacenará el costo subtotal de todos los artículos 
+    for (const productId in cart) { // recorremos el carrito
                 let product = cart[productId]
                 let totalCost = product.cost*product.count
                 let name = product.name;
-                name.length>19?
-                 name = (product.name).substring(0,20)+"...":{};
-                product.currency == "UYU"?
-                totalCostUSD += parseInt(totalCost/42):
-                totalCostUSD += parseInt(totalCost);
+                name.length>19? // si el nombre del producto es mayor a 19 caracteres
+                 name = (product.name).substring(0,20)+"...":{}; // lo limitamos y le concatenamos puntos suspensivos
+                product.currency == "UYU"? // si la moneda del producto es UYU
+                totalCostUSD += parseInt(totalCost/42): // dividimos su costo total entre 42 para calcularlo en dólares
+                totalCostUSD += parseInt(totalCost); // en el caso de que la moneda sea UDS, simplemente se suma al subtotal 
+                // String con formato HTML para mostrar cada producto en el carrito
                  cartItem += `
                         <li class="dropdown-item row d-flex">
                         <h4 class="col-12" style="width:300px">
@@ -134,7 +128,7 @@ export function drawCart(){
                             ${product.currency} ${totalCost}</div>
                       </li>
                     ` 
-    }
+    } // Luego de recorrer todo el carrito, hacemos visible el costo subtotal
     document.getElementById("CartDropdown").innerHTML = `
      <ul id="listCartDropdown">
       <li class="dropdown-item row d-flex" id="EmptyCart">
@@ -160,31 +154,34 @@ export function drawCart(){
       </div>
     </div>
     `
-
     const boxCart = document.getElementById("listCartDropdown");
-    boxCart.innerHTML = "";
-    boxCart.innerHTML += cartItem
-
-    if (cart == undefined || JSON.stringify(cart).length<3) {
+    boxCart.innerHTML = ""; // vaciamos el contenedor del navbar para asegurarnos de que está vacío
+    boxCart.innerHTML += cartItem // luego concatenamos la lista de artículos 
+    if (cart == undefined || JSON.stringify(cart).length<3) { // En el caso de que el carrito se encuentre vacío 
+      //ejecutamos =>
       emptyCart();
     }
   }
-  else{
+  else{ // si el usuario no se encuentra logueado 
+    //ejecutamos =>
     emptyCart();
   }
+  // luego de imprimir o no el carrito, ejecutamos la función que muestra la cantidad de artículos en él
   showProductInCart();
 }
-export function emptyCart(){
-  const listDropdown = document.getElementById("listCartDropdown"); 
-  let liEmpty = "";
-    if(listDropdown.getElementsByTagName("li").length<1){
+export function emptyCart(){ // Función que nos permite saber si el carrito se encuentra vacío
+  const listDropdown = document.getElementById("listCartDropdown"); //obtenemos el contenedor del carrito del navbar
+  let liEmpty = ""; // seteamos un String que tendrá el formato HTML
+    if(listDropdown.getElementsByTagName("li").length<1){ // si la cantidad de artículos en el carrito es inferior a 1 (0 artículos)
+      // le asignamos que el carrito se encuentrá vacío
       liEmpty = `<li class="dropdown-item row d-flex" id="EmptyCart">
      <h4 class="col-12">
        Carrito vacío
      </h4>
    </li>`;
-   listDropdown.innerHTML = liEmpty;
-   if (document.getElementById("productListCart")) {
+   listDropdown.innerHTML = liEmpty; //mostramos en el HTML que el carrito está vacío
+   if (document.getElementById("productListCart")) { // Si el usuario se encuentra en la página cart.html 
+    // también le mostramos que el carrito se encuentra vacío
      document.getElementById("productListCart").innerHTML=`
      <li class="row d-flex">
        <h4 class="col-12">
@@ -194,7 +191,7 @@ export function emptyCart(){
      `
     }
    }
-   else{
+   else{ // en el caso de que el carrito posea un artículo o más, eliminamos el cartel de carrito vacío 
      if(document.getElementById("EmptyCart")){
        document.getElementById("EmptyCart").remove();
      }
@@ -203,29 +200,20 @@ export function emptyCart(){
 
 
 }
-export function windowReplace(productId,catId) {
+export function windowReplace(productId,catId) { //Función que nos permite redireccionar a la página de un artículo
   localStorage.setItem("productId", productId);
   localStorage.setItem("catId",catId)
   window.location = "product-info.html";
 }
-
-document.addEventListener("DOMContentLoaded", async ()=>{
-  let userEmail = localStorage.getItem("userEmail");
-  if (userEmail) {
-    await loadCart();
-    if (!document.getElementById("product-container")) {
-      
-    }
-    let credentials = JSON.parse(localStorage.getItem("credentials"))
-    document.getElementById("userName").innerHTML=(credentials.userName+" "+credentials.userLastname).substring(0,9)+"...";
+document.addEventListener("DOMContentLoaded", async ()=>{ // Una vez se carga la página
+  let userEmail = localStorage.getItem("userEmail"); //obtenemos el email del usuario
+  if (userEmail) { // si se encuentra logueado
+    await loadCart(); // cargamos su carrito de Firebase
+    let credentials = JSON.parse(localStorage.getItem("credentials")); // obtenemos sus credenciales del LS
+    document.getElementById("userName").innerHTML=(credentials.userName+" "+credentials.userLastname).substring(0,9)+"..."; // y las imprimimos en el navbar, esto sucede en todas las páginas
     document.getElementById("userEmail").getElementsByTagName("img")[0].src=credentials.photo;
   }
-  
-
 });
-
-
-
 window.chgCount = chgCount;
 window.deleteItemCart=deleteItemCart;
 

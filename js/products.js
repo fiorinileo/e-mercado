@@ -1,4 +1,4 @@
-import { firebaseGetImage, getCategorieInfo, getCategoriesInfo, getProductsOfCategory, saveCategorieInfo } from "./config/firebase.js";
+import { firebaseGetImage, getCategorieInfo, getCategoriesInfo, getProductsOfCategory } from "./config/firebase.js";
 import { hideSpinner, showSpinner } from "./init.js";
 
 //  Los comentarios de todos los documentos están realizados con el
@@ -177,7 +177,6 @@ document.addEventListener("DOMContentLoaded",async function(e){
     if(catId){
             currentProductsArray= await getProductsOfCategory(catId)
             let categoryInfo = await getCategorieInfo(catId)
-            /* await saveCategorieInfo(currentProductsArray)  //Agregar atributos nuevos en todos los objetos */
             categoryName = categoryInfo.name;
             showProductsList()
             hideSpinner()

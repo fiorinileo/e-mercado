@@ -1,11 +1,11 @@
 import { firebaseGetImage, getProductsOfCategory, saveCart,saveComment } from "./config/firebase.js"
 import { loadFirebaseComments } from "./config/loadComments.js";
 import { showMessage } from "./config/showMessage.js";
-import {getJSONData, showProductInCart, windowReplace, drawCart} from "./init.js"
+import { showProductInCart, windowReplace, drawCart} from "./init.js"
 
 var date = new Date();
 
-function drawScore(place, value) {
+function drawScore(place, value) { // Función que nos permite imprimir la calificación promedio en tiempo real según cambien los comentarios
   document.getElementById("generalScore").innerHTML = `
                             Calificación: 
                                 <span class="fa "></span>
@@ -13,19 +13,20 @@ function drawScore(place, value) {
                                 <span class="fa "></span>
                                 <span class="fa "></span>
                                 <span class="fa "></span>`;
-  for (let j = 0; j < value; j++) {
+  for (let j = 0; j < value; j++) { // imprimimos estrellas hasta el valor que el usuario haya escogido
     place[j].classList.add("checked");
     place[j].classList.add("fa-star");
-    if (value - 1 - j > 0.24 && value - 1 - j < 0.76) {
+    if (value - 1 - j > 0.24 && value - 1 - j < 0.76) { // Para la calificación promedio, si la división entrega un decimal, dependiendo de su valor, agregará la mitad de la estrella siguiente, o no
       place[j + 1].classList.add("fa-star-half");
     }
   }
 }
-async function imagesProduct(product) {
+async function imagesProduct(product) { // Función que imprime el carousel de imágenes del producto que se está visualziando
   let htmlContentToAppend = "";
-  let carouselContainer = document.getElementsByClassName("carousel-indicators")[0];
-  for (let i = 0; i < product.images.length; i++) {
-    let imageURL = await firebaseGetImage("prod"+product.id+"_"+(i+1)+".jpg")
+  let carouselContainer = document.getElementsByClassName("carousel-indicators")[0]; //obtenemos el contenedor
+  for (let i = 0; i < product.images.length; i++) { // recorremos todas las imágenes
+    let imageURL = await firebaseGetImage("prod"+product.id+"_"+(i+1)+".jpg") // obtenemos las URL de las imágenes del producto
+    // Creamos el formato HTML necesario para mostrarlas 
     carouselContainer.innerHTML+=`
                       <img src=${imageURL}
                         type="button" data-bs-target="#carouselExampleIndicators"
@@ -48,16 +49,15 @@ async function imagesProduct(product) {
       document.getElementById("product-list-images").innerHTML=htmlContentToAppend;
   }
 }
-function showProductInfo(product) {
-    let countStatus;
-    console.log(parseInt(product.stock));
-    if (parseInt(product.stock) > 0) {
-      countStatus = product.soldCount+" vendidos";
+function showProductInfo(product) { // Función que imprime las características del producto en el Body
+    let countStatus; // variable que almacena el Stock de ese producto
+    if (parseInt(product.stock) > 0) { // si hay Stock se muestra la cantidad disponible
+      countStatus =  product.stock + " artículos disponibles";
     }
-    else{
+    else{ // si no hay stock se muestra "Agotado"
       countStatus = "Agotado"
     }
-  // Reutilización del código ya creado en "Products", esto se debe a que la visualización que se solicita es idéntica, sustituyendo en este caso las distintas categorias, por los distintos productos pertenecientes a la categoría solicitada.
+  // String almacenador del formato HTML
   let htmlContentToAppend = "";
   htmlContentToAppend += `
   
@@ -82,9 +82,10 @@ function showProductInfo(product) {
                     
                     <div class="col-lg-12 p-1 p-md-5 product_info p-4">
                         <div class="col mt-3">
-                        <small id="soldCountSpan">Nuevo | ${
-                          countStatus
-                        }  </small>
+                          <small id="soldCountSpan">Nuevo | ${
+                            product.soldCount
+                            } vendidos
+                          </small>
                             <div class="d-flex w-100 justify-content-between">
                                 <h4 class="mb-1 product-header">${product.name.toUpperCase()}</h4>
                             </div>
@@ -100,7 +101,9 @@ function showProductInfo(product) {
                             <div class="col-12 row ">
                                 <p class="product-price col-12 mt-4">${product.currency} ${product.cost}</p>
                                 <span id="inputCantidad" class="col-12">
-                                <span> Cantidad: </span>
+                                  <p> Stock | <small>${countStatus}</small>
+                                  </p>
+                                  <span> Cantidad: </span>
                                   <input class="col" type=number id="nudCant" min=1 max=100 value="1">                                
                                 </span>
                             </div>
@@ -118,9 +121,7 @@ function showProductInfo(product) {
   document.getElementById("product-container").innerHTML = htmlContentToAppend;
   imagesProduct(product);
 }
-/*-----------------------------------------------------------------------------*/
-export function drawComment(id, user, dateTime, description) {
-
+export function drawComment(id, user, dateTime, description) { // Función que imprime el comentario realizado por el usuario
   document.getElementById("commentList").innerHTML +=
     `
     <li id="idComment_` +
@@ -148,26 +149,26 @@ export function drawComment(id, user, dateTime, description) {
         </div>
     </li>`;
 }
-function averageScore() {
-  let totalScore = document
+function averageScore() { // Función que calcula la calificación promedio del artículo
+  let totalScore = document // obtenemos todos las estiquetas que contienen estrellas
     .getElementById("commentList")
-    .getElementsByClassName("checked").length;
-  let totalComments = document
+    .getElementsByClassName("checked").length;  
+  let totalComments = document // obtenemos la cantidad de comentarios realizados
     .getElementById("commentList")
     .getElementsByTagName("li").length;
-  let avgScore = totalScore / totalComments;
+  let avgScore = totalScore / totalComments; // obtenemos el promedio de votos realizado por comentario
   let generalScore = document.getElementById("generalScore");
-  let spanGeneralScore = generalScore.getElementsByTagName("span");
-  drawScore(spanGeneralScore, avgScore);
+  let spanGeneralScore = generalScore.getElementsByTagName("span"); // obtenemos el array de span que contienen las estrellas de calificación promedio
+  drawScore(spanGeneralScore, avgScore); // se lo pasamos como parámetro para  que lo imprima
 }
- function dualDigits(num) {
+function dualDigits(num) {
   return parseInt(num) < 10 ? (num = "0" + num) : num;
 }
-async function showRelatedProducts(product) {
+async function showRelatedProducts(product) { // Imprime las tarjetas de los productos relacionados 
   let htmlContentToAppend = "";
   for (let i = 0; i < product.relatedProducts.length; i++) {
     let relatedProduct = product.relatedProducts[i];
-    let imageURL = await firebaseGetImage("prod"+relatedProduct.id+"_1.jpg")
+    let imageURL = await firebaseGetImage("prod"+relatedProduct.id+"_1.jpg") //obtenemos las URL de la imágen de los productos relacionados
     htmlContentToAppend += `
                 <li class="cursor-active col-12 col-md-6 col-lg-4 p-4">
                 <div class="row pb-4 pt-2 px-1 product-card" onclick="windowReplace(${
@@ -192,23 +193,23 @@ async function showRelatedProducts(product) {
     document.getElementById("related-products").innerHTML = htmlContentToAppend;
   }
 }
-export function loadComments() {
+export function loadComments() { // Función que carga todos los comentarios realizados
   let comments = JSON.parse(localStorage.getItem("comments")); // obtenemos todos los comentarios realizados en el sitio  
-  for (const idComment in comments) {
+  for (const idComment in comments) { // recorremos el objeto que los almacena
       const comment = comments[idComment];
-      drawComment(
+      drawComment( // los imprimimos en le HTML
         idComment,
         comment.userName,
         comment.dateTime,
         comment.description
       );
       let span = document
-        .getElementById("idComment_" + idComment)
-        .getElementsByTagName("span");
-      drawScore(span, comment.score);
+        .getElementById("idComment_" + idComment) 
+        .getElementsByTagName("span"); //obtenemos los span para imprimir las estrellas
+      drawScore(span, comment.score); // lo pasamos como parámetro para que se impriman
   }
 }
-function printScoreselected(submitScore, index) {
+function printScoreselected(submitScore, index) { // Función que pinta en el campo de realizar un comentario la cantidad de estrellas que el usuario selecciona en tiempo real 
   for (let i = index; i < submitScore.length; i++) {
     // este ForLoop recorre todas las estrellas del mismo o mayor indice para eliminarle la clase checked
     let elementNotChecked = submitScore[i];
@@ -220,29 +221,6 @@ function printScoreselected(submitScore, index) {
     elementChecked.classList.add("checked");
   }
 }
-function printSelectedScore() {
-  let submitScore = document.getElementsByClassName("submitScore"); //creamos un array que contiene todos los span(estrellas)
-  let selectedscore = true;
-  for (let index = 0; index < submitScore.length; index++) {
-    let element = submitScore[index];
-    element.addEventListener("click", () => {
-      if (selectedscore) {
-        selectedscore = false;
-      }
-      printScoreselected(submitScore, index);
-      let numberScore = document.getElementsByClassName(
-        "submitScore checked"
-      ).length;
-    });
-    element.addEventListener("mouseover", () => {
-      //agregamos evento "mouseover" a cada una de las estrellas
-      if (selectedscore) {
-        printScoreselected(submitScore, index);
-      }
-    });
-  }
-}
-
 document.getElementById("sendComment").addEventListener("click", () => {
 
   if (JSON.parse(localStorage.getItem("credentials"))) {
@@ -292,7 +270,7 @@ document.getElementById("sendComment").addEventListener("click", () => {
 document.addEventListener("DOMContentLoaded", async ()=> {
   let catId = localStorage.getItem("catId");
   let productId = localStorage.getItem("productId");
-  if (productId) {
+  if (productId) { // comprobamos que el usuario realmente haya escogido un producto
           let credentials = JSON.parse(localStorage.getItem("credentials"));
           let userName;
           credentials?userName = credentials.userName+"_"+credentials.userLastname :userName= "Anonymus";
@@ -304,52 +282,73 @@ document.addEventListener("DOMContentLoaded", async ()=> {
           // Cargamos información del producto desde Firebase (más actualizada)
           
           await loadFirebaseComments(); // cargamos los comentiarios realizados
-          printSelectedScore();
+          // Sentencias para darle vida y animación a las estrellas de "realizar un comentario"
+              let submitScore = document.getElementsByClassName("submitScore"); //creamos un array que contiene todos los span(estrellas)
+              let selectedscore = false; // booleano que almacena si el usuario ya seleccionó un puntaje (empieza en false)
+              for (let index = 0; index < submitScore.length; index++) { // recorremos el array de estrellas
+                let element = submitScore[index];
+                element.addEventListener("click", () => { // le agregamos un evento de escucha a cada estrella
+                  if (!selectedscore) {  // cuando le da click, si el usuario no había seleccionado estrellas 
+                    selectedscore = true; // almacenamos que lo ha seleccionado
+                  }
+                  printScoreselected(submitScore, index); // pintamos o despintamos las demas estrellas
+                });
+                element.addEventListener("mouseover", () => { //agregamos un evento de moseover
+                  //agregamos evento "mouseover" a cada una de las estrellas
+                  if (!selectedscore) { //cuando el usuario pase el cursor por encima de la estrella, pintaremos las estrellas con la condición de que no haya seleccionado una calificación antes 
+                    printScoreselected(submitScore, index);
+                  }
+                });
+              }
           averageScore() // imprimimos la calificación promedio
-          document.getElementById("commentUser").innerHTML=userName || "Anonymus";
+          document.getElementById("commentUser").innerHTML=userName || "Anonymus"; 
           document.getElementById("buy_btn").addEventListener("click", async () => {//creamos el evento de escucha a "click" en el boton de comprar
               if (localStorage.getItem("userEmail")) { //comprobamos que el usuario está logeado
                 
                 if (product.stock >= document.getElementById("nudCant").value) { // Si hay artículos en stock suficientes, se ejecuta el codigo
-                  if (document.getElementById("nudCant").value>0) {
-  
+                  if (document.getElementById("nudCant").value>0) { // Si la cantidad seleccionada por el usuario es mayor a 0, se ejecuta ==>>
                     let userEmail = localStorage.getItem("userEmail");//cargamos el nombre de usuario en [userEmail]
                     let cart = JSON.parse(localStorage.getItem("cart"));//declaramos el objeto cartUser
                     let count = parseInt(document.getElementById("nudCant").value);//sumamos la cantidad previa de dicho producto con la seleccionada previamente en el nud(numeric Up Down)
                     let flag = true;
-                    if (cart) { // si existe en el carrito, le sumamos a count, la cantidad previa
-                      if (cart[currentProduct]) { // Si el producto existe en el carrito, le sumamos la cantidad
-                        if (product.stock > (cart[currentProduct].count+count) ) {
-                          count+=cart[currentProduct].count;
-                          cart[currentProduct] = {
-                            cost:product.cost,
-                            count:count,
-                            name:product.name,
-                            currency: product.currency,
-                            image:product.images[0],
-                            catId:product.catId,
-                            stock:product.stock,
-                          }
-                        }
-                        else{
-                          flag = false;
-                          showMessage("Lo sentimos, no disponemos de stock suficiente para su compra",false,"top","center")
-                        }
-                      }
-                      else{
-                        cart[currentProduct] = {
-                        cost:product.cost,
-                        count:count,
-                        name:product.name,
-                        currency: product.currency,
-                        image:product.images[0],
-                        catId:product.catId,
-                        stock:product.stock,
-                      }
-                      }
-                      
-                    }
-                    else{
+                    if (cart) { // si existe el carrito
+                      // se ejecuta =>
+                            if (cart[currentProduct]) { // Si el producto existe en el carrito
+                              // se ejecuta =>
+                                    if (product.stock > (cart[currentProduct].count+count) ) { // si hay stock suficiente a la venta 
+                                      // se suma la cantidad previa, más la cantidad seleccionada
+                                      count+=cart[currentProduct].count;
+                                      cart[currentProduct] = {
+                                        cost:product.cost,
+                                        count:count,
+                                        name:product.name,
+                                        currency: product.currency,
+                                        image:product.images[0],
+                                        catId:product.catId,
+                                        stock:product.stock,
+                                      }
+                                    }
+                                    else{ // si NO hay stock suficiente a la venta
+                                      // Le mostramos el mensaje 
+                                      flag = false; // establecemos nuestra flag en false, para que no se ejecute nada más
+                                      showMessage("Lo sentimos, no disponemos de stock suficiente para su compra",false,"top","center")
+                                    }
+                            }
+                            else{ // Si el producto NO existe en el carrito
+                              // lo agregamos por primera vez y no le sumamos cantidad previa
+                                cart[currentProduct] = {
+                                  cost:product.cost,
+                                  count:count,
+                                  name:product.name,
+                                  currency: product.currency,
+                                  image:product.images[0],
+                                  catId:product.catId,
+                                  stock:product.stock,
+                                }
+                            }
+                    } 
+                    else{ // Si el carrito NO existe en el LS
+                      // creamos el objeto cart y le agregamos el producto, más la cantidad que seleccionó el usuario
                       cart = {}
                       cart[currentProduct] = {
                         cost:product.cost,
@@ -361,31 +360,35 @@ document.addEventListener("DOMContentLoaded", async ()=> {
                         stock:product.stock,
                       }
                     }
-                    if (flag) {
-                      saveCart(userEmail,currentProduct,product.cost,count,product.name,product.currency,product.images[0],product.catId,product.stock)
-                      localStorage.setItem("cart", JSON.stringify(cart));//guardamos el carrito general(con todos los usuarios) en localStorage
-                      showProductInCart();
-                      drawCart();
-                      showMessage("Se ha agregado su producto al carrito",true,"top","center")
+                    if (flag) { // si nuestra bandera permite ejecutar código
+                      // Almacenamos el cart en Firebase Y en el LS
+                        saveCart(userEmail,currentProduct,product.cost,count,product.name,product.currency,product.images[0],product.catId,product.stock)
+                        localStorage.setItem("cart", JSON.stringify(cart));//guardamos el carrito general(con todos los usuarios) en localStorage
+                      //Ejecutamos nuestras funciones que brindan información visual sobre el carrito
+                        drawCart();
+                        showProductInCart();
+                      // Damos feedback de que se agregó el producto exitosamente
+                        showMessage("Se ha agregado su producto al carrito",true,"top","center")
                     }
                   }
-                  else{
-                    alert("Debes ingresar un valor positivo entero");
+                  else{// Si la cantidad seleccionada por el usuario es igual o menor a 0, se ejecuta ==>>
+                    // El mensaje dandole feedback al usuario
+                    showMessage("Debes ingresar un valor positivo entero",false,"top","center");
                   }
                 }
-                else{
+                else{ // Si NO hay stock suficiente para la cantidad que solicitó el usuario
+                  // Le avisamos que no se dispone del stock
                   showMessage("Lo sentimos, no hay artículos suficientes a la venta",false,"top","center");
                 } 
             }
             else{
+              // Si el usuario no se encuentra logueado
+              // Le informamos que debe estarlo para poder agregar productos a un carrito
               showMessage("Necesitas estar Logeado para hacer eso",false,"top","center");
             }
-          }
-            );
-        
-      
+          });// FIN BOTÓN COMPRAR
       }
-      else {
+  else { //En el caso de que no haya escogido un producto, lo redirigimos a cateogires.html
     window.location.replace("./categories.html");
   }
 });

@@ -1,4 +1,4 @@
-export function showMessage(message,caso,gravity,position){
+export function showMessage(message,caso,gravity,position){ // Función de utilidad que nos permite mostrar mensajes personalizados en cualquier sitio
     let color;
     if (caso){
         color="var(--primary-color)";
