@@ -163,6 +163,7 @@ export const saveSoldProduct = async (cart)=>{ // Función que se ejecuta una ve
       let cartSoldCount = cart[productId].count // Separamos la cantidad que el usuario desea comprar
       let newSoldCount = previusSoldCount+cartSoldCount; // sumamos esas dos cantidades en NewSoldCount
       productsOfCategory[productId].soldCount=newSoldCount; // establecemos esa cantidad resultante en el objeto de su producto, dentro de la categoria
+      productsOfCategory[productId].stock = parseInt(productsOfCategory[productId].stock)-cartSoldCount; // Eliminamos el stock del producto
       const docRef = doc(collection(db,"catInfo/catId_"+catId+"/products"),"products"); //creamos la referencia hacia ese producto
       await updateDoc(docRef,productsOfCategory,{merge:true});// actualizamos dicho producto
   }
