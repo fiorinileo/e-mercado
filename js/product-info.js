@@ -6,18 +6,23 @@ import { showProductInCart, windowReplace, drawCart} from "./init.js"
 var date = new Date();
 
 function drawScore(place, value) { // Función que nos permite imprimir la calificación promedio en tiempo real según cambien los comentarios
-  document.getElementById("generalScore").innerHTML = `
-                            Calificación: 
-                                <span class="fa "></span>
-                                <span class="fa "></span>
-                                <span class="fa "></span>
-                                <span class="fa "></span>
-                                <span class="fa "></span>`;
-  for (let j = 0; j < value; j++) { // imprimimos estrellas hasta el valor que el usuario haya escogido
-    place[j].classList.add("checked");
-    place[j].classList.add("fa-star");
-    if (value - 1 - j > 0.24 && value - 1 - j < 0.76) { // Para la calificación promedio, si la división entrega un decimal, dependiendo de su valor, agregará la mitad de la estrella siguiente, o no
-      place[j + 1].classList.add("fa-star-half");
+  if (isNaN(value)) {
+    document.getElementById("generalScore").innerHTML = `Aún sin calificación`
+  }
+  else{
+    document.getElementById("generalScore").innerHTML = `
+                              Calificación: 
+                                  <span class="fa "></span>
+                                  <span class="fa "></span>
+                                  <span class="fa "></span>
+                                  <span class="fa "></span>
+                                  <span class="fa "></span>`;
+    for (let j = 0; j < value; j++) { // imprimimos estrellas hasta el valor que el usuario haya escogido
+      place[j].classList.add("checked");
+      place[j].classList.add("fa-star");
+      if (value - 1 - j > 0.24 && value - 1 - j < 0.76) { // Para la calificación promedio, si la división entrega un decimal, dependiendo de su valor, agregará la mitad de la estrella siguiente, o no
+        place[j + 1].classList.add("fa-star-half");
+      }
     }
   }
 }
@@ -59,6 +64,7 @@ function showProductInfo(product) { // Función que imprime las características
     }
   // String almacenador del formato HTML
   let htmlContentToAppend = "";
+  console.log(product);
   htmlContentToAppend += `
   
                       <div id="carouselExampleIndicators" class="carousel slide row col-12 col-lg-7" data-bs-ride="carousel" >
@@ -82,7 +88,7 @@ function showProductInfo(product) { // Función que imprime las características
                     
                     <div class="col-lg-12 p-1 p-md-5 product_info p-4">
                         <div class="col mt-3">
-                          <small id="soldCountSpan">Nuevo | ${
+                          <small id="soldCountSpan">${product.status?product.status:"Nuevo"} | ${
                             product.soldCount
                             } vendidos
                           </small>
@@ -157,6 +163,7 @@ function averageScore() { // Función que calcula la calificación promedio del 
     .getElementById("commentList")
     .getElementsByTagName("li").length;
   let avgScore = totalScore / totalComments; // obtenemos el promedio de votos realizado por comentario
+  console.log(avgScore);
   let generalScore = document.getElementById("generalScore");
   let spanGeneralScore = generalScore.getElementsByTagName("span"); // obtenemos el array de span que contienen las estrellas de calificación promedio
   drawScore(spanGeneralScore, avgScore); // se lo pasamos como parámetro para  que lo imprima

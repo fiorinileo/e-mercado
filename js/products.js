@@ -57,7 +57,7 @@ async function showProductsList(){
                                 <h4 class="mb-1 product-header px-2">${product.name.toUpperCase()}</h4>
                                 <small class="text-muted">${product.soldCount} vendidos</small>
                             </div>
-                            <p class="mb-1">${product.description}</p>
+                            <p class="mb-1">${product.description.length>139?product.description.substring(0,140)+"...":product.description}</p>
                         </div>
                         <div class="row pe-0 m-0 mt-1 bg-light py-2">
                          <p class="product-price col m-0 align-self-center">${product.currency} ${product.cost}</p>

@@ -55,8 +55,8 @@
           >
             <i class="fas fa-bars"></i>
           </button>
-        <!-- Navbar brand -->
-        <a class="navbar-brand" href="#">E-Mercado</a>
+          <!-- Navbar brand -->
+          <a class="navbar-brand" href="#"> <img src="./e-logo.svg" width="40px">-Mercado</a>
         <ul class="navbar-nav d-flex flex-row me-1" id="navbar-actions--logged">
           <!-- Logged in -->
                 <li class="nav-item me-3 me-lg-0 logged-in">
@@ -259,6 +259,19 @@
             </div>
           </div>
           <div class="row">
+            <div class="col-md-7 mb-3">
+              <label for="productStatus">Estado</label>
+              <select name="productStatus" class="custom-select form-select d-block w-100" id="productStatus" required>
+                <option value="">Seleccione el estado del producto...</option>
+                <option value="Nuevo">Nuevo</option>
+                <option value="Usado">Usado</option>
+              </select>
+              <div class="invalid-feedback">
+                Por favor ingresa una categoría válida.
+              </div>
+            </div>
+          </div>
+          <div class="row">
             <div class="col-md-3 mb-3">
               <label for="productCostInput">Costo</label>
               <input type="number" name="productCostInput" class="form-control" id="productCostInput" placeholder="" required="" value="0"
@@ -372,7 +385,7 @@
     </div>
     <div class="container">
       <p class="text-white">
-        Todos los iconos de este sitio son propiedad de: <a href="http://www.freepik.com">Designed by Ibrandify / Freepik</a>
+        Algunos de los iconos de este sitio son propiedad de: <a href="http://www.freepik.com">Designed by Ibrandify / Freepik</a>
       </p>
     </div>
   </footer>

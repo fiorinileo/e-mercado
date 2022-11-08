@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function(e){
         
         let productNameInput = document.getElementById("productName");
         let productCategory = document.getElementById("productCategory");
+        let productStatus = document.getElementById("productStatus");
         let productCost = document.getElementById("productCostInput");
         let productDescription = document.getElementById("productDescription");
         let productCurrency = document.getElementById("productCurrency");
@@ -118,7 +119,12 @@ document.addEventListener("DOMContentLoaded", function(e){
             productCategory.classList.add('is-invalid');
             infoMissing = true;
         }
-
+        // Consulto por el estado del producto
+        if (productStatus.value === "")
+        {
+            productStatus.classList.add('is-invalid');
+            infoMissing = true;
+        }
         //Consulto por el costo
         if (productCost.value <=0)
         {
@@ -127,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function(e){
         }
         if (myDropzone.files.length<3) {
             infoMissing = true;
+            showMessage("Cantidad de imágenes insuficientes, debes subir al menos 4 imágenes diferentes",false,"top","center")
         }
         if(!infoMissing)
         {
@@ -150,6 +157,7 @@ document.addEventListener("DOMContentLoaded", function(e){
                     images:imagesProduct,
                     soldCount:0,
                     relatedProducts:[],
+                    status:productStatus.value,
                   }
                 await saveCategorieCount(selectedCategory)
                 await saveProductInfo(selectedCategory,catProducts)
@@ -183,6 +191,9 @@ document.addEventListener("DOMContentLoaded", function(e){
                 document.getElementById("alertResult").classList.add("show");
             }); */
             
+        }
+        else{
+            hideSpinner()
         }
     });
 });
