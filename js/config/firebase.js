@@ -7,6 +7,7 @@ import { getFirestore,collection, setDoc, doc, getDocs,getDoc, updateDoc, delete
 import { deleteCart } from "../cart.js";
 import { getJSONData, PRODUCT_INFO_URL } from "../init.js";
 import { saveFirebaseComments } from "./postComments.js";
+import { showMessage } from "./showMessage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC4uWhBDz6xTJe4CQUv98u-oJ_QyUR3S5c",
@@ -155,6 +156,7 @@ export const saveUserPurchase = async () =>{ // almacena el carrito del usuario,
   location.reload() // recargamos la página para que se refresquen todos los inputs y HTML
 }
 export const saveSoldProduct = async (cart)=>{ // Función que se ejecuta una vez el usuario realizó la compra para almacenar la cantidad de todos los productos vendidos en Firebase
+  let hasStock = true;
   for (const productId in cart) { // recorremos el carrito del usuario
       const product = cart[productId]; // obtenemos los productos individualmente
       let catId = product.catId; // Obtenemos la categoria a la que pertenecen 
@@ -164,9 +166,16 @@ export const saveSoldProduct = async (cart)=>{ // Función que se ejecuta una ve
       let newSoldCount = previusSoldCount+cartSoldCount; // sumamos esas dos cantidades en NewSoldCount
       productsOfCategory[productId].soldCount=newSoldCount; // establecemos esa cantidad resultante en el objeto de su producto, dentro de la categoria
       productsOfCategory[productId].stock = parseInt(productsOfCategory[productId].stock)-cartSoldCount; // Eliminamos el stock del producto
-      const docRef = doc(collection(db,"catInfo/catId_"+catId+"/products"),"products"); //creamos la referencia hacia ese producto
-      await updateDoc(docRef,productsOfCategory,{merge:true});// actualizamos dicho producto
+      if (productsOfCategory[productId].stock<0) { // Si el stock de productos resultante es menor a 0
+        showMessage("No se pudo procesar su compra, el stock de: "+product.name+" es insuficiente.",false,"bottom","left");
+        hasStock = false
+      }
+      else{
+        const docRef = doc(collection(db,"catInfo/catId_"+catId+"/products"),"products"); //creamos la referencia hacia ese producto
+        await updateDoc(docRef,productsOfCategory,{merge:true});// actualizamos dicho producto
+      }
   }
+  return hasStock;
 
 }
 export const saveUserName = async (name,lastname,email,photo)=>{ // Función que se ejecuta una vez el usuario de logeo para almacenar sus credenciales en Firebase
@@ -221,4 +230,3 @@ export const ticketLoader = async ()=>{ // Función que devuelve todas las compr
   }
   return tickets; //devolvemos el objeto de todas las compras
 }
-// FIN :)

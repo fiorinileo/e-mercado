@@ -88,6 +88,9 @@ function showProductInfo(product) { // Función que imprime las características
                     
                     <div class="col-lg-12 p-1 p-md-5 product_info p-4">
                         <div class="col mt-3">
+                        <p>
+                          Vendedor: <span id="seller">${product.seller?product.seller:"E-Mercado"}</span>
+                        </p>
                           <small id="soldCountSpan">${product.status?product.status:"Nuevo"} | ${
                             product.soldCount
                             } vendidos

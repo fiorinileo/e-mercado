@@ -63,6 +63,11 @@
     --bs-gutter-x:0;
     padding: 0;
 }
+.product_info>div>p:last-of-type{
+
+    overflow: auto;
+    max-height: 95px;
+}
 #product-info-container h4{
     color: #fff;
     font-size: 4rem;
