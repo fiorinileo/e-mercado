@@ -230,3 +230,19 @@ export const ticketLoader = async ()=>{ // Función que devuelve todas las compr
   }
   return tickets; //devolvemos el objeto de todas las compras
 }
+export const saveUserSale =  async (userEmail,catId,productId,name,description,cost,currency,stock,images,status) =>{ // Función que almacena un único producto en carrito del usuario en Firebase
+  let docData={
+    catId:catId,
+    id:productId,
+    name:name,
+    description:description,
+    cost:cost,
+    currency:currency,
+    stock:stock,
+    images:images,
+    soldCount:0,
+    status:status
+  }
+  let ruta= doc(db,"usersInfo/"+userEmail+"/sales/"+productId); //creamos la ruta donde se almacenará ese producto dentro del carrito del usuario
+  await setDoc(ruta,docData); // establecemos esa ruta y almacenamos en Firebase mediante la función setDoc
+} 

@@ -1,4 +1,4 @@
-import { firebaseGetImage, getProductInfo, getProductsOfCategory, saveCategorieCount, saveProductInfo, uploadFile } from "./config/firebase.js";
+import { firebaseGetImage, getProductInfo, getProductsOfCategory, saveCategorieCount, saveProductInfo, saveUserSale, uploadFile } from "./config/firebase.js";
 import { showMessage } from "./config/showMessage.js";
 import { hideSpinner, showSpinner } from "./init.js";
 
@@ -31,7 +31,6 @@ function updateTotalCosts(){
 //que el documento se encuentra cargado, es decir, se encuentran todos los
 //elementos HTML presentes.
 document.addEventListener("DOMContentLoaded", function(e){
-    setRelatedProducts(102)
     document.getElementById("productCountInput").addEventListener("change", function(){
         productCount = this.value;
         updateTotalCosts();
@@ -90,6 +89,7 @@ document.addEventListener("DOMContentLoaded", function(e){
         
         let userName = JSON.parse(localStorage.getItem("credentials"))
             userName = userName.userName +" "+ userName.userLastname;
+        let userEmail = localStorage.getItem("userEmail");
         let productNameInput = document.getElementById("productName");
         let productCategory = document.getElementById("productCategory");
         let productStatus = document.getElementById("productStatus");
@@ -139,7 +139,6 @@ document.addEventListener("DOMContentLoaded", function(e){
         }
         if(!infoMissing)
         {
-                let relatedProducts = await setRelatedProducts(selectedCategory); // obtenemos productos relacionados
 
                let imagesProduct=[];
                 for (let i = 0; i < myDropzone.files.length; i++) { // recorremos el array de imagenes del producto
@@ -163,6 +162,7 @@ document.addEventListener("DOMContentLoaded", function(e){
                     status:productStatus.value,
                     seller:userName,
                   }
+                await saveUserSale(userEmail,selectedCategory,productId,productNameInput.value,productDescription.value,productCost.value,productCurrency.value,productCountInput.value,imagesProduct,productStatus.value)
                 await saveCategorieCount(selectedCategory)
                 await saveProductInfo(selectedCategory,catProducts)
                 hideSpinner();
@@ -201,4 +201,3 @@ document.addEventListener("DOMContentLoaded", function(e){
         }
     });
 });
-

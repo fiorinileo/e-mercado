@@ -165,7 +165,6 @@ function averageScore() { // Función que calcula la calificación promedio del 
     .getElementById("commentList")
     .getElementsByTagName("li").length;
   let avgScore = totalScore / totalComments; // obtenemos el promedio de votos realizado por comentario
-  console.log(avgScore);
   let generalScore = document.getElementById("generalScore");
   let spanGeneralScore = generalScore.getElementsByTagName("span"); // obtenemos el array de span que contienen las estrellas de calificación promedio
   drawScore(spanGeneralScore, avgScore); // se lo pasamos como parámetro para  que lo imprima
@@ -334,55 +333,84 @@ document.addEventListener("DOMContentLoaded", async ()=> {
               },
               109:{  // A "Celulares" relacionamos con "Computadora" y "Juguetes"
                   105:70,
-                  102:30,
+                  107:30,
               },
           }
-          console.log(category);
-          let catProductCount=Object.keys(category).length;
-          if (catProductCount>=2) {
-              randomIndex[0]=getRandomInt(catProductCount)
-
-              do {
-                randomIndex[1]=getRandomInt(catProductCount)
-              } while (randomIndex[0]==randomIndex[1]);
-              for (let i = 0; i < 2; i++) {
-                let productRelated=Object.values(category)[randomIndex[i]]
-                let relatedProduct = {
-                  catId:catId,
-                  id:productRelated.id,
-                  name:productRelated.name,
-                  image:productRelated.images[0],
+          let contador = 0;
+            const obtainRandProdOfCategory = async (catId,isOtherCategory=false) =>{ //obtiene un producto random de la categoría a la que pertenece
+                contador++;
+                console.log("contador : "+contador);
+                console.log("isOtherCategory : "+ isOtherCategory);
+                console.log("catID : "+catId);
+                if (contador < 8) {
+                  let randProducts = category;
+                  if (isOtherCategory) {
+                      randProducts = await getProductsOfCategory(catId); // En el caso que sea una categoría relacionada, traemos sus productos
+                  }
+                  let randIndex = getRandomInt(Object.keys(randProducts).length) // Obtenemos un producto random de la cateogría, el número máximo que le pasamos como parámetro es el largo del objeto.
+                  if (randIndex>=0) { //comprobamos que la categoŕia tenga productos
+                    let randProduct = randProducts[Object.keys(randProducts)[randIndex]]
+                      /* Componemos el id del producto, gracias a los tres primeros dígitos de la categoría, cancatenándole el índice random resultante: 
+                      //EJ:   
+                              Jugetes tiene ID 102;
+                              products[String(catId)+(randIndex+1)]   
+                              products[String(102)+(2+1)]  = products[1023] = el arículo Playstation 5 tiene ID 1023*/
+                      if (Object.keys(randProducts).length != 0) {
+                        const found = relatedProducts.find(i => i.id==randProduct.id); // Buscamos en el array de productos si ya se ha agregado ese artículo
+                        if (!found && productId != randProduct.id) { //En el caso de que el array de productos relacionados no posea el artículo sugerido, se agregará
+                            relatedProducts[relatedProducts.length] = { // establecemos el índice según el largo del array
+                                catId:catId,
+                                //entramos al artículo y extraemos sus atributos
+                                id: randProduct.id, 
+                                image:randProduct.images[0],
+                                name:randProduct.name,
+                            }
+                        }
+                        else{ //En el caso de que se repita el id: Ejecutamos =>
+                            if (Object.keys(randProducts).length<2) {
+                              obtainRandProdOfRelatedCategory(catId)
+                            } 
+                            else{
+                              obtainRandProdOfCategory(catId,true); //Ejecutamos la misma función hasta que se agregue uno diferente (Problema de eficiencia)
+                            }
+                        }
+                      }
+                  }
+                  else{
+                      obtainRandProdOfRelatedCategory(catId)
+                      obtainRandProdOfRelatedCategory(catId)
+                  }
                 }
-              relatedProducts.push(relatedProduct);
               }
-          }
-          else if (catProductCount=1) {
-            randomIndex[0]=getRandomInt(catProductCount)
-            let relatedCategoryId;
+              const obtainRandProdOfRelatedCategory = async (catId) =>{ // Obtiene productos random, de una categoría relacionada, ya con sus porcentajes de probabilidad
+                  let numRand = getRandomInt(100)
+                  if(numRand<=Object.values(RelatedCategories[catId])[0]){ //Si el número random del 1 al 100 es menor o igual al procentaje almacenado en la primer categoría relacionada se ejecuta =>
+                      await obtainRandProdOfCategory(Object.keys(RelatedCategories[catId])[0],true) // Se busca producto random en la primer categoría relacionada
+                  }
+                  else{
+                      await obtainRandProdOfCategory(Object.keys(RelatedCategories[catId])[1],true)
+                  }
+              }
 
-            if (Object.values(RelatedCategories[catId])[0] <= getRandomInt(100)) {
-              relatedCategoryId=RelatedCategories[catId][0];
-            }
-            else{
-              relatedCategoryId=RelatedCategories[catId][1];
-            }
-            let productsOfRelatedCategory = await getProductsOfCategory(relatedCategoryId);
-            console.log(Object.values(RelatedCategories[catId])[0]);
-            randomIndex[1]=getRandomInt(Object.keys(productsOfRelatedCategory).length);
-            let productRelated=Object.values(productsOfRelatedCategory)[randomIndex[1]]
-            let relatedProduct = {
-              catId:relatedCategoryId,
-              id:productRelated.id,
-              name:productRelated.name,
-              image:productRelated.images[0],
-            }
-            relatedProducts.push(relatedProduct);
-          } else {
-            
-          }
-          
-          
+              if ((Object.keys(category).length)>0) { // En el caso de que la categoría principal tenga al menos un producto 
+                  if (Object.keys(category).length>1) { // En el caso que la categoría principal tenga más de 1 producto, trabajamos con esa categoría
+                      await  obtainRandProdOfCategory(catId);
+                      await  obtainRandProdOfCategory(catId);
+                      await  obtainRandProdOfRelatedCategory(catId)
+                  }
+                  else{ // Pero si sólo tiene un producto, lo agregamos y luego agregamos otro de una categoría relacionada
+                      await  obtainRandProdOfCategory(catId);
+                      await  obtainRandProdOfRelatedCategory(catId)
+                      await  obtainRandProdOfRelatedCategory(catId)
 
+                  }
+              }
+              else{ //En caso de que la categoría NO posea productos, haremos el siguiente procedimiento
+                  await  obtainRandProdOfRelatedCategory(catId)
+                  await  obtainRandProdOfRelatedCategory(catId)
+                  await  obtainRandProdOfRelatedCategory(catId)
+
+              }
           var currentProduct = String(productId);
           showProductInfo(product);
           showRelatedProducts(relatedProducts);
