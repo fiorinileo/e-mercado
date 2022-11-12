@@ -64,7 +64,6 @@ function showProductInfo(product) { // Función que imprime las características
     }
   // String almacenador del formato HTML
   let htmlContentToAppend = "";
-  console.log(product);
   htmlContentToAppend += `
   
                       <div id="carouselExampleIndicators" class="carousel slide row col-12 col-lg-7" data-bs-ride="carousel" >
@@ -174,10 +173,10 @@ function averageScore() { // Función que calcula la calificación promedio del 
 function dualDigits(num) {
   return parseInt(num) < 10 ? (num = "0" + num) : num;
 }
-async function showRelatedProducts(product) { // Imprime las tarjetas de los productos relacionados 
+async function showRelatedProducts(relatedProducts) { // Imprime las tarjetas de los productos relacionados 
   let htmlContentToAppend = "";
-  for (let i = 0; i < product.relatedProducts.length; i++) {
-    let relatedProduct = product.relatedProducts[i];
+  for (let i = 0; i < relatedProducts.length; i++) {
+    let relatedProduct = relatedProducts[i];
     let imageURL = await firebaseGetImage("prod"+relatedProduct.id+"_1.jpg") //obtenemos las URL de la imágen de los productos relacionados
     htmlContentToAppend += `
                 <li class="cursor-active col-12 col-md-6 col-lg-4 p-4">
@@ -185,7 +184,7 @@ async function showRelatedProducts(product) { // Imprime las tarjetas de los pro
                   relatedProduct.id
                 },${relatedProduct.catId})">
                     <div class="col-">
-                        <div>
+                        <div class="text-center">
                             <img id="main-image-product" src=${imageURL} class="img-thumbnail">
                         </div>
                     </div>
@@ -230,6 +229,9 @@ function printScoreselected(submitScore, index) { // Función que pinta en el ca
     let elementChecked = submitScore[i];
     elementChecked.classList.add("checked");
   }
+}
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
 }
 document.getElementById("sendComment").addEventListener("click", () => {
 
@@ -286,9 +288,104 @@ document.addEventListener("DOMContentLoaded", async ()=> {
           credentials?userName = credentials.userName+"_"+credentials.userLastname :userName= "Anonymus";
           let category = await getProductsOfCategory(catId);
           var product = category[productId];
+          delete category[productId]
+          let relatedProducts = [] // Arrays que almacenará los productos relacionados que genere esta función
+          let randomIndex=[];
+          const RelatedCategories = {
+              /*  ESTRUCTURA Y CRITERIO
+              CatId principal : {
+                  CatId relacionada : (porcentaje de categoría relacionada - rango : 1-100),
+                  Otra CatId relacionada : (otro porcentaje de categoría relacionada - rango : 1-100),
+
+                  // Entre todos los elementos, la suma de sus porcentajes siempre dará 100
+                  // El porcentaje representaría que tan similar es esa categoría a la principal
+                  // Las categoría no pueden NO tener categorías relacionadas, si la categoría no tiene similitud con ninguna, se relacionará con ella misma en un 100% 
+              }, 
+              */
+              101:{
+                  101:100, // Autos sólo lo relacionamos con él mismo
+              }, 
+              102:{ // A "Juguetes" relacionamos con "Computadora" y "Celulares"
+                  105:60,
+                  109:40 ,
+              },   
+              103:{ // A "Muebles" relacionamos con "Herramientas" y "Electrodomésticos"
+                  104:30,
+                  107:70,
+              }, 
+              104:{ // A "Herramientas" relacionamos con "Muebles" y "Electrodomésticos"
+                  103:50,
+                  107:50, 
+              }, 
+              105:{ // A "Computadora" relacionamos con "Celulares" y "Electrodomésticos"
+                  109:80,
+                  107:20,
+              }, 
+              106:{ // A "Vestimenta" relacionamos con "Muebles" y "Deporte"
+                  103:20,
+                  108:80,
+              }, 
+              107:{ // A "Electrodomésticos" relacionamos con "Herramientas" y "Muebles"
+                  104:30,
+                  103:70,
+              }, 
+              108:{  // A "Deporte" relacionamos con "Vestimenta"
+                  106: 100,
+              },
+              109:{  // A "Celulares" relacionamos con "Computadora" y "Juguetes"
+                  105:70,
+                  102:30,
+              },
+          }
+          console.log(category);
+          let catProductCount=Object.keys(category).length;
+          if (catProductCount>=2) {
+              randomIndex[0]=getRandomInt(catProductCount)
+
+              do {
+                randomIndex[1]=getRandomInt(catProductCount)
+              } while (randomIndex[0]==randomIndex[1]);
+              for (let i = 0; i < 2; i++) {
+                let productRelated=Object.values(category)[randomIndex[i]]
+                let relatedProduct = {
+                  catId:catId,
+                  id:productRelated.id,
+                  name:productRelated.name,
+                  image:productRelated.images[0],
+                }
+              relatedProducts.push(relatedProduct);
+              }
+          }
+          else if (catProductCount=1) {
+            randomIndex[0]=getRandomInt(catProductCount)
+            let relatedCategoryId;
+
+            if (Object.values(RelatedCategories[catId])[0] <= getRandomInt(100)) {
+              relatedCategoryId=RelatedCategories[catId][0];
+            }
+            else{
+              relatedCategoryId=RelatedCategories[catId][1];
+            }
+            let productsOfRelatedCategory = await getProductsOfCategory(relatedCategoryId);
+            console.log(Object.values(RelatedCategories[catId])[0]);
+            randomIndex[1]=getRandomInt(Object.keys(productsOfRelatedCategory).length);
+            let productRelated=Object.values(productsOfRelatedCategory)[randomIndex[1]]
+            let relatedProduct = {
+              catId:relatedCategoryId,
+              id:productRelated.id,
+              name:productRelated.name,
+              image:productRelated.images[0],
+            }
+            relatedProducts.push(relatedProduct);
+          } else {
+            
+          }
+          
+          
+
           var currentProduct = String(productId);
           showProductInfo(product);
-          showRelatedProducts(product);
+          showRelatedProducts(relatedProducts);
           // Cargamos información del producto desde Firebase (más actualizada)
           
           await loadFirebaseComments(); // cargamos los comentiarios realizados

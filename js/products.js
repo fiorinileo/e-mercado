@@ -46,7 +46,7 @@ async function showProductsList(){
                 htmlContentToAppend += `
                 <li class="cursor-active col-md-6 col-lg-4 p-4">
                     <div class="row pb-0 pt-2 product-card" onclick="windowReplace(${product.id})">
-                        <div class="col-">
+                        <div class="col- text-center">
                             <div class="d-flex bg-white">
                                 <img src=${imageURL} class="img-thumbnail mx-auto mt-0">
                             </div>
