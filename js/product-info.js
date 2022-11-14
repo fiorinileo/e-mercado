@@ -289,7 +289,6 @@ document.addEventListener("DOMContentLoaded", async ()=> {
           var product = category[productId];
           delete category[productId]
           let relatedProducts = [] // Arrays que almacenará los productos relacionados que genere esta función
-          let randomIndex=[];
           const RelatedCategories = {
               /*  ESTRUCTURA Y CRITERIO
               CatId principal : {
@@ -306,7 +305,7 @@ document.addEventListener("DOMContentLoaded", async ()=> {
               }, 
               102:{ // A "Juguetes" relacionamos con "Computadora" y "Celulares"
                   105:60,
-                  109:40 ,
+                  109:40,
               },   
               103:{ // A "Muebles" relacionamos con "Herramientas" y "Electrodomésticos"
                   104:30,
@@ -333,7 +332,7 @@ document.addEventListener("DOMContentLoaded", async ()=> {
               },
               109:{  // A "Celulares" relacionamos con "Computadora" y "Juguetes"
                   105:70,
-                  107:30,
+                  102:30,
               },
           }
           let contador = 0;
