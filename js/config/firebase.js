@@ -195,7 +195,7 @@ export const getUserName = async ()=>{ // Función que obtiene obtiene las crede
   let credentials = {}
   const querySnapshot = await getDoc(doc(db, "usersInfo/"+userEmail));
   credentials = querySnapshot.data()
-  credentials["withGoogle"]=false; // ya que se ejecuta esta finción significa que el usuario no inició sesión con google, por lo que la establecemos en false
+  credentials.withGoogle=false; // ya que se ejecuta esta finción significa que el usuario no inició sesión con google, por lo que la establecemos en false
   localStorage.setItem("credentials",JSON.stringify(credentials))
   document.getElementById("userName").innerHTML=(credentials.userName+" "+credentials.userLastname).substring(0,9)+"..."; // seteamos el nombre del usuario en el navbar
   document.getElementById("userEmail").getElementsByTagName("img")[0].src=credentials.photo; // junto con su foto de perfil

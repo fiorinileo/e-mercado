@@ -82,6 +82,7 @@ let currentSortCriteria = undefined;
 let minPrice = undefined;
 let maxPrice = undefined;
 export function sortProducts(criteria, array){
+    
     let result = Object.values(array);
     if (criteria === ORDER_DESC_BY_PRICE)
     {
@@ -111,7 +112,7 @@ export function sortProducts(criteria, array){
 }
 export function sortAndShowProducts(sortCriteria, ProductsArray){
     currentSortCriteria = sortCriteria;
-
+    console.log(currentProductsArray);
     if(ProductsArray != undefined){
         currentProductsArray = ProductsArray;
     }
