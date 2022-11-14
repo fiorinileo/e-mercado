@@ -192,9 +192,12 @@ export const saveUserName = async (name,secondName="",lastname,secondLastname=""
 }
 export const getUserName = async ()=>{ // Función que obtiene obtiene las credenciales desde Firebase una vez el usuario se logeó y las establece en el LocalStorage
   let userEmail = localStorage.getItem("userEmail")
+  console.log(userEmail);
   let credentials = {}
   const querySnapshot = await getDoc(doc(db, "usersInfo/"+userEmail));
   credentials = querySnapshot.data()
+  console.log(credentials);
+  console.log(credentials.withGoogle);
   credentials.withGoogle=false; // ya que se ejecuta esta finción significa que el usuario no inició sesión con google, por lo que la establecemos en false
   localStorage.setItem("credentials",JSON.stringify(credentials))
   document.getElementById("userName").innerHTML=(credentials.userName+" "+credentials.userLastname).substring(0,9)+"..."; // seteamos el nombre del usuario en el navbar

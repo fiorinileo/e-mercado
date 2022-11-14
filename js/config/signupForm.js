@@ -15,7 +15,7 @@ if (signupForm) {
         const signupModal = document.querySelector("#signupModal")
         bootstrap.Modal.getInstance(signupModal).hide()
         let URLphotoDefault = "https://firebasestorage.googleapis.com/v0/b/emercado-359900.appspot.com/o/img_perfil.png?alt=media&token=214661d3-8e00-4ea3-8e87-325cdd903d68";
-        await saveUserName(name,lastname,email,URLphotoDefault)
+        await saveUserName(name,"",lastname,"",email,"",URLphotoDefault)
         /*  Logeamos automaticamente al usuario*/
         await signInWithEmailAndPassword(auth,email,password);
         document.getElementById("userName").innerHTML=email.substring(0,9)+"...";
