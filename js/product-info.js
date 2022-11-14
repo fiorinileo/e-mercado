@@ -66,7 +66,7 @@ function showProductInfo(product) { // Función que imprime las características
   let htmlContentToAppend = "";
   htmlContentToAppend += `
   
-                      <div id="carouselExampleIndicators" class="carousel slide row col-12 col-lg-7" data-bs-ride="carousel" >
+                      <div id="carouselExampleIndicators" class="carousel slide row col-12 col-xl-7" data-bs-ride="carousel" >
                         <div class="carousel-indicators" >
                           
                         </div>
@@ -83,7 +83,7 @@ function showProductInfo(product) { // Función que imprime las características
                         </button>
                     </div>
 
-                <div class="row justify-content-center col-lg-5  p-lg-4 col-12">
+                <div class="row justify-content-center col-xl-5  p-lg-4 col-12">
                     
                     <div class="col-lg-12 p-1 p-md-5 product_info p-4">
                         <div class="col mt-3">
