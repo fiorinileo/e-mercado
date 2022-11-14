@@ -178,14 +178,17 @@ export const saveSoldProduct = async (cart)=>{ // Función que se ejecuta una ve
   return hasStock;
 
 }
-export const saveUserName = async (name,lastname,email,photo)=>{ // Función que se ejecuta una vez el usuario de logeo para almacenar sus credenciales en Firebase
+export const saveUserName = async (name,secondName="",lastname,secondLastname="",email,phone="",photo="https://firebasestorage.googleapis.com/v0/b/emercado-359900.appspot.com/o/img_perfil.png?alt=media&token=214661d3-8e00-4ea3-8e87-325cdd903d68")=>{ // Función que se ejecuta una vez el usuario de logeo para almacenar sus credenciales en Firebase
   let credentials = { // creamos el objeto con las credenciales que almacenaremos
     userName:name,
+    secondName:secondName,
     userLastname:lastname,
+    secondLastname:secondLastname,
     photo:photo,
+    phone:phone,
   }
   let ruta= doc(db,"usersInfo/"+email); //establecemos la ruta que es el email del usuario (identificador único)
-  setDoc(ruta,credentials) // seteamos sus credenciales
+  await setDoc(ruta,credentials) // seteamos sus credenciales
 }
 export const getUserName = async ()=>{ // Función que obtiene obtiene las credenciales desde Firebase una vez el usuario se logeó y las establece en el LocalStorage
   let userEmail = localStorage.getItem("userEmail")

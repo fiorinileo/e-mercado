@@ -339,9 +339,6 @@ document.addEventListener("DOMContentLoaded", async ()=> {
           let contador = 0;
             const obtainRandProdOfCategory = async (catId,isOtherCategory=false) =>{ //obtiene un producto random de la categoría a la que pertenece
                 contador++;
-                console.log("contador : "+contador);
-                console.log("isOtherCategory : "+ isOtherCategory);
-                console.log("catID : "+catId);
                 if (contador < 8) {
                   let randProducts = category;
                   if (isOtherCategory) {

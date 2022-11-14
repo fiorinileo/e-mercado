@@ -1,6 +1,6 @@
 // Archivo que permite el logeo al sitio mediante la cuenta de google 
 import { GoogleAuthProvider,signInWithPopup } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"
-import { auth, saveUserName } from "./firebase.js"
+import { auth, getUserName, saveUserName } from "./firebase.js"
 import { loadCart } from "./loadCart.js";
 
 const googlebtn = document.getElementById("googleLogin"); //obtenemos el botón de inicio de sesion con google 
@@ -13,10 +13,8 @@ if (googlebtn) { // si botón existe en la página
                 localStorage.setItem('userEmail',credentials.user.email); // seteamos en el LocalStorage el email del usuario
                 splitName(credentials.user.displayName,credentials.user.email,credentials.user.photoURL) // ejecutamos la funcion SplitName con el nombre de usuario que nos proporciona google
                 bootstrap.Modal.getInstance(document.querySelector("#signinModal")).hide() //ocultamos el modal de login
-                let userName = (credentials.user.displayName).substring(0,9)+"..."; 
-                document.getElementById("userName").innerHTML=userName; //seteamos el nombre de usuario en el navbar
-                document.getElementById("userEmail").getElementsByTagName("img")[0].src=credentials.user.photoURL; // seteamos la foto de perfil que nos da google junto con le nombre
-                loadCart(); // cargamos el carrito de ese usuario
+                await getUserName()
+                await loadCart(); // cargamos el carrito de ese usuario
             } catch (error) {
                 console.log(error);
             }    
