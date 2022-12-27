@@ -4,6 +4,7 @@ import { ticketLoader } from "./config/firebase.js";
 document.addEventListener("DOMContentLoaded",async()=>{
     var tickets = await ticketLoader()
     let ticketContainer = document.getElementById("ticketContainer")
+    console.log(tickets);
     let HTMLListItems = `
         <li class="bg-white text-dark p-4 m-4">
             <h3>

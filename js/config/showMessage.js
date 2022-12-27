@@ -9,7 +9,7 @@ export function showMessage(message,caso,gravity,position){ // Función de utili
     Toastify({
         text: message,
         duration: 3000,
-        destination: "../categories.html",
+        destination: "#",
         newWindow: true,
         close: true,
         gravity: gravity, // `top` or `bottom`

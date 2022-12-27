@@ -11,7 +11,7 @@ if (signupForm) {
     let password = (signupForm['signup-password'].value).toLowerCase();
     let name = (signupForm['signup-name'].value).toLowerCase();
     let lastname = (signupForm['signup-lastname'].value).toLowerCase();
-    if (email.value !=null && password.value  != null && name.value !=null && lastname.value  != null) {
+    if (email !=null && password  != null && name !=null && lastname  != null) {
         try { 
             const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
             const signupModal = document.querySelector("#signupModal")
