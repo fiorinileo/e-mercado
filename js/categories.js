@@ -47,8 +47,8 @@ async function showCategoriesList(){ // Muestra todas las categorías existentes
     if(currentCategoriesArray.length >= 0){ // si el array tiene elementos
         for(let i = 0; i < currentCategoriesArray.length; i++){ // recorremos el array de categorias
             let category = currentCategoriesArray[i]; // separamos la categoría correspondiente
-            if (((minCount == undefined) || (minCount != undefined && parseInt(productCount) >= minCount)) &&
-                ((maxCount == undefined) || (maxCount != undefined && parseInt(productCount) <= maxCount))){ // Comparador de filtros proporcionado por la Letra
+            if (((minCount == undefined) || (minCount != undefined && parseInt(category.productCount) >= minCount)) &&
+                ((maxCount == undefined) || (maxCount != undefined && parseInt(category.productCount) <= maxCount))){ // Comparador de filtros proporcionado por la Letra
                     // Estructura HTML individual para presentar cada tarjeta de categoría
                 htmlContentToAppend += ` 
                 <li class="cursor-active col-md-6 col-lg-4 p-4" onclick="setCatID(${category.id})" >
